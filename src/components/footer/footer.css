@@ -1,0 +1,42 @@
+.footer {
+  margin: 125px 70px 0;
+}
+
+.footer__title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #8b8b8b;
+  margin: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid;
+}
+.footer__container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+.footer__year {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.footer__container_url {
+  display: flex;
+  column-gap: 20px;
+}
+
+.footer__link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
