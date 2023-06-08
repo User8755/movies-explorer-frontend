@@ -16,6 +16,9 @@ function Main(props) {
       <main className='main'>
         <Promo MoreInfo={MoreInfo} />
         <AboutProject isMoreInfo={isMoreInfo} />
+        <Techs isMoreInfo={isMoreInfo} />
+        <AboutMe isMoreInfo={isMoreInfo} />
+        <Portfolio isMoreInfo={isMoreInfo} />
       </main>
       <Footer />
     </>

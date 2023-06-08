@@ -1,3 +1,7 @@
+.techs-disable {
+  display: none;
+}
+
 .techs__name {
   font-style: normal;
   font-weight: 400;
@@ -23,7 +27,7 @@
   margin: 90px 0 26px;
 }
 
-.techs__paragraph {
+.techs__subtitle {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -32,7 +36,7 @@
   text-align: center;
 }
 
-.techs__container {
+.techs__list {
   display: flex;
   margin: 100px auto 0;
   column-gap: 10px;
@@ -40,16 +44,17 @@
   max-width: max-content;
 }
 
-.techs__span {
+.techs__div {
   width: 90px;
   background: #303030;
   border-radius: 10px;
   text-align: center;
   padding-top: 21px;
   padding-bottom: 21px;
+  list-style-type: none;
 }
 
-.techs__span:hover {
+.techs__div:hover {
   box-shadow: 5px 5px 6px #8b8b8b;
   background: rgba(48, 48, 48, 0.4);
 }

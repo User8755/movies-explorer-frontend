@@ -1,3 +1,7 @@
+.aboutMe-disable {
+  display: none;
+}
+
 .aboutMe__name {
   font-style: normal;
   font-weight: 400;

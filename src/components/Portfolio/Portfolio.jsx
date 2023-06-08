@@ -1,9 +1,12 @@
 import Arrow from '../../images/arrow.svg';
 import './Portfolio.css'
 
-function Portfolio() {
+function Portfolio(props) {
+
+  const { isMoreInfo } = props
+
   return (
-    <section className='Portfolio'>
+    <section className={isMoreInfo ? 'Portfolio' : 'Portfolio-disable'}>
       <h3 className='Portfolio__title'>Портфолио</h3>
       <a href='https://github.com/User8755' className='Portfolio__link'>
         <p className='Portfolio__link_text'>Статичный сайт</p>

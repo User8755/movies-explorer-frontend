@@ -2,6 +2,10 @@
   margin: 100px 70px 125px;
 }
 
+.Portfolio-disable {
+  display: none;
+}
+
 .Portfolio__title {
   font-style: normal;
   font-weight: 400;

@@ -1,9 +1,12 @@
 import './AboutMe.css';
 import Foto from '../../images/Me.jpg';
 
-function AboutMe() {
+function AboutMe(props) {
+
+  const { isMoreInfo } = props
+
   return (
-    <section className='aboutMe'>
+    <section className={isMoreInfo ? 'aboutMe' : 'aboutMe-disable'}>
       <p className='aboutMe__name'>Студент</p>
       <div className='aboutMe__container'>
         <div className='aboutMe__container_text'>
