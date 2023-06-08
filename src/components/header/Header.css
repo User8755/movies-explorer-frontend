@@ -1,0 +1,32 @@
+.header {
+  padding: 18px 70px 0;
+  background: #073042;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header__container {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  column-gap: 30px;
+  align-items: center;
+}
+
+.header__btn-login {
+  padding: 8px 20px;
+  background-color: #3ddc84;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.header__btn-login:hover {
+  box-shadow: 3px 3px 4px #8b8b8b;
+}
+
+.header__btn-login:active {
+  background: #03863e;
+}

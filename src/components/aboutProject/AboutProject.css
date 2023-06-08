@@ -23,6 +23,10 @@
   background: #202020;
 }
 
+.aboutProject-disable {
+  display: none;
+}
+
 .aboutProject__container {
   display: grid;
   grid-template-columns: repeat(auto-fill, 540px);

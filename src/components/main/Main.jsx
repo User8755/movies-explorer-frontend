@@ -5,16 +5,17 @@ import Techs from '../techs/Techs';
 import AboutMe from '../aboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 import Footer from '../footer/Footer';
+import Header from '../header/Header';
 
-function Main() {
+function Main(props) {
+  const { MoreInfo, isMoreInfo } = props;
+
   return (
     <>
+      <Header />
       <main className='main'>
-        <Promo />
-        <AboutProject />
-        <Techs />
-        <AboutMe />
-        <Portfolio />
+        <Promo MoreInfo={MoreInfo} />
+        <AboutProject isMoreInfo={isMoreInfo} />
       </main>
       <Footer />
     </>

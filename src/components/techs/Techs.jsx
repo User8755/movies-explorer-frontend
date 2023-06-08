@@ -10,13 +10,13 @@ function Techs() {
           дипломном проекте.
         </p>
         <div className='techs__container'>
-          <span className='techs__span'>HTML</span>
-          <span className='techs__span'>CSS</span>
-          <span className='techs__span'>JS</span>
-          <span className='techs__span'>React</span>
-          <span className='techs__span'>Git</span>
-          <span className='techs__span'>Express.js</span>
-          <span className='techs__span'>mongoDB</span>
+          <div className='techs__div'>HTML</div>
+          <div className='techs__div'>CSS</div>
+          <div className='techs__div'>JS</div>
+          <div className='techs__div'>React</div>
+          <div className='techs__div'>Git</div>
+          <div className='techs__div'>Express.js</div>
+          <div className='techs__div'>mongoDB</div>
         </div>
       </section>
   )

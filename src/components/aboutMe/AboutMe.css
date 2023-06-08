@@ -58,5 +58,6 @@
   width: 270px;
   height: 327px;
   margin: 66px 70px 0 0;
-  border: 1px solid red;
+  object-fit: cover;
+  object-position: center;
 }

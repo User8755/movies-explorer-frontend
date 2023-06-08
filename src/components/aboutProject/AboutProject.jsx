@@ -1,8 +1,10 @@
 import './AboutProject.css'
 
-function AboutProject() {
+function AboutProject(props) {
+  const { isMoreInfo } = props;
+
   return (
-    <section className='aboutProject'>
+    <section className={isMoreInfo ? 'aboutProject' : 'aboutProject-disable'}>
       <p className='aboutProject__name'>О проекте</p>
       <div className='aboutProject__container'>
         <h3 className='aboutProject__title'>Дипломный проект включал 5 этапов</h3>

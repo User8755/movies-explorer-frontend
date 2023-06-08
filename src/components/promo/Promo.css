@@ -40,6 +40,15 @@
   padding: 10px 20px;
   color: #fff;
 }
+
+.promo__button:hover {
+  box-shadow: 3px 3px 4px #8b8b8b;
+}
+
+.promo__button:active {
+  background: rgba(13, 119, 165, 0.2);
+}
+
 .promo__logo {
   max-width: 310px;
   max-height: 304px;
