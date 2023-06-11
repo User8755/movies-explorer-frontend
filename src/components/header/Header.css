@@ -15,18 +15,26 @@
   align-items: center;
 }
 
-.header__btn-login {
+.header__register-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header__login-link {
   padding: 8px 20px;
   background-color: #3ddc84;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  text-decoration:  none;
+  color: #000;
 }
 
-.header__btn-login:hover {
+.header__login-link:hover {
   box-shadow: 3px 3px 4px #8b8b8b;
 }
 
-.header__btn-login:active {
+.header__login-link:active {
   background: #03863e;
 }

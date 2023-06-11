@@ -23,8 +23,8 @@ function AboutProject(props) {
         <p className='aboutProject__paragraph_time aboutProject__paragraph_time-darck'>
           4 недель
         </p>
-        <spna className='aboutProject__span'>Back-end</spna>
-        <spna className='aboutProject__span'>Front-end</spna>
+        <span className='aboutProject__span'>Back-end</span>
+        <span className='aboutProject__span'>Front-end</span>
       </div>
     </section>
   );
