@@ -44,7 +44,7 @@
   max-width: max-content;
 }
 
-.techs__div {
+.techs__li {
   width: 90px;
   background: #303030;
   border-radius: 10px;
@@ -54,7 +54,7 @@
   list-style-type: none;
 }
 
-.techs__div:hover {
+.techs__li:hover {
   box-shadow: 5px 5px 6px #8b8b8b;
   background: rgba(48, 48, 48, 0.4);
 }

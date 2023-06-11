@@ -3,9 +3,9 @@ import './vendor/font/Inter_Web/inter.css';
 import './App.css';
 import Main from './components/main/Main.jsx';
 import { useState } from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Register from './components/Register/Register.jsx';
-import Login  from './components/Login/Login';
+import Login from './components/Login/Login';
 
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);

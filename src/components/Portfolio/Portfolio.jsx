@@ -1,9 +1,8 @@
 import Arrow from '../../images/arrow.svg';
-import './Portfolio.css'
+import './Portfolio.css';
 
 function Portfolio(props) {
-
-  const { isMoreInfo } = props
+  const { isMoreInfo } = props;
 
   return (
     <section className={isMoreInfo ? 'Portfolio' : 'Portfolio-disable'}>

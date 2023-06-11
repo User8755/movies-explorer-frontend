@@ -3,18 +3,17 @@ import profileLogo from '../../images/ProfileLogo.svg';
 import { NavLink } from 'react-router-dom';
 
 function Login() {
-
-    const hendleSubmit = (evt) => {
-      evt.preventDefault();
-      console.log('ты нажал кнопку')
-    };
+  const hendleSubmit = (evt) => {
+    evt.preventDefault();
+    console.log('ты нажал кнопку');
+  };
 
   return (
     <section className='login'>
       <img src={profileLogo} alt='логотип' className='login__logo'></img>
       <h2 className='login__title'>Добро пожаловать!</h2>
       <form className='login__form'>
-      <label className='login__lable'>
+        <label className='login__lable'>
           E-mail
           <input
             type='email'
@@ -42,7 +41,9 @@ function Login() {
       </form>
       <nav className='login__nav'>
         <span className='login__nav_span'>Ещё не зарегистрированы?</span>
-        <NavLink to='/sign-up' className='login__nav_link'>Регистрация</NavLink>
+        <NavLink to='/sign-up' className='login__nav_link'>
+          Регистрация
+        </NavLink>
       </nav>
     </section>
   );
