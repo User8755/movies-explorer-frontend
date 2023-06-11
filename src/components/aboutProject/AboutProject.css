@@ -1,5 +1,4 @@
 .aboutProject__name {
-  font-style: normal;
   font-weight: 400;
   font-size: 22px;
   line-height: 27px;
@@ -10,7 +9,6 @@
 }
 
 .aboutProject__title {
-  font-style: normal;
   font-weight: 400;
   font-size: 20px;
   line-height: 24px;
@@ -38,7 +36,7 @@
 
 .aboutProject__paragraph {
   margin: 0;
-  font-style: normal;
+
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -52,23 +50,21 @@
   padding-bottom: 110px;
 }
 @media screen and (max-width: 768px) {
-.aboutProject {
-  margin: 0 50px;
-}
+  .aboutProject {
+    margin: 0 50px;
+  }
 
   .aboutProject__info__container_time {
     grid-template-columns: 140px 1fr;
   }
 
   .aboutProject__paragraph {
-    font-style: normal;
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
   }
 
   .aboutProject__title {
-    font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
@@ -84,7 +80,6 @@
 }
 
 .aboutProject__paragraph_time {
-  font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
@@ -102,7 +97,6 @@
 }
 
 .aboutProject__span {
-  font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;

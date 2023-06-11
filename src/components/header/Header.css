@@ -6,7 +6,6 @@
   align-items: center;
 }
 .header__container {
-  font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
@@ -27,7 +26,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  text-decoration:  none;
+  text-decoration: none;
   color: #000;
 }
 

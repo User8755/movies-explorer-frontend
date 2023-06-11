@@ -3,7 +3,6 @@
 }
 
 .footer__title {
-  font-style: normal;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
@@ -20,7 +19,6 @@
   padding-bottom: 20px;
 }
 .footer__year {
-  font-style: normal;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
@@ -35,7 +33,7 @@
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  font-style: normal;
+
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
