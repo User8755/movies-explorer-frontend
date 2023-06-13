@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Register from './components/Register/Register.jsx';
 import Login from './components/Login/Login';
+import PageNotFound from './components/PageNotFound/PageNotFound.jsx';
 
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
@@ -17,6 +18,7 @@ function App() {
   return (
     <div className='App'>
       <Routes>
+        <Route path='*' element={<PageNotFound/>}></Route>
         <Route path='/sign-up' element={<Register></Register>}></Route>
         <Route path='/sign-in' element={<Login></Login>}></Route>
         <Route

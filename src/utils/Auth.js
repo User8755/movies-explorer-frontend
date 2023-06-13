@@ -12,11 +12,11 @@ class Auth {
   }
 
   register(item) {
-    console.log(this._baseUrl);
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        name: item.name,
         password: item.password,
         email: item.email,
       }),
@@ -44,6 +44,6 @@ class Auth {
   }
 }
 
-const auth = new Auth('https://api.movies.user87.nomoredomains.rocks');
+const auth = new Auth('http://api.movies.user87.nomoredomains.rocks');
 
 export default auth;

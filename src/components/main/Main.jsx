@@ -6,12 +6,13 @@ import AboutMe from '../aboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
-
+import MoviesCardList from '../MoviesCardList/MoviesCardList'
 function Main(props) {
   const { MoreInfo, isMoreInfo } = props;
 
   return (
     <>
+    <MoviesCardList></MoviesCardList>
       <Header />
       <main className='main'>
         <Promo MoreInfo={MoreInfo} isMoreInfo={isMoreInfo} />
