@@ -6,7 +6,7 @@ function PageNotFound() {
       <h2 className='pagenofound__title'>404</h2>
       <p className='pagenofound__subtitle'>Страница не найдена</p>
       <nav className='pagenofound__nav'>
-        <NavLink to='/main' className='pagenofound__nav-link'>
+        <NavLink to='/' className='pagenofound__nav-link'>
           Назад
         </NavLink>
       </nav>

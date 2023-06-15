@@ -12,11 +12,19 @@ class Api {
     }
   }
 
+  userInfoApi(jwt) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
+    }).then(this._checkRes);
+  }
 
 }
 
 const api = new Api({
-  baseUrl: 'api.movies.user87.nomoredomains.rocks',
+  baseUrl: 'http://api.movies.user87.nomoredomains.rocks',
   headers: {
     'Content-Type': 'application/json',
   },

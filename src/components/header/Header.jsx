@@ -1,8 +1,8 @@
 import './Header.css';
 import profileLogo from '../../images/ProfileLogo.svg';
-import { NavLink } from 'react-router-dom';
 
-function Header() {
+function Header(props) {
+const {children} = props
   return (
     <header className='header'>
       <img
@@ -10,14 +10,7 @@ function Header() {
         src={profileLogo}
         alt='Логотип профиля'
       ></img>
-      <nav className='header__container'>
-        <NavLink to='/sign-up' className='header__register-link'>
-          Регистрация
-        </NavLink>
-        <NavLink to='/sign-in' className='header__login-link'>
-          Войти
-        </NavLink>
-      </nav>
+      {children}
     </header>
   );
 }

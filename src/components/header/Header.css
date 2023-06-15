@@ -37,3 +37,29 @@
 .header__login-link:active {
   background: #03863e;
 }
+
+.header__nav {
+  display: flex;
+  column-gap: 16px;
+}
+
+.header__nav_link {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  text-decoration: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.header__button {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  max-width: 100px;
+  background-color: #313131;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+}
