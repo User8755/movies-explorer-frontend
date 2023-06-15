@@ -1,10 +1,13 @@
 import './Login.css';
 import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
-import { NavLink, Navigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 function Login() {
+
+const navigate = useNavigate()
+
   const [formValue, setFormValue] = useState({
     email: '',
     password: '',
@@ -16,6 +19,15 @@ function Login() {
     setLogin(!isLogin);
   };
 
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+  };
+
   const hendleSubmit = (evt) => {
     evt.preventDefault();
     auth
@@ -24,20 +36,10 @@ function Login() {
         if (res) {
           localStorage.setItem('token', res.token);
           hendleLogin();
-          //setLogin(true);
-          Navigate('/main', { replace: true });
+          navigate('/movies', { replace: true });
         }
       })
       .catch((res) => console.log(res));
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
   };
 
   return (

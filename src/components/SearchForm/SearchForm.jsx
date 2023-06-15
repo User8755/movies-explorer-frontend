@@ -12,9 +12,9 @@ function SearchForm() {
         ></input>
         <button className='search-form__button'></button>
       </form>
-      <div class='search-form__container'>
-        <input type='checkbox' class='search-form__toggle-button' id='serch'></input>
-        <label for='serch' className='search-form__lable'>Короткометражки</label>
+      <div className='search-form__container'>
+        <input type='checkbox' className='search-form__toggle-button' id='serch'></input>
+        <label className='search-form__lable'>Короткометражки</label>
       </div>
     </section>
   );

@@ -7,7 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import Register from './components/Register/Register.jsx';
 import Login from './components/Login/Login';
 import PageNotFound from './components/PageNotFound/PageNotFound.jsx';
-
+import Movies from './components/Movies/Movies';
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
 
@@ -27,6 +27,7 @@ function App() {
             <Main MoreInfo={handleMoreInfo} isMoreInfo={isMoreInfo}></Main>
           }
         ></Route>
+        <Route path='/movies' element={<Movies></Movies>}></Route>
       </Routes>
     </div>
   );
