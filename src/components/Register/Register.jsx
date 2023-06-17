@@ -1,10 +1,11 @@
 import './Register.css';
 import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
-import { NavLink, Navigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 function Register() {
+  const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
     name: '',
     email: '',
@@ -24,15 +25,21 @@ function Register() {
     evt.preventDefault();
     auth
       .register(formValue)
-      .then(() => Navigate("/sign-in", { replace: true }))
+      .then(() => navigate('/sign-in', { replace: true }))
       .catch((res) => console.log(res));
   };
-
+console.log(formValue)
   return (
     <section className='register'>
-      <img src={profileLogo} alt='логотип' className='register__logo'></img>
+      <NavLink to='/'>
+        <img
+          className='header__logo'
+          src={profileLogo}
+          alt='Логотип профиля'
+        ></img>
+      </NavLink>
       <h2 className='register__title'>Добро пожаловать!</h2>
-      <form className='register__form' method='POST'>
+      <form className='register__form' method='POST' onSubmit={hendleSubmit}>
         <label className='register__lable'>
           Имя
           <input
@@ -73,11 +80,7 @@ function Register() {
             required
           ></input>
         </label>
-        <button
-          className='register__button'
-          type='submit'
-          onClick={hendleSubmit}
-        >
+        <button className='register__button' type='submit'>
           Зарегистрироваться
         </button>
       </form>

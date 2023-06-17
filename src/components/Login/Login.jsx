@@ -4,20 +4,15 @@ import auth from '../../utils/Auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-function Login() {
+function Login(props) {
+  const { isLogin } = props;
 
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [formValue, setFormValue] = useState({
     email: '',
     password: '',
   });
-
-  const [isLogin, setLogin] = useState(false);
-
-  const hendleLogin = () => {
-    setLogin(!isLogin);
-  };
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -35,7 +30,7 @@ const navigate = useNavigate()
       .then((res) => {
         if (res) {
           localStorage.setItem('token', res.token);
-          hendleLogin();
+          isLogin(true);
           navigate('/movies', { replace: true });
         }
       })
@@ -44,7 +39,13 @@ const navigate = useNavigate()
 
   return (
     <section className='login'>
-      <img src={profileLogo} alt='логотип' className='login__logo'></img>
+      <NavLink to='/'>
+        <img
+          className='header__logo'
+          src={profileLogo}
+          alt='Логотип профиля'
+        ></img>
+      </NavLink>
       <h2 className='login__title'>Добро пожаловать!</h2>
       <form className='login__form'>
         <label className='login__lable'>

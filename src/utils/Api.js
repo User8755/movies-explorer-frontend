@@ -21,11 +21,25 @@ class Api {
     }).then(this._checkRes);
   }
 
+  updateUserInfo(item) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        ...this._headers,
+      },
+      body: JSON.stringify({
+        name: item.name,
+        email: item.email,
+      }),
+    }).then(this._checkRes);
+  }
+
 }
 
 const api = new Api({
   baseUrl: 'http://api.movies.user87.nomoredomains.rocks',
   headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json',
   },
 });

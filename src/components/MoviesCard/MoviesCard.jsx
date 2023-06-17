@@ -6,6 +6,7 @@ function MoviesCard() {
   const [islike, setLike] = useState(false);
   const handlelike = () => {
     setLike(!islike);
+    localStorage.setItem("likes", true) //тут будет id карточки
   };
 
   return (

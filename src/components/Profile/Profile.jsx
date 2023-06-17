@@ -1,31 +1,87 @@
 import './Profile.css';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-function Profile() {
+import api from '../../utils/Api';
+import Header from '../header/Header';
+import { NavLink } from 'react-router-dom';
+
+function Profile(props) {
+  const { userInfo } = props;
+  const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const [formValue, setFormValue] = useState({
+    name: '',
+    email: '',
+  });
+
+  useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser]);
+
+  useEffect(() => {
+    setFormValue({name, email})
+  }, [email, name]);
+
+
+  const handleUpdateUser = () => {
+    api
+      .updateUserInfo(formValue)
+      .then((res) => userInfo(res))
+      .catch((res) => console.log(res));
+  };
+
+  console.log(formValue);
 
   const hendleSignOut = () => {
     localStorage.removeItem('token');
     navigate('/', { replace: true });
   };
 
-  const currentUser = useContext(CurrentUserContext);
+
+  const handleChangeName = (evt) => {
+    setName(evt.target.value);
+  };
+
+  const handleChangeEmail = (evt) => {
+    setEmail(evt.target.value);
+
+  };
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+
+    handleUpdateUser();
+  };
 
   return (
+    <>
+    <Header>
+        <nav className='header__nav'>
+          <NavLink to='/movies' className='header__nav_link'>Фильмы</NavLink>
+          <NavLink to='/saved-movies' className='header__nav_link'>Сохранённые фильмы</NavLink>
+        </nav>
+        <NavLink to='/profile'className='header__button'>Аккаунт</NavLink>
+      </Header>
     <section className='profile'>
       <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
-      <form type='submit' className='profile__form'>
+      <form type='submit' className='profile__form' onSubmit={handleSubmit}>
         <label className='profile__lable'>
           Имя
           <input
             className='profile__input'
             type='text'
+            name='name'
             placeholder='Введите имя'
             minLength={2}
             maxLength={30}
-            required={true}
-            value={currentUser.name}
+            required
+            value={name || ''}
+            onChange={handleChangeName}
           ></input>
         </label>
         <label className='profile__lable'>
@@ -33,9 +89,11 @@ function Profile() {
           <input
             className='profile__input'
             type='email'
+            name='email'
             placeholder='Введите email'
             required
-            value={currentUser.email}
+            value={email || ''}
+            onChange={handleChangeEmail}
           ></input>
         </label>
         <button type='submit' className='profile__button'>
@@ -46,6 +104,7 @@ function Profile() {
         Выйти из аккаунта
       </button>
     </section>
+    </>
   );
 }
 

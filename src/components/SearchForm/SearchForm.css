@@ -21,6 +21,10 @@
   min-width: calc(100% - 80px);
 }
 
+.search-form__input::placeholder {
+  text-align: left;
+}
+
 .search-form__button {
   position: relative;
   border: none;
