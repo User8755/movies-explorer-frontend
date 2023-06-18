@@ -1,10 +1,18 @@
 .header {
-  padding: 18px 70px 0;
+  padding: 18px 70px;
   background: #073042;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
+.header_login {
+  padding: 18px 70px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .header__container {
   font-weight: 500;
   font-size: 12px;
@@ -24,7 +32,7 @@
   padding: 8px 20px;
   background-color: #3ddc84;
   border: none;
-  border-radius: 8px;
+  border-radius: 3px;
   cursor: pointer;
   text-decoration: none;
   color: #000;
@@ -66,4 +74,11 @@
   text-decoration: none;
   border-radius: 20px;
   padding: 8px 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
 }

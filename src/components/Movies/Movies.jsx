@@ -4,12 +4,11 @@ import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
 import { NavLink } from 'react-router-dom';
-import MoviesCard from '../MoviesCard/MoviesCard';
 
-function Movies() {
+function Movies(props) {
   return (
     <>
-      <Header>
+      <Header isLogin={props.loggedIn}>
         <nav className='header__nav'>
           <NavLink
             to='/movies'
@@ -27,20 +26,7 @@ function Movies() {
       </Header>
       <main className='movies'>
         <SearchForm></SearchForm>
-        <MoviesCardList>
-        <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-          <MoviesCard/>
-        </MoviesCardList>
+        <MoviesCardList film={props.film}></MoviesCardList>
         <Footer></Footer>
       </main>
     </>

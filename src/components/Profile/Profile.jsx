@@ -60,7 +60,7 @@ function Profile(props) {
 
   return (
     <>
-    <Header>
+    <Header isLogin={props.loggedIn}>
         <nav className='header__nav'>
           <NavLink to='/movies' className='header__nav_link'>Фильмы</NavLink>
           <NavLink to='/saved-movies' className='header__nav_link'>Сохранённые фильмы</NavLink>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login/Login';
 import Movies from './components/Movies/Movies';
@@ -10,22 +10,23 @@ import Register from './components/Register/Register.jsx';
 import { CurrentUserContext } from './components/contexts/CurrentUserContext';
 import Main from './components/main/Main.jsx';
 import api from './utils/Api';
-import auth from './utils/Auth';
+import tempFilm from './utils/tempFilms';
 import './vendor/font/Inter_Web/inter.css';
 import './vendor/normalize.css';
 import SavedMovies from './components/SavedMovies/SavedMovies.jsx';
 
 function App() {
-  const navigate = useNavigate();
   const [isMoreInfo, setMoreInfo] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [film, setFilm] = useState([]);
+
+
   const handleMoreInfo = () => {
     setMoreInfo(!isMoreInfo);
   };
   const jwt = localStorage.getItem('token');
 
   const [isLogin, setLogin] = useState(false);
-
 
   useEffect(() => {
     api
@@ -39,8 +40,6 @@ function App() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
-
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -77,10 +76,14 @@ function App() {
                 element={Movies}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
+                film={tempFilm}
               />
             }
           ></Route>
-          <Route path='/saved-movies' element={<SavedMovies />}></Route>
+          <Route
+            path='/saved-movies'
+            element={<SavedMovies loggedIn={isLogin} />}
+          ></Route>
         </Routes>
       </div>
     </CurrentUserContext.Provider>

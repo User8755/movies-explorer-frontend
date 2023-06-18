@@ -41,3 +41,18 @@
   max-width: 29px;
   max-height: 29px;
 }
+
+@media screen and (max-width: 1260px) {
+  .Portfolio {
+    margin: 90px 50px;
+  }
+
+  .Portfolio__link {
+    font-size: 28px;
+    line-height: 50px;
+  }
+
+  .Portfolio__title {
+    margin-bottom: 31px;
+  }
+}

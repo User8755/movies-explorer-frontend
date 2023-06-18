@@ -49,9 +49,44 @@
   padding-top: 21px;
   padding-bottom: 21px;
   list-style-type: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  letter-spacing: -0.04em;
 }
 
 .techs__li:hover {
   box-shadow: 5px 5px 6px #8b8b8b;
   background: rgba(48, 48, 48, 0.4);
+}
+
+@media screen and (max-width: 1260px) {
+  .techs__name {
+    margin-left: 50px;
+    margin-right: 50px;
+    padding-top: 74px;
+  }
+  .techs__title {
+    margin: 80px auto 22px;
+  }
+
+  .techs__subtitle {
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    letter-spacing: -0.04em;
+  }
+
+  .techs__list {
+    margin-top: 84px;
+    padding-left: 0;
+    padding-bottom: 90px;
+  }
+
+  .techs__li {
+    width: 84px;
+    font-size: 12px;
+    line-height: 15px;
+  }
 }

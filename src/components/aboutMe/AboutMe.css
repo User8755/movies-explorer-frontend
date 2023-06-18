@@ -3,7 +3,6 @@
 }
 
 .aboutMe__name {
-  
   font-weight: 400;
   font-size: 22px;
   line-height: 27px;
@@ -25,7 +24,6 @@
 }
 
 .aboutMe__title {
-  
   font-weight: 400;
   font-size: 50px;
   line-height: 58px;
@@ -33,7 +31,6 @@
 }
 
 .aboutMe__subtitle {
-  
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
@@ -41,7 +38,6 @@
 }
 
 .aboutMe__paragraph {
-  
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
@@ -50,7 +46,6 @@
 }
 
 .aboutMe__link {
-  
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
@@ -64,4 +59,50 @@
   margin: 66px 70px 0 0;
   object-fit: cover;
   object-position: center;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 1260px) {
+  .aboutMe__name {
+    margin-left: 50px;
+    margin-right: 50px;
+    padding-top: 90px;
+  }
+
+  .aboutMe__container {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 66px;
+  }
+
+  .aboutMe__container_text {
+    max-width: 364px;
+  }
+
+  .aboutMe__image {
+    margin-right: 0;
+    margin-top: 0;
+  }
+
+  .aboutMe__title {
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 40px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .aboutMe__subtitle {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 16px;
+    margin-bottom: 20px;
+  }
+
+  .aboutMe__paragraph {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+  }
 }

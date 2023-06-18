@@ -4,9 +4,17 @@
   padding-bottom: 17px;
 }
 
+.movies-cards__link {
+  cursor: pointer;
+}
+
 .movies-cards__image {
   object-fit: contain;
   object-position: center;
+  max-width: 364px;
+  max-height: 203px;
+  margin: 0 auto;
+  display: block;
 }
 
 .movies-cards__description {

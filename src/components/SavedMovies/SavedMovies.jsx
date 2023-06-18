@@ -1,15 +1,24 @@
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
 import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function SavedMovies() {
+function SavedMovies(props) {
+  const [sevedFilm, setSvaedFilm] = useState([]);
+
+  useEffect(() => {
+    api
+      .getSaveFilm()
+      .then((res) => setSvaedFilm(res))
+      .catch((res) => console.log(res));
+  }, []);
 
   return (
     <>
-      <Header>
+      <Header isLogin={props.loggedIn}>
         <nav className='header__nav'>
           <NavLink to='/movies' className='header__nav_link'>
             Фильмы
@@ -27,11 +36,11 @@ function SavedMovies() {
       </Header>
       <main className='movies'>
         <SearchForm></SearchForm>
-        <MoviesCardList>
-          <MoviesCard />
-          <MoviesCard />
-          <MoviesCard />
-        </MoviesCardList>
+        <div className='movies__list'>
+        {sevedFilm.map((film) => {
+          return <MoviesCard card={film}></MoviesCard>;
+        })}
+        </div>
         <Footer></Footer>
       </main>
     </>
