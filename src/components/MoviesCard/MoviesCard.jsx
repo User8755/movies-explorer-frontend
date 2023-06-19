@@ -2,12 +2,30 @@ import './MoviesCard.css';
 import { useState, useEffect } from 'react';
 import api from '../../utils/Api';
 import ButtonLike from '../ButtonLike/ButtonLike';
+import ButtonDelete from '../ButtonDelete/ButtonDelete';
+import { useLocation } from 'react-router-dom';
 function MoviesCard(props) {
   const { card } = props;
   const [islike, setLike] = useState(false);
   const [film, setFilm] = useState(false);
+  const [loc, setLoc] = useState(false);
+  const location = useLocation();
 
-  const handlelike = () => {
+  useEffect(() => {
+    if (location.pathname === '/movies') {
+      setLoc(true);
+    }
+  }, [location.pathname]);
+
+const handleDeleteSavedCard = (item) =>{
+  console.log(item)
+  api
+  .deleteSaveFilm(item._id)
+  .then((res) => setFilm(res))
+  .catch((res) => console.log(res));
+}
+
+  const handleLike = () => {
     if (!islike) {
       setLike(!islike);
       localStorage.setItem(card.movieId, true);
@@ -19,12 +37,8 @@ function MoviesCard(props) {
         .catch((res) => console.log(res));
     } else {
       setLike(!islike);
-      console.log(film._id);
       localStorage.removeItem(card.movieId);
-      api
-        .deleteSaveFilm(film._id)
-        .then((res) => setFilm(res))
-        .catch((res) => console.log(res));
+      handleDeleteSavedCard(film)
     }
   };
 
@@ -50,15 +64,12 @@ function MoviesCard(props) {
       </a>
       <div className='movies-cards__description'>
         <h2 className='movies-cards__title'>{card.nameRU}</h2>
-        <button
-          type='button'
-          className={
-            islike
-              ? 'movies-cards__button-like_active'
-              : 'movies-cards__button-like'
-          }
-          onClick={handlelike}
-        ></button>
+        {loc ? 
+          <ButtonLike like={handleLike} islike={islike}></ButtonLike>
+         : 
+         <ButtonDelete del={()=>handleDeleteSavedCard(card)}></ButtonDelete >
+          
+        }
       </div>
       <span className='movies-cards__duration'>{`${Math.floor(
         card.duration / 60

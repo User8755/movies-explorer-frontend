@@ -23,14 +23,16 @@
   font-size: 50px;
   line-height: 58px;
   margin: 90px 0 26px;
+  letter-spacing: -0.04em;
 }
 
 .techs__subtitle {
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  margin: 0;
+  margin: 0 auto;
   text-align: center;
+  max-width: 460px;
 }
 
 .techs__list {
@@ -39,6 +41,7 @@
   column-gap: 10px;
   padding-bottom: 100px;
   max-width: max-content;
+  padding-left: 0;
 }
 
 .techs__li {
@@ -54,6 +57,7 @@
   line-height: 17px;
   text-align: center;
   letter-spacing: -0.04em;
+  padding: 21px 0;
 }
 
 .techs__li:hover {
@@ -86,7 +90,47 @@
 
   .techs__li {
     width: 84px;
+    font-weight: 400;
+    letter-spacing: -0.04em;
     font-size: 12px;
     line-height: 15px;
+  }
+}
+
+@media screen and (max-width: 734px) {
+  .techs__list {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 178px;
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .techs__name {
+    font-size: 18px;
+    line-height: 22px;
+    margin-left: 18px;
+    margin-right: 18px;
+    padding-top: 31px;
+    padding-bottom: 28px;
+    border-color: #000;
+  }
+
+  .techs__title {
+    font-size: 30px;
+    line-height: 36px;
+    margin-top: 59px;
+  }
+
+  .techs__subtitle {
+    font-size: 11px;
+    line-height: 16px;
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+
+  .techs__list {
+    margin-top: 53px;
   }
 }

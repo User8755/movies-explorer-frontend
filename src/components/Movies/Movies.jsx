@@ -6,6 +6,7 @@ import Header from '../header/Header';
 import { NavLink } from 'react-router-dom';
 
 function Movies(props) {
+  console.log(props.isLike)
   return (
     <>
       <Header isLogin={props.loggedIn}>
@@ -26,7 +27,7 @@ function Movies(props) {
       </Header>
       <main className='movies'>
         <SearchForm></SearchForm>
-        <MoviesCardList film={props.film}></MoviesCardList>
+        <MoviesCardList film={props.film} onLike={props.onLike} isLike={props.isLike}></MoviesCardList>
         <Footer></Footer>
       </main>
     </>

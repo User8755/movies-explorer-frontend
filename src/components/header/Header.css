@@ -82,3 +82,26 @@
     padding-right: 30px;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .header {
+    padding-top: 18px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .header__container {
+    column-gap: 14px;
+  }
+
+  .header__register-link {
+    font-size: 10px;
+    line-height: 16px;
+  }
+
+  .header__login-link {
+    font-size: 10px;
+    line-height: 16px;
+    padding: 5px 12px;
+  }
+}

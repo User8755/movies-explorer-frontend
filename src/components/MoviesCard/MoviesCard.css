@@ -32,28 +32,6 @@
   line-height: 16px;
 }
 
-.movies-cards__button-like {
-  background: transparent;
-  border: none;
-  background-image: url('../../images/buttonLike.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  min-width: 20px;
-  min-height: 14px;
-  padding: 0;
-}
-
-.movies-cards__button-like_active {
-  background: transparent;
-  border: none;
-  background-image: url('../../images/likeActive.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  min-width: 20px;
-  min-height: 14px;
-  padding: 0;
-}
-
 .movies-cards__button-like:hover {
   scale: 1.2;
 }

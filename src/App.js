@@ -16,10 +16,8 @@ import './vendor/normalize.css';
 import SavedMovies from './components/SavedMovies/SavedMovies.jsx';
 
 function App() {
-  const [isMoreInfo, setMoreInfo] = useState(false);
+  const [isMoreInfo, setMoreInfo] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
-  const [film, setFilm] = useState([]);
-
 
   const handleMoreInfo = () => {
     setMoreInfo(!isMoreInfo);

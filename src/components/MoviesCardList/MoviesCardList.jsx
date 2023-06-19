@@ -1,21 +1,23 @@
 import './MoviesCardList..css';
 import { useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
-
 function MoviesCardList(props) {
-  const { film } = props;
+  const { film, isLike } = props;
   const [isMoreMovies, setsMoreMovies] = useState(false);
-
+  console.log(isLike)
   const handleClickButton = () => {
     setsMoreMovies(!isMoreMovies);
   };
-  
+
   return (
     <main className='main'>
       <section className='movies'>
         <div className='movies__list'>
           {film.map((card) => {
-            return <MoviesCard card={card}></MoviesCard>;
+            return (
+              <MoviesCard card={card}>
+              </MoviesCard>
+            );
           })}
         </div>
         <div

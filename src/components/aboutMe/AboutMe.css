@@ -21,13 +21,14 @@
 
 .aboutMe__container_text {
   max-width: 600px;
+  position: relative;
 }
 
 .aboutMe__title {
   font-weight: 400;
   font-size: 50px;
   line-height: 58px;
-  margin: 90px 0 26px;
+  margin: 0 0 26px;
 }
 
 .aboutMe__subtitle {
@@ -51,12 +52,14 @@
   line-height: 17px;
   text-decoration: none;
   color: inherit;
+  position: absolute;
+  bottom: 0;
 }
 
 .aboutMe__image {
   width: 270px;
   height: 327px;
-  margin: 66px 70px 0 0;
+  margin: 0 70px 0 0;
   object-fit: cover;
   object-position: center;
   border-radius: 10px;
@@ -81,7 +84,8 @@
 
   .aboutMe__image {
     margin-right: 0;
-    margin-top: 0;
+    max-width: 255px;
+    max-height: 305px;
   }
 
   .aboutMe__title {
@@ -104,5 +108,60 @@
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .aboutMe__paragraph {
+    margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .aboutMe__container {
+    flex-direction: column-reverse;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .aboutMe__name {
+    margin-left: 14px;
+    margin-right: 14px;
+    font-size: 18px;
+    line-height: 22px;
+    padding-top: 53px;
+  }
+  .aboutMe__container {
+    margin-left: 14px;
+    margin-right: 14px;
+    margin-top: 60px;
+  }
+
+  .aboutMe__container_text {
+    margin-top: 40px;
+  }
+
+  .aboutMe__image {
+    max-width: 292px;
+    min-height: 352px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .aboutMe__title {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .aboutMe__subtitle {
+    font-size: 11px;
+    line-height: 16px;
+    margin-top: 20px;
+  }
+
+  .aboutMe__paragraph {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 105px;
   }
 }

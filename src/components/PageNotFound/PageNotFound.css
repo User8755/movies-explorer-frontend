@@ -36,3 +36,21 @@
   margin: 184px auto 60px;
   cursor: pointer;
 }
+
+@media screen and (max-width: 400px) {
+  .pagenofound__title {
+    font-size: 80px;
+    line-height: 97px;
+    padding-top: 281px;
+  }
+
+  .pagenofound__subtitle {
+    font-size: 12px;
+    line-height: 15px;
+    padding-top: 11px;
+  }
+
+  .pagenofound__nav {
+    margin-top: 281px;
+  }
+}

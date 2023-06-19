@@ -1,0 +1,21 @@
+.button-like {
+  background: transparent;
+  border: none;
+  background-image: url('../../images/buttonLike.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  min-width: 20px;
+  min-height: 14px;
+  padding: 0;
+}
+
+.button-like_active {
+  background: transparent;
+  border: none;
+  background-image: url('../../images/likeActive.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  min-width: 20px;
+  min-height: 14px;
+  padding: 0;
+}
