@@ -19,7 +19,7 @@ function MoviesCardList(props) {
       return (
         <>
           {moreFilmCard.map((card) => {
-            return <MoviesCard card={card}></MoviesCard>;
+            return <MoviesCard card={card} ></MoviesCard>;
           })}
         </>
       );
