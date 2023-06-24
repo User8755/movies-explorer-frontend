@@ -1,9 +1,9 @@
 import './Profile.css';
 import { useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from '../Contexts/CurrentUserContext';
 import api from '../../utils/Api';
-import Header from '../header/Header';
+import Header from '../Header/Header';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
 

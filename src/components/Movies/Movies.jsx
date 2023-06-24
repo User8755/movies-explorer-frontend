@@ -1,8 +1,8 @@
 import './Movies.css';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
-import Footer from '../footer/Footer';
-import Header from '../header/Header';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
 
