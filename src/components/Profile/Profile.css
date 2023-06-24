@@ -1,12 +1,13 @@
 .profile {
-  max-width: 100%;
+  width: 410px;
+  margin: 0 auto;
 }
 .profile__title {
   font-weight: 500;
   font-size: 24px;
   line-height: 29px;
   max-width: 204px;
-  margin: 74px auto 0;
+  margin: 86px auto 0;
 }
 
 .profile__form {
@@ -55,6 +56,9 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
 }
 
 .profile__signout {
@@ -69,4 +73,38 @@
   width: 410px;
   display: block;
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .profile__title {
+    margin-top: 250px;
+  }
+  .profile__form {
+    margin-top: 98px;
+  }
+  .profile__button {
+    margin-top: 208px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .profile {
+    width: 260px;
+  }
+
+  .profile__title {
+    margin-top: 83px;
+  }
+  .profile__form {
+    margin-top: 81px;
+  }
+  .profile__button {
+    margin-top: 374px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .profile__signout {
+    width: 260px;
+  }
 }

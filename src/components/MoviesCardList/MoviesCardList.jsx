@@ -1,35 +1,45 @@
 import './MoviesCardList..css';
 import { useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
+
 function MoviesCardList(props) {
-  const { film, isLike } = props;
+  const { film } = props;
   const [isMoreMovies, setsMoreMovies] = useState(false);
-  console.log(isLike)
+
   const handleClickButton = () => {
     setsMoreMovies(!isMoreMovies);
   };
 
+  const sliceFilm = film.slice(0, 12);
+  const sliceFilmLen = sliceFilm.length;
+
+  const addMoreFilm = () => {
+    if (isMoreMovies) {
+      const moreFilmCard = film.slice(sliceFilmLen, sliceFilmLen + 3);
+      return (
+        <>
+          {moreFilmCard.map((card) => {
+            return <MoviesCard card={card}></MoviesCard>;
+          })}
+        </>
+      );
+    }
+  };
+
   return (
-    <main className='main'>
+    <>
       <section className='movies'>
         <div className='movies__list'>
-          {film.map((card) => {
-            return (
-              <MoviesCard card={card}>
-              </MoviesCard>
-            );
+          {sliceFilm.map((card) => {
+            return <MoviesCard card={card}></MoviesCard>;
           })}
+          {addMoreFilm()}
         </div>
-        <div
-          className={
-            isMoreMovies ? 'movies__list-more_true' : 'movies__list-more'
-          }
-        ></div>
         <button className='movies__button' onClick={handleClickButton}>
           Еще
         </button>
       </section>
-    </main>
+    </>
   );
 }
 

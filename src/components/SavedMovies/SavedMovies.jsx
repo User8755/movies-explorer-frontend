@@ -1,10 +1,11 @@
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
-import { NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import NavBar from '../NavBar/Navbar';
+import NavButton from '../NavButton/NavButton';
 
 function SavedMovies(props) {
   const [sevedFilm, setSvaedFilm] = useState([]);
@@ -19,20 +20,8 @@ function SavedMovies(props) {
   return (
     <>
       <Header isLogin={props.loggedIn}>
-        <nav className='header__nav'>
-          <NavLink to='/movies' className='header__nav_link'>
-            Фильмы
-          </NavLink>
-          <NavLink
-            to='/saved-movies'
-            className='header__nav_link header__nav_link-active'
-          >
-            Сохранённые фильмы
-          </NavLink>
-        </nav>
-        <NavLink to='/profile' className='header__button'>
-          Аккаунт
-        </NavLink>
+      <NavBar lowWidth={props.lowWidth}></NavBar>
+       <NavButton lowWidth={props.lowWidth} modal={props.modal}></NavButton>
       </Header>
       <main className='movies'>
         <SearchForm></SearchForm>

@@ -1,0 +1,31 @@
+.nav-bar-modal {
+  margin: 159px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 28px;
+}
+
+.nav-bar-modal__link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: inherit;
+}
+
+.nav-bar-modal__link-active {
+  padding-bottom: 4px;
+  border-bottom: 2px solid #fff;
+}
+
+.nav-bar-modal_profile {
+  position: absolute;
+  bottom: 90px;
+}
+
+@media screen and (max-width: 520px) {
+  .nav-bar-modal_profile {
+    bottom: 40px;
+  }
+}

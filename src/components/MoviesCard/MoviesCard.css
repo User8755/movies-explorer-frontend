@@ -1,7 +1,6 @@
 .movies-cards {
   background-color: #222;
   max-width: 364px;
-  padding-bottom: 17px;
 }
 
 .movies-cards__link {
@@ -21,7 +20,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-top: 16px;
+  margin-top: 5px;
   margin-left: 16px;
   margin-right: 24px;
 }
@@ -46,4 +45,31 @@
   line-height: 13px;
   color: #8b8b8b;
   margin: 17px 0 0 17px;
+}
+
+@media screen and (max-width: 1260px) {
+  .movies-cards__image {
+    width: 339px;
+    height: 190px;
+  }
+
+  .movies-cards {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 685px) {
+  .movies-cards__image {
+    width: 300px;
+    height: 168px;
+  }
+
+  .movies-cards__description {
+    margin-right: 15px;
+  }
+
+  .movies-cards__title {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }

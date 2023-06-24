@@ -39,14 +39,14 @@ function Login(props) {
 
   return (
     <section className='login'>
-      <NavLink to='/'>
+      <NavLink to='/' >
         <img
           className='header__logo'
           src={profileLogo}
-          alt='Логотип профиля'
+          alt='Логотип сайта'
         ></img>
       </NavLink>
-      <h2 className='login__title'>Добро пожаловать!</h2>
+      <h2 className='login__title'>Рады видеть!</h2>
       <form className='login__form'>
         <label className='login__lable'>
           E-mail

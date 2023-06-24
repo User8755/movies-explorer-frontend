@@ -1,0 +1,11 @@
+.nav-button-profile {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  max-width: 100px;
+  background-color: #313131;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+}

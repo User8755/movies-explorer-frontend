@@ -4,10 +4,11 @@ import { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../../utils/Api';
 import Header from '../header/Header';
-import { NavLink } from 'react-router-dom';
+import NavBar from '../NavBar/Navbar';
+import NavButton from '../NavButton/NavButton';
 
 function Profile(props) {
-  const { userInfo } = props;
+  const { userInfo, lowWidth } = props;
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -61,11 +62,8 @@ function Profile(props) {
   return (
     <>
     <Header isLogin={props.loggedIn}>
-        <nav className='header__nav'>
-          <NavLink to='/movies' className='header__nav_link'>Фильмы</NavLink>
-          <NavLink to='/saved-movies' className='header__nav_link'>Сохранённые фильмы</NavLink>
-        </nav>
-        <NavLink to='/profile'className='header__button'>Аккаунт</NavLink>
+        <NavBar lowWidth={lowWidth}></NavBar>
+        <NavButton lowWidth={lowWidth}></NavButton>
       </Header>
     <section className='profile'>
       <h2 className='profile__title'>Привет, {currentUser.name}!</h2>

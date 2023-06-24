@@ -1,6 +1,6 @@
 .register {
-  margin: 0 auto;
-  max-width: 31%;
+  margin: 68px auto;
+  max-width: 396px;
 }
 
 .register__logo {
@@ -19,7 +19,7 @@
   max-width: 396px;
   display: flex;
   flex-direction: column;
-  margin: 40px auto;
+  margin: 40px auto 14px;
   row-gap: 20px;
 }
 
@@ -45,8 +45,9 @@
   margin-top: 10px;
   color: #fff;
 }
-::placeholder {
+.register__input::placeholder {
   color: #8b8b8b;
+  text-align: left;
 }
 
 .register__input:valid {
@@ -58,7 +59,7 @@
 }
 
 .register__button {
-  margin-top: 91px;
+  margin-top: 70px;
 
   font-weight: 500;
   font-size: 14px;
@@ -104,4 +105,51 @@
   text-align: center;
   text-decoration: none;
   color: #4285f4;
+}
+
+@media screen and (max-width: 1260px) {
+  .register {
+    margin-top: 232px;
+    display: block;
+  }
+
+  .register__input {
+    width: 366px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 56px;
+    width: 260px;
+  }
+
+  .register__title {
+    margin-top: 47px;
+  }
+
+  .register__form {
+    margin-top: 81px;
+  }
+
+  .register__input {
+    width: 230px;
+  }
+
+  .register__nav_span {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .register__nav_link {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .register__button {
+    margin-top: 158px;
+  }
 }

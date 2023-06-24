@@ -1,3 +1,9 @@
-.movies {
+.main-movies {
   margin: 0 70px;
+}
+@media screen and (max-width: 1260px) {
+  .main-movies {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }

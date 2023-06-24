@@ -6,13 +6,14 @@ function Header(props) {
   const { children, isLogin } = props;
 
   const login = isLogin ? 'header_login' : 'header';
+
   return (
     <header className={login}>
       <NavLink to='/'>
         <img
           className='header__logo'
           src={profileLogo}
-          alt='Логотип профиля'
+          alt='Логотип сайта'
         ></img>
       </NavLink>
       {children}
