@@ -1,21 +1,21 @@
 import { useEffect, useState, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import './vendor/normalize.css';
+import '../../vendor/normalize.css';
 import './App.css';
-import Login from './components/Login/Login';
-import Movies from './components/Movies/Movies';
-import PageNotFound from './components/PageNotFound/PageNotFound.jsx';
-import Profile from './components/Profile/Profile';
-import ProtectedRouteElement from './components/ProtectedRouteElement/ProtectedRouteElement.jsx';
-import Register from './components/Register/Register.jsx';
-import { CurrentUserContext } from './components/Contexts/CurrentUserContext';
-import Main from './components/Main/Main.jsx';
-import api from './utils/Api';
-import tempFilm from './utils/tempFilms';
-import './vendor/font/Inter_Web/inter.css';
-import SavedMovies from './components/SavedMovies/SavedMovies.jsx';
-import useResize from './hook/useResize';
-import ModalMenu from './components/ModalMenu/ModalMenu';
+import Login from '../Login/Login.jsx';
+import Movies from '../Movies/Movies';
+import PageNotFound from '../PageNotFound/PageNotFound.jsx';
+import Profile from '../Profile/Profile';
+import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
+import Register from '../Register/Register.jsx';
+import { CurrentUserContext } from '../Contexts/CurrentUserContext';
+import Main from '../Main/Main.jsx';
+import api from '../../utils/Api';
+import tempFilm from '../../utils/tempFilms';
+import '../../vendor/font/Inter_Web/inter.css';
+import SavedMovies from '../SavedMovies/SavedMovies.jsx';
+import useResize from '../../hook/useResize';
+import ModalMenu from '../ModalMenu/ModalMenu';
 
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(true);
