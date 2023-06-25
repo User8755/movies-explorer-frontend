@@ -16,13 +16,16 @@ import '../../vendor/font/Inter_Web/inter.css';
 import SavedMovies from '../SavedMovies/SavedMovies.jsx';
 import useResize from '../../hook/useResize';
 import ModalMenu from '../ModalMenu/ModalMenu';
+import ModalError from '../ModalError/ModalError';
 
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const [isWidth, setWidth] = useState(false);
   const [modal, setModal] = useState(false);
-  
+  const [error, setError] = useState(false);
+  const [errorMessge, setErrorMessge] = useState('');
+  console.log(errorMessge)
   const location = useLocation().pathname;
   const component = useRef();
 
@@ -56,10 +59,11 @@ function App() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
-
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='App' ref={component}>
+        <ModalError active={error} setActive={setError} textMessage={errorMessge}></ModalError>
         <ModalMenu active={modal} setActive={setModal} location={location}></ModalMenu>
         <Routes>
           <Route path='*' element={<PageNotFound />}></Route>
@@ -76,6 +80,10 @@ function App() {
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
                 lowWidth={isWidth}
+                modal={setModal}
+                error={setError}
+                message={setErrorMessge}
+
               ></Profile>
               // <ProtectedRouteElement
               //   loggedIn={isLogin}

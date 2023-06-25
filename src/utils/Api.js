@@ -8,7 +8,11 @@ class Api {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`Error: ${res.status}`);
+      return res.text().then(err=>Promise.reject({
+        status: res.status,
+        message: JSON.parse(err).message,
+        
+      }));
     }
   }
 

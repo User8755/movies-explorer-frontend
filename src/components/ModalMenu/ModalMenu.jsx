@@ -10,7 +10,10 @@ function ModalMenu(props) {
       onClick={() => setActive(false)}
     >
       <div className='modal__menu' onClick={(evt) => evt.stopPropagation()}>
-        <button className='modal__menu_btn-close' onClick={() => setActive(false)}></button>
+        <button
+          className='modal__menu_btn-close'
+          onClick={() => setActive(false)}
+        ></button>
         <NavBarModal setActive={setActive} location={location}></NavBarModal>
       </div>
     </div>
