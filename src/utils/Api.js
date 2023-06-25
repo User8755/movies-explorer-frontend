@@ -80,7 +80,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'http://api.movies.user87.nomoredomains.rocks',
+  baseUrl: 'https://api.movies.user87.nomoredomains.rocks',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json',

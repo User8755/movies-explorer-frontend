@@ -7,7 +7,11 @@ class Auth {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`Error: ${res.status}`);
+      return res.text().then(err=>Promise.reject({
+        status: res.status,
+        message: JSON.parse(err).message,
+        
+      }));
     }
   }
 
@@ -44,6 +48,6 @@ class Auth {
   }
 }
 
-const auth = new Auth('http://api.movies.user87.nomoredomains.rocks');
+const auth = new Auth('https://api.movies.user87.nomoredomains.rocks');
 
 export default auth;

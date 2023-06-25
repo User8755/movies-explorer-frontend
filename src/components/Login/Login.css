@@ -15,13 +15,6 @@
   margin: 40px 0 0;
 }
 
-.login__form {
-  display: flex;
-  flex-direction: column;
-  margin: 40px auto 16px;
-  row-gap: 20px;
-}
-
 .login__lable {
   font-weight: 400;
   font-size: 10px;
@@ -68,6 +61,10 @@
   border-radius: 3px;
   border: none;
   cursor: pointer;
+}
+
+.login__button-disabled {
+  opacity: .4;
 }
 
 .login__button:hover {
@@ -126,10 +123,6 @@
 
   .login__title {
     margin-top: 47px;
-  }
-
-  .login__form {
-    margin-top: 81px;
   }
 
   .login__input {

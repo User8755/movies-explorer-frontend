@@ -3,32 +3,43 @@ import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Form from '../Form/Form';
 
-function Register() {
+function Register(props) {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
     name: '',
     email: '',
     password: '',
   });
+  const [isvalid, setValid] = useState(false);
+  const [errors, setErrors] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setErrors(evt.target.validationMessage);
     setFormValue({
       ...formValue,
       [name]: value,
     });
+    setValid(evt.target.validity.valid);
   };
+
+  const btnDisable = isvalid
+    ? 'register__button'
+    : 'register__button register__button-disabled';
 
   const hendleSubmit = (evt) => {
     evt.preventDefault();
     auth
       .register(formValue)
       .then(() => navigate('/sign-in', { replace: true }))
-      .catch((res) => console.log(res));
+      .catch((err) => {
+        props.error(true);
+        props.message(err.message);
+      });
   };
-console.log(formValue)
+
   return (
     <section className='register'>
       <NavLink to='/'>
@@ -39,7 +50,7 @@ console.log(formValue)
         ></img>
       </NavLink>
       <h2 className='register__title'>Добро пожаловать!</h2>
-      <form className='register__form' method='POST' onSubmit={hendleSubmit}>
+      <Form submit={hendleSubmit} errors={errors} >
         <label className='register__lable'>
           Имя
           <input
@@ -80,10 +91,10 @@ console.log(formValue)
             required
           ></input>
         </label>
-        <button className='register__button' type='submit'>
+        <button className={btnDisable} type='submit' disabled={!isvalid}>
           Зарегистрироваться
         </button>
-      </form>
+      </Form>
       <nav className='register__nav'>
         <span className='register__nav_span'>Уже зарегистрированы?</span>
         <NavLink to='/sign-in' className='register__nav_link'>

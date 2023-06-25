@@ -19,13 +19,13 @@ import ModalMenu from '../ModalMenu/ModalMenu';
 import ModalError from '../ModalError/ModalError';
 
 function App() {
-  const [isMoreInfo, setMoreInfo] = useState(true);
+  const [isMoreInfo, setMoreInfo] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isWidth, setWidth] = useState(false);
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessge, setErrorMessge] = useState('');
-  console.log(errorMessge)
+
   const location = useLocation().pathname;
   const component = useRef();
 
@@ -59,18 +59,37 @@ function App() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
-  
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='App' ref={component}>
-        <ModalError active={error} setActive={setError} textMessage={errorMessge}></ModalError>
-        <ModalMenu active={modal} setActive={setModal} location={location}></ModalMenu>
+        <ModalError
+          active={error}
+          setActive={setError}
+          textMessage={errorMessge}
+        ></ModalError>
+        <ModalMenu
+          active={modal}
+          setActive={setModal}
+          location={location}
+        ></ModalMenu>
         <Routes>
           <Route path='*' element={<PageNotFound />}></Route>
-          <Route path='/sign-up' element={<Register></Register>}></Route>
+          <Route
+            path='/sign-up'
+            element={
+              <Register error={setError} message={setErrorMessge}></Register>
+            }
+          ></Route>
           <Route
             path='/sign-in'
-            element={<Login isLogin={setLogin}></Login>}
+            element={
+              <Login
+                isLogin={setLogin}
+                error={setError}
+                message={setErrorMessge}
+              ></Login>
+            }
           ></Route>
           <Route
             path='/profile'
@@ -83,7 +102,6 @@ function App() {
                 modal={setModal}
                 error={setError}
                 message={setErrorMessge}
-
               ></Profile>
               // <ProtectedRouteElement
               //   loggedIn={isLogin}
@@ -123,7 +141,13 @@ function App() {
           ></Route>
           <Route
             path='/saved-movies'
-            element={<SavedMovies loggedIn={isLogin} lowWidth={isWidth} modal={setModal}/>}
+            element={
+              <SavedMovies
+                loggedIn={isLogin}
+                lowWidth={isWidth}
+                modal={setModal}
+              />
+            }
           ></Route>
         </Routes>
       </div>

@@ -3,24 +3,27 @@ import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Form from '../Form/Form';
 
 function Login(props) {
-  const { isLogin } = props;
+  const { isLogin, error, message } = props;
 
   const navigate = useNavigate();
-
+  const [errors, setErrors] = useState('');
   const [formValue, setFormValue] = useState({
     email: '',
     password: '',
   });
+  const [isvalid, setValid] = useState(false);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
-
+    setErrors(evt.target.validationMessage);
     setFormValue({
       ...formValue,
       [name]: value,
     });
+    setValid(evt.target.validity.valid);
   };
 
   const hendleSubmit = (evt) => {
@@ -34,12 +37,20 @@ function Login(props) {
           navigate('/movies', { replace: true });
         }
       })
-      .catch((res) => console.log(res));
+      .catch((err) => {
+        error(true);
+        message(err.message);
+      });
   };
 
+  const btnDisable = isvalid
+    ? 'login__button'
+    : 'login__button login__button-disabled';
+  
+  console.log(formValue);
   return (
     <section className='login'>
-      <NavLink to='/' >
+      <NavLink to='/'>
         <img
           className='header__logo'
           src={profileLogo}
@@ -47,7 +58,7 @@ function Login(props) {
         ></img>
       </NavLink>
       <h2 className='login__title'>Рады видеть!</h2>
-      <form className='login__form'>
+      <Form submit={hendleSubmit} errors={errors}>
         <label className='login__lable'>
           E-mail
           <input
@@ -74,10 +85,13 @@ function Login(props) {
             onChange={handleChange}
           ></input>
         </label>
-        <button className='login__button' onClick={hendleSubmit}>
+        <button
+          className={btnDisable}
+          disabled={!isvalid}
+        >
           Войти
         </button>
-      </form>
+      </Form>
       <nav className='login__nav'>
         <span className='login__nav_span'>Ещё не зарегистрированы?</span>
         <NavLink to='/sign-up' className='login__nav_link'>

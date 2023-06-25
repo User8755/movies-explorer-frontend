@@ -73,6 +73,10 @@
   cursor: pointer;
 }
 
+.register__button-disabled {
+  opacity: .4;
+}
+
 .register__button:hover {
   box-shadow: 2px 2px 4px #fffcff;
   background: rgb(0, 98, 255);
