@@ -1,11 +1,11 @@
 import './Main.css';
-import Promo from '../_Promo/Promo';
+import Promo from '../Promo/Promo';
 import AboutProject from '../AboutProject/AboutProject';
-import Techs from '../_Techs/Techs';
+import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
-import Footer from '../_Footer/Footer';
-import Header from '../_Header/Header';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 import { NavLink } from 'react-router-dom';
 
 function Main(props) {

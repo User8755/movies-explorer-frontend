@@ -1,6 +1,6 @@
 import SearchForm from '../SearchForm/SearchForm';
-import Footer from '../_Footer/Footer';
-import Header from '../_Header/Header';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 import { useState, useEffect } from 'react';
 import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
