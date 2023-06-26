@@ -7,7 +7,7 @@
   font-size: 24px;
   line-height: 29px;
   max-width: 204px;
-  margin: 70px auto 0;
+  margin: 91px auto 122px;
 }
 
 .form__lable {
@@ -61,7 +61,8 @@
 
 @media screen and (max-width: 768px) {
   .profile__title {
-    margin-top: 230px;
+    margin-top: 245px;
+    margin-bottom: 99px;
   }
 }
 
@@ -71,7 +72,8 @@
   }
 
   .profile__title {
-    margin-top: 66px;
+    margin-top: 84px;
+    margin-bottom: 80px;
   }
   .profile__form {
     margin-top: 81px;

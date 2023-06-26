@@ -6,7 +6,7 @@ import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
-
+import './SavedMovies.css'
 function SavedMovies(props) {
   const [sevedFilm, setSvaedFilm] = useState([]);
 
@@ -23,11 +23,11 @@ function SavedMovies(props) {
       <NavBar lowWidth={props.lowWidth}></NavBar>
        <NavButton lowWidth={props.lowWidth} modal={props.modal}></NavButton>
       </Header>
-      <main className='movies'>
+      <main className='saved-movies'>
         <SearchForm></SearchForm>
-        <div className='movies__list'>
+        <div className='saved-movies__list'>
         {sevedFilm.map((film) => {
-          return <MoviesCard card={film}></MoviesCard>;
+          return <MoviesCard card={film} key={film.movieId}></MoviesCard>;
         })}
         </div>
         <Footer></Footer>

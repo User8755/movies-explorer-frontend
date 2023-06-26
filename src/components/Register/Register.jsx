@@ -25,10 +25,6 @@ function Register(props) {
     setValid(evt.target.validity.valid);
   };
 
-  const btnDisable = isvalid
-    ? 'register__button'
-    : 'register__button register__button-disabled';
-
   const hendleSubmit = (evt) => {
     evt.preventDefault();
     auth
@@ -50,7 +46,13 @@ function Register(props) {
         ></img>
       </NavLink>
       <h2 className='register__title'>Добро пожаловать!</h2>
-      <Form submit={hendleSubmit} errors={errors} >
+      <Form
+        submit={hendleSubmit}
+        errors={errors}
+        isvalid={isvalid}
+        location={props.location}
+        btnText={'Зарегистрироваться'}
+      >
         <label className='register__lable'>
           Имя
           <input
@@ -91,9 +93,6 @@ function Register(props) {
             required
           ></input>
         </label>
-        <button className={btnDisable} type='submit' disabled={!isvalid}>
-          Зарегистрироваться
-        </button>
       </Form>
       <nav className='register__nav'>
         <span className='register__nav_span'>Уже зарегистрированы?</span>

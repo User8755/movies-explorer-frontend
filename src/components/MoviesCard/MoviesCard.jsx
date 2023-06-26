@@ -18,7 +18,6 @@ function MoviesCard(props) {
   }, [location.pathname]);
 
 const handleDeleteSavedCard = (item) =>{
-  console.log(item)
   api
   .deleteSaveFilm(item._id)
   .then((res) => setFilm(res))

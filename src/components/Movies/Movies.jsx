@@ -7,7 +7,7 @@ import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
 
 function Movies(props) {
-
+  console.log(props.width)
   return (
     <>
       <Header isLogin={props.loggedIn}>
@@ -23,6 +23,7 @@ function Movies(props) {
           film={props.film}
           onLike={props.onLike}
           isLike={props.isLike}
+          width={props.width}
         ></MoviesCardList>
       </main>
       <Footer></Footer>

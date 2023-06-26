@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Form from '../Form/Form';
 
 function Login(props) {
-  const { isLogin, error, message } = props;
+  const { isLogin, error, message, location } = props;
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState('');
@@ -40,14 +40,10 @@ function Login(props) {
       .catch((err) => {
         error(true);
         message(err.message);
+        console.log(err);
       });
   };
-
-  const btnDisable = isvalid
-    ? 'login__button'
-    : 'login__button login__button-disabled';
   
-  console.log(formValue);
   return (
     <section className='login'>
       <NavLink to='/'>
@@ -58,7 +54,13 @@ function Login(props) {
         ></img>
       </NavLink>
       <h2 className='login__title'>Рады видеть!</h2>
-      <Form submit={hendleSubmit} errors={errors}>
+      <Form
+        submit={hendleSubmit}
+        errors={errors}
+        isvalid={isvalid}
+        location={location}
+        btnText={'Войти'}
+      >
         <label className='login__lable'>
           E-mail
           <input
@@ -85,12 +87,7 @@ function Login(props) {
             onChange={handleChange}
           ></input>
         </label>
-        <button
-          className={btnDisable}
-          disabled={!isvalid}
-        >
-          Войти
-        </button>
+
       </Form>
       <nav className='login__nav'>
         <span className='login__nav_span'>Ещё не зарегистрированы?</span>

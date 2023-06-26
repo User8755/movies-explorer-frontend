@@ -17,6 +17,7 @@ import SavedMovies from '../SavedMovies/SavedMovies.jsx';
 import useResize from '../../hook/useResize';
 import ModalMenu from '../ModalMenu/ModalMenu';
 import ModalError from '../ModalError/ModalError';
+import auth from '../../utils/Auth';
 
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
@@ -52,13 +53,22 @@ function App() {
       .userInfoApi(jwt)
       .then((res) => setCurrentUser(res))
       .catch((error) => {
-        console.log(`Код ошибки: ${error}`);
+        console.log(`Код ошибки: ${error.status}`);
       });
   }, [jwt]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
+
+  useEffect(() => {
+    auth
+      .tokenValid()
+      .then(() => {
+        setLogin(true);
+      })
+      .catch((err) => console.log(err.status));
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -78,13 +88,18 @@ function App() {
           <Route
             path='/sign-up'
             element={
-              <Register error={setError} message={setErrorMessge}></Register>
+              <Register
+                error={setError}
+                message={setErrorMessge}
+                location={location}
+              ></Register>
             }
           ></Route>
           <Route
             path='/sign-in'
             element={
               <Login
+                location={location}
                 isLogin={setLogin}
                 error={setError}
                 message={setErrorMessge}
@@ -128,6 +143,7 @@ function App() {
                 film={tempFilm}
                 lowWidth={isWidth}
                 modal={setModal}
+                width={width}
               ></Movies>
               // <ProtectedRouteElement
               //   loggedIn={isLogin}

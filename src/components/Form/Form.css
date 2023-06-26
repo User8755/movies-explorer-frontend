@@ -1,12 +1,13 @@
 .form {
   display: flex;
   flex-direction: column;
-  margin: 124px auto 0;
+  margin: 38px auto 0;
   max-width: 410px;
+  position: relative;
 }
 
-.form__button {
-  margin: 212px 0 0;
+.form__button-profile {
+  margin: 222px 0 0;
   color: #fff;
   background-color: inherit;
   border: none;
@@ -17,20 +18,54 @@
   line-height: 16px;
 }
 
+.form__button-disabled {
+  opacity: 0.4;
+}
+
+.form__button {
+  margin-top: 178px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  padding: 13px 0 15px;
+  background: #4285f4;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.form__button-disabled {
+  opacity: 0.4;
+}
+
+.form__button:hover {
+  box-shadow: 2px 2px 4px #fffcff;
+  background: rgb(0, 98, 255);
+}
+
+.form__button:active {
+  background: rgba(86, 94, 107, 0.5);
+}
+
 .form__span {
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
   color: #ee3465;
   margin-top: 10px;
+  position: absolute;
+  bottom: 194px;
 }
 
 @media screen and (max-width: 768px) {
   .form {
-    margin-top: 98px;
+    margin-top: 43px;
   }
-  .form__button {
-    margin-top: 199px;
+
+  .form__button-profile {
+    margin-top: 210px;
   }
 }
 
@@ -39,8 +74,16 @@
     margin-top: 81px;
   }
 
+  .form__span {
+    bottom: 282px;
+  }
+
   .form__button {
-    margin-top: 363px;
+    margin-top: 268px;
+  }
+
+  .form__button-profile {
+    margin-top: 374px;
     font-size: 12px;
     line-height: 15px;
   }
