@@ -37,6 +37,14 @@
   background-position: 15px 11px;
 }
 
+.search-form__button:hover {
+  scale: 1.1;
+}
+
+.search-form__button:active {
+  scale: .9;
+}
+
 .search-form__container {
   margin: 34px 0 0;
   display: flex;

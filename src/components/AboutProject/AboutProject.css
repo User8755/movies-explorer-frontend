@@ -47,19 +47,20 @@
   line-height: 20px;
 }
 
-.aboutProject__info__container_time {
+.aboutProject__info {
   display: grid;
   grid-template-columns: 230px 1fr;
   text-align: center;
   white-space: nowrap;
   padding-bottom: 110px;
 }
+
 @media screen and (max-width: 768px) {
   .aboutProject {
     margin: 0 50px;
   }
 
-  .aboutProject__info__container_time {
+  .aboutProject__info {
     grid-template-columns: 140px 1fr;
   }
 
@@ -89,7 +90,7 @@
   }
 }
 
-.aboutProject__paragraph_time {
+.aboutProject__time {
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
@@ -100,7 +101,7 @@
   margin: 0;
 }
 
-.aboutProject__paragraph_time-darck {
+.aboutProject__time-darck {
   background: #303030;
   color: #fff;
   padding: 9px 0 0;
@@ -155,11 +156,11 @@
     row-gap: 14px;
   }
 
-  .aboutProject__info__container_time {
+  .aboutProject__container_info {
     grid-template-columns: 100px 1fr;
   }
 
-  .aboutProject__paragraph_time {
+  .aboutProject__time {
     font-size: 11px;
     line-height: 13px;
     padding: 10px 11px;

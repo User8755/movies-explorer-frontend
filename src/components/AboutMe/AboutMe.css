@@ -19,7 +19,7 @@
   justify-content: space-between;
 }
 
-.aboutMe__container_text {
+.aboutMe__description {
   max-width: 600px;
   position: relative;
 }
@@ -78,7 +78,7 @@
     margin-top: 66px;
   }
 
-  .aboutMe__container_text {
+  .aboutMe__description {
     max-width: 364px;
   }
 
@@ -120,6 +120,11 @@
 @media screen and (max-width: 700px) {
   .aboutMe__container {
     flex-direction: column-reverse;
+    align-items: center
+  }
+
+  .aboutMe__description {
+    margin-top: 40px;
   }
 }
 
@@ -137,7 +142,7 @@
     margin-top: 60px;
   }
 
-  .aboutMe__container_text {
+  .aboutMe__description {
     margin-top: 40px;
   }
 

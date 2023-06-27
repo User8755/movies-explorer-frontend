@@ -26,9 +26,9 @@ function AboutProject(props) {
           </p>
         </div>
       </div>
-      <div className='aboutProject__info__container_time'>
-        <p className='aboutProject__paragraph_time'>1 неделя</p>
-        <p className='aboutProject__paragraph_time aboutProject__paragraph_time-darck'>
+      <div className='aboutProject__info'>
+        <p className='aboutProject__time'>1 неделя</p>
+        <p className='aboutProject__time aboutProject__time-darck'>
           4 недель
         </p>
         <span className='aboutProject__span'>Back-end</span>

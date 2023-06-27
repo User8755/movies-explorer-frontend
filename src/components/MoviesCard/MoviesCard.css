@@ -1,6 +1,7 @@
 .movies-cards {
   background-color: #222;
   max-width: 364px;
+  height: 281px;
 }
 
 .movies-cards__link {
@@ -48,6 +49,11 @@
 }
 
 @media screen and (max-width: 1260px) {
+  .movies-cards {
+    max-width: 339px;
+    height: 262px;
+  }
+
   .movies-cards__image {
     width: 339px;
     height: 190px;
@@ -59,6 +65,10 @@
 }
 
 @media screen and (max-width: 685px) {
+  .movies-cards {
+    max-width: 300px;
+    height: 237px;
+  }
   .movies-cards__image {
     width: 300px;
     height: 168px;

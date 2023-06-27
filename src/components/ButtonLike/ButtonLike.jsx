@@ -7,7 +7,7 @@ function ButtonLike(props) {
       type='button'
       className={
         props.islike
-          ? 'button-like_active'
+          ? 'button-like-active'
           : 'button-like'
       }
       onClick={props.like} 

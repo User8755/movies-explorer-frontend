@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 function Header(props) {
   const { children, isLogin } = props;
 
-  const login = isLogin ? 'header_login' : 'header';
+  const login = isLogin ? 'header header_login' : 'header';
 
   return (
     <header className={login}>

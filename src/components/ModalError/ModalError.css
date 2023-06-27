@@ -24,7 +24,7 @@
   justify-content: center;
 }
 
-.modal-error__container_text {
+.modal-error__description {
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;

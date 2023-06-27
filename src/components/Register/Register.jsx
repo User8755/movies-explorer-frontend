@@ -40,9 +40,9 @@ function Register(props) {
     <section className='register'>
       <NavLink to='/'>
         <img
-          className='header__logo'
+          className='register__logo'
           src={profileLogo}
-          alt='Логотип профиля'
+          alt='Логотип проекта'
         ></img>
       </NavLink>
       <h2 className='register__title'>Добро пожаловать!</h2>
@@ -95,8 +95,8 @@ function Register(props) {
         </label>
       </Form>
       <nav className='register__nav'>
-        <span className='register__nav_span'>Уже зарегистрированы?</span>
-        <NavLink to='/sign-in' className='register__nav_link'>
+        <span className='register__span'>Уже зарегистрированы?</span>
+        <NavLink to='/sign-in' className='register__link'>
           Войти
         </NavLink>
       </nav>

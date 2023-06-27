@@ -25,7 +25,7 @@
   line-height: 16px;
 }
 
-.footer__container_url {
+.footer__url {
   display: flex;
   column-gap: 20px;
 }
@@ -58,7 +58,7 @@
     row-gap: 27px;
   }
 
-  .footer__container_url {
+  .footer__url {
     flex-direction: column;
     row-gap: 15px;
   }

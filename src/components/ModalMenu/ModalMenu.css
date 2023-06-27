@@ -20,7 +20,7 @@
   justify-content: center;
 }
 
-.modal__menu_btn-close {
+.modal__btn-closed {
   background-image: url('../../images/iconDel.svg');
   background-color: inherit;
   background-size: 22px;

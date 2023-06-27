@@ -11,7 +11,7 @@ function ModalMenu(props) {
     >
       <div className='modal__menu' onClick={(evt) => evt.stopPropagation()}>
         <button
-          className='modal__menu_btn-close'
+          className='modal__btn-closed'
           onClick={() => setActive(false)}
         ></button>
         <NavBarModal setActive={setActive} location={location}></NavBarModal>

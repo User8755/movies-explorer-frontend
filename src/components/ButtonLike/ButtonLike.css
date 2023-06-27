@@ -9,7 +9,7 @@
   padding: 0;
 }
 
-.button-like_active {
+.button-like-active {
   background: transparent;
   border: none;
   background-image: url('../../images/likeActive.svg');

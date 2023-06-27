@@ -13,7 +13,7 @@ function ModalError(props) {
           className='modal-error__closed'
           onClick={() => setActive(false)}
         ></button>
-        <p className='modal-error__container_text'>{textMessage}</p>
+        <p className='modal-error__description'>{textMessage}</p>
       </div>
     </div>
   );

@@ -54,7 +54,7 @@ function NavBarModal(props) {
           Сохранённые фильмы
         </NavLink>
       </nav>
-      <nav className='nav-bar-modal_profile'>
+      <nav className='nav-bar-modal-profile'>
         <NavButtonProfile closed={handleCLosedModal}></NavButtonProfile>
       </nav>
     </>

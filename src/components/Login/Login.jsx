@@ -48,7 +48,7 @@ function Login(props) {
     <section className='login'>
       <NavLink to='/'>
         <img
-          className='header__logo'
+          className='login__logo'
           src={profileLogo}
           alt='Логотип сайта'
         ></img>
@@ -90,8 +90,8 @@ function Login(props) {
 
       </Form>
       <nav className='login__nav'>
-        <span className='login__nav_span'>Ещё не зарегистрированы?</span>
-        <NavLink to='/sign-up' className='login__nav_link'>
+        <span className='login__span'>Ещё не зарегистрированы?</span>
+        <NavLink to='/sign-up' className='login__link'>
           Регистрация
         </NavLink>
       </nav>
