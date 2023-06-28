@@ -1,0 +1,15 @@
+.button-delete {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  background-image: url('../../images/iconDel.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 7px 7px;
+  max-width: 7px;
+  height: 7px;
+}
+
+.button-delete:hover {
+  scale: 1.5;
+}
