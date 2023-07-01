@@ -6,7 +6,7 @@ import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
-import './SavedMovies.css'
+import './SavedMovies.css';
 function SavedMovies(props) {
   const [sevedFilm, setSvaedFilm] = useState([]);
 
@@ -14,21 +14,28 @@ function SavedMovies(props) {
     api
       .getSaveFilm()
       .then((res) => setSvaedFilm(res))
-      .catch((res) => console.log(res));
+      .catch((err) => console.log(err));
   }, []);
 
   return (
     <>
       <Header isLogin={props.loggedIn}>
-      <NavBar lowWidth={props.lowWidth}></NavBar>
-       <NavButton lowWidth={props.lowWidth} modal={props.modal}></NavButton>
+        <NavBar lowWidth={props.lowWidth}></NavBar>
+        <NavButton lowWidth={props.lowWidth} modal={props.modal}></NavButton>
       </Header>
       <main className='saved-movies'>
         <SearchForm></SearchForm>
         <div className='saved-movies__list'>
-        {sevedFilm.map((film) => {
-          return <MoviesCard card={film} key={film.movieId}></MoviesCard>;
-        })}
+          {sevedFilm.map((film) => {
+            console.log(film);
+            return (
+              <MoviesCard
+                card={film}
+                key={film.movieId}
+                currentUser={props.currentUser}
+              ></MoviesCard>
+            );
+          })}
         </div>
         <Footer></Footer>
       </main>

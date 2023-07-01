@@ -1,0 +1,15 @@
+.start-search {
+  background-color: inherit;
+  height: 52vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-search__title {
+  max-width: 300px;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}

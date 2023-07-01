@@ -6,12 +6,10 @@ import Login from '../Login/Login.jsx';
 import Movies from '../Movies/Movies';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import Profile from '../Profile/Profile';
-import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
 import Register from '../Register/Register.jsx';
 import { CurrentUserContext } from '../Contexts/CurrentUserContext';
 import Main from '../Main/Main';
 import api from '../../utils/Api';
-import tempFilm from '../../utils/tempFilms';
 import '../../vendor/font/Inter_Web/inter.css';
 import SavedMovies from '../SavedMovies/SavedMovies.jsx';
 import useResize from '../../hook/useResize';
@@ -26,9 +24,13 @@ function App() {
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessge, setErrorMessge] = useState('');
+  const [isLogin, setLogin] = useState(false);
+  const [isFindFilms, setFindFilms] = useState([]);
 
   const location = useLocation().pathname;
   const component = useRef();
+
+  const moviesApiUrl = 'https://api.nomoreparties.co/';
 
   const { width } = useResize(component);
 
@@ -37,8 +39,6 @@ function App() {
   };
 
   const jwt = localStorage.getItem('token');
-
-  const [isLogin, setLogin] = useState(false);
 
   useEffect(() => {
     if (width < 770) {
@@ -140,10 +140,13 @@ function App() {
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
-                film={tempFilm}
+                film={isFindFilms}
                 lowWidth={isWidth}
                 modal={setModal}
                 width={width}
+                setFindFilms={setFindFilms}
+                moviesApiUrl={moviesApiUrl}
+                currentUser={currentUser}
               ></Movies>
               // <ProtectedRouteElement
               //   loggedIn={isLogin}
@@ -162,6 +165,7 @@ function App() {
                 loggedIn={isLogin}
                 lowWidth={isWidth}
                 modal={setModal}
+                currentUser={currentUser}
               />
             }
           ></Route>

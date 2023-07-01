@@ -3,24 +3,24 @@ import { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList(props) {
-  const { film, width } = props;
+  const { film, width, moviesApiUrl, currentUser } = props;
   const [isMoreMovies, setsMoreMovies] = useState(false);
-  const [countFilm,setCountFilm] = useState(0)
+  const [countFilm, setCountFilm] = useState(0);
 
-useEffect(()=>{
-  if(width <= 320) {
-    return setCountFilm(5)
-  }
-  if(width <=768) {
-    return setCountFilm(8)
-  }
-  if(width >=1280) {
-    return setCountFilm(12)
-  }
-}, [width])
-console.log(countFilm)
+  useEffect(() => {
+    if (width <= 320) {
+      return setCountFilm(5);
+    }
+    if (width <= 768) {
+      return setCountFilm(8);
+    }
+    if (width >= 1280) {
+      return setCountFilm(12);
+    }
+  }, [width]);
+
   const handleClickButton = () => {
-    setsMoreMovies(!isMoreMovies);
+    setsMoreMovies(true);
   };
 
   const sliceFilm = film.slice(0, countFilm);
@@ -32,7 +32,14 @@ console.log(countFilm)
       return (
         <>
           {moreFilmCard.map((film) => {
-            return <MoviesCard card={film} key={film.movieId}></MoviesCard>;
+            return (
+              <MoviesCard
+                card={film}
+                key={film.id}
+                moviesApiUrl={moviesApiUrl}
+                currentUser={currentUser}
+              ></MoviesCard>
+            );
           })}
         </>
       );
@@ -44,11 +51,21 @@ console.log(countFilm)
       <section className='movies-card-list'>
         <div className='movies-card-list__list'>
           {sliceFilm.map((film) => {
-            return <MoviesCard card={film} key={film.movieId}></MoviesCard>;
+            return (
+              <MoviesCard
+                card={film}
+                key={film.id}
+                moviesApiUrl={moviesApiUrl}
+                currentUser={currentUser}
+              ></MoviesCard>
+            );
           })}
           {addMoreFilm()}
         </div>
-        <button className='movies-card-list__button' onClick={handleClickButton}>
+        <button
+          className='movies-card-list__button'
+          onClick={handleClickButton}
+        >
           Еще
         </button>
       </section>

@@ -1,7 +1,8 @@
 class Api {
-  constructor({ baseUrl, headers }) {
+  constructor({ baseUrl, headers, moviesIgmUrl }) {
     this._baseUrl = baseUrl;
     this._headers = headers;
+    this._moviesIgmUrl = moviesIgmUrl
   }
 
   _checkRes(res) {
@@ -59,12 +60,12 @@ class Api {
         duration: item.duration,
         year: item.year,
         description: item.description,
-        image: item.image,
+        image: `${this._moviesIgmUrl}/${item.image.url}`,
         trailerLink: item.trailerLink,
-        thumbnail: item.thumbnail,
+        thumbnail: `${this._moviesIgmUrl}/${item.image.url}`,
         nameRU: item.nameRU,
         nameEN: item.nameEN,
-        movieId: item.movieId,
+        movieId: item.id,
 
       }),
     }).then(this._checkRes);
@@ -80,6 +81,7 @@ class Api {
 }
 
 const api = new Api({
+  moviesIgmUrl: 'https://api.nomoreparties.co/',
   baseUrl: 'https://api.movies.user87.nomoredomains.rocks',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
