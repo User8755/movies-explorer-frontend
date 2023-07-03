@@ -28,6 +28,8 @@ function Movies(props) {
         setFindFilms={props.setFindFilms}
         moviesApiUrl={props.moviesApiUrl}
         film={props.film}
+        isFoundFilm={props.isFoundFilm}
+        setFoundFilm={props.setFoundFilm}
       ></SearchForm>
       {isFilsm ? (
         <main className='main-movies'>

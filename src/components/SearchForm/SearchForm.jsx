@@ -3,9 +3,11 @@ import films from '../../utils/MoviesApi';
 import { useEffect, useState } from 'react';
 
 function SearchForm(props) {
+  const { film, setFindFilms, isFoundFilm, setFoundFilm } = props;
   const [isFilms, setFilms] = useState([]);
   const [isToggleBtn, setToggleBtn] = useState(false);
   const [isInput, setInput] = useState({ search: '' });
+  const [errors, setErrors] = useState('');
 
   useEffect(() => {
     films
@@ -27,30 +29,38 @@ function SearchForm(props) {
       } else {
         console.log('нет совпадений');
       }
-      return props.setFindFilms(findFilm);
+      return setFindFilms(findFilm);
     });
   };
 
   useEffect(() => {
-    const shortFilms = [];
     if (isToggleBtn) {
-      props.film.map((item) => {
+      const shortFilms = [];
+      setFoundFilm(film);
+      film.map((item) => {
         if (item.duration <= 40) {
           shortFilms.push(item);
         }
-        return props.setFindFilms(shortFilms);
+        return setFindFilms(shortFilms);
       });
+    } else {
+      return setFindFilms(isFoundFilm);
     }
-  }, [isToggleBtn, props]);
+  }, [ isToggleBtn ]);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
+    setErrors(evt.target.validationMessage);
     setInput({ [name]: value });
   };
 
   return (
     <section className='search-form'>
-      <form className='search-form__form' onSubmit={hendleSearchFilms}>
+      <form
+        className='search-form__form'
+        onSubmit={hendleSearchFilms}
+        noValidate
+      >
         <input
           className='search-form__input'
           placeholder='Фильм'
@@ -58,8 +68,10 @@ function SearchForm(props) {
           name='search'
           onChange={handleChange}
           required
+          minLength={1}
         ></input>
         <button className='search-form__button' type='submit'></button>
+        <span className='search-form__span'>{errors}</span>
       </form>
       <div className='search-form__container'>
         <input

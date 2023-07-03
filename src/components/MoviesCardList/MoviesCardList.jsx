@@ -4,53 +4,47 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList(props) {
   const { film, width, moviesApiUrl, currentUser } = props;
-  const [isMoreMovies, setsMoreMovies] = useState(false);
+  const [isMoreMovies, setsMoreMovies] = useState(true);
   const [countFilm, setCountFilm] = useState(0);
+  const [countMoreFilm, setCountMoreFilm] = useState(0);
+  const [isFilms, setFilms] = useState([]);
+
+  const handleClickButton = () => {
+    setFilms(film.slice(0, isFilms.length + countMoreFilm));
+  };
 
   useEffect(() => {
-    if (width <= 320) {
-      return setCountFilm(5);
+    if (width <= 1136) {
+      setCountFilm(8);
+      setCountMoreFilm(2);
     }
-    if (width <= 768) {
-      return setCountFilm(8);
+    if (width >= 1137) {
+      setCountFilm(12);
+      setCountMoreFilm(3);
     }
-    if (width >= 1280) {
-      return setCountFilm(12);
+    if (width <= 767) {
+      setCountFilm(5);
+      setCountMoreFilm(1);
     }
   }, [width]);
 
-  const handleClickButton = () => {
-    setsMoreMovies(true);
-  };
+  useEffect(() => {
+    setFilms(film.slice(0, countFilm));
+  }, [countFilm, film]);
 
-  const sliceFilm = film.slice(0, countFilm);
-  const sliceFilmLen = sliceFilm.length;
-
-  const addMoreFilm = () => {
-    if (isMoreMovies) {
-      const moreFilmCard = film.slice(sliceFilmLen, sliceFilmLen + 3);
-      return (
-        <>
-          {moreFilmCard.map((film) => {
-            return (
-              <MoviesCard
-                card={film}
-                key={film.id}
-                moviesApiUrl={moviesApiUrl}
-                currentUser={currentUser}
-              ></MoviesCard>
-            );
-          })}
-        </>
-      );
+  useEffect(() => {
+    if (film.length === isFilms.length) {
+      setsMoreMovies(false);
+    } else {
+      setsMoreMovies(true);
     }
-  };
+  }, [film.length, isFilms.length]);
 
   return (
     <>
       <section className='movies-card-list'>
         <div className='movies-card-list__list'>
-          {sliceFilm.map((film) => {
+          {isFilms.map((film) => {
             return (
               <MoviesCard
                 card={film}
@@ -60,10 +54,13 @@ function MoviesCardList(props) {
               ></MoviesCard>
             );
           })}
-          {addMoreFilm()}
         </div>
         <button
-          className='movies-card-list__button'
+          className={
+            isMoreMovies
+              ? 'movies-card-list__button'
+              : 'movies-card-list__button-disabled'
+          }
           onClick={handleClickButton}
         >
           Еще

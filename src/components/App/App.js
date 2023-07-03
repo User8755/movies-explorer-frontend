@@ -26,6 +26,7 @@ function App() {
   const [errorMessge, setErrorMessge] = useState('');
   const [isLogin, setLogin] = useState(false);
   const [isFindFilms, setFindFilms] = useState([]);
+  const [isFoundFilm, setFoundFilm] = useState([]);
 
   const location = useLocation().pathname;
   const component = useRef();
@@ -147,6 +148,8 @@ function App() {
                 setFindFilms={setFindFilms}
                 moviesApiUrl={moviesApiUrl}
                 currentUser={currentUser}
+                isFoundFilm={isFoundFilm}
+                setFoundFilm={setFoundFilm}
               ></Movies>
               // <ProtectedRouteElement
               //   loggedIn={isLogin}
@@ -166,6 +169,10 @@ function App() {
                 lowWidth={isWidth}
                 modal={setModal}
                 currentUser={currentUser}
+                setFindFilms={setFindFilms}
+                isFindFilms={isFindFilms}
+                isFoundFilm={isFoundFilm}
+                setFoundFilm={setFoundFilm}
               />
             }
           ></Route>
