@@ -13,16 +13,18 @@ function SearchForm(props) {
     films
       .getFilms()
       .then((res) => setFilms(res))
+      //.then((res) => localStorage.setItem('movies', JSON.stringify((res))))
       .catch((err) => console.log(err));
   }, []);
-
+const movies = JSON.parse(localStorage.getItem('movies'))
   const handleToggleBtn = () => {
     setToggleBtn(!isToggleBtn);
   };
-
+  
   const hendleSearchFilms = (evt) => {
     const findFilm = [];
     evt.preventDefault();
+
     isFilms.map((item) => {
       if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
         findFilm.push(item);
