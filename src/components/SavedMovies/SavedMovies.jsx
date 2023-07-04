@@ -1,21 +1,36 @@
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
 import './SavedMovies.css';
+import StartSearch from '../StartSearch/StartSearch';
 
 function SavedMovies(props) {
+  const [SavedFilms, setSavedFilms] = useState([]);
+  const [isFilms, setFilms] = useState(false);
+
+  useEffect(() => {
+    if (SavedFilms.length > 0) {
+      setFilms(true);
+    } else {
+      setFilms(false);
+    }
+  }, [SavedFilms]);
+
   useEffect(() => {
     api
       .getSaveFilm()
-      .then((res) => props.setFindFilms(res))
+      .then((res) => {
+        localStorage.setItem('savedFilms', JSON.stringify(res));
+        setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
+      })
       .catch((err) => console.log(err));
-  }, [props]);
-console.log(props)
+  }, []);
+
   return (
     <>
       <Header isLogin={props.loggedIn}>
@@ -24,22 +39,26 @@ console.log(props)
       </Header>
       <main className='saved-movies'>
         <SearchForm
-          isFoundFilm={props.isFoundFilm}
-          setFoundFilm={props.setFoundFilm}
-          setFindFilms={props.setFindFilms}
-          film={props.isFindFilms}
+          SavedFilms={SavedFilms}
+          setSavedFilms={setSavedFilms}
         ></SearchForm>
-        <div className='saved-movies__list'>
-          {props.isFindFilms.map((film) => {
-            return (
-              <MoviesCard
-                card={film}
-                key={film.movieId}
-                currentUser={props.currentUser}
-              ></MoviesCard>
-            );
-          })}
-        </div>
+        {isFilms ? (
+          <div className='saved-movies__list'>
+            {SavedFilms.map((film) => {
+              return (
+                <MoviesCard
+                  card={film}
+                  key={film.movieId}
+                  currentUser={props.currentUser}
+                  moviesApiUrl={props.moviesApiUrl}
+                  location={props.location}
+                ></MoviesCard>
+              );
+            })}
+          </div>
+        ) : (
+          <StartSearch text={'У вас нет сохраненных фильмов'}></StartSearch>
+        )}
         <Footer></Footer>
       </main>
     </>

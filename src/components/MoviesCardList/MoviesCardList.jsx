@@ -3,15 +3,21 @@ import { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList(props) {
-  const { film, width, moviesApiUrl, currentUser } = props;
+  const { isMoviesList, width, moviesApiUrl, currentUser, location } = props;
   const [isMoreMovies, setsMoreMovies] = useState(true);
   const [countFilm, setCountFilm] = useState(0);
   const [countMoreFilm, setCountMoreFilm] = useState(0);
-  const [isFilms, setFilms] = useState([]);
+  const [isFilmsList, setFilmsList] = useState([]);
+  
 
   const handleClickButton = () => {
-    setFilms(film.slice(0, isFilms.length + countMoreFilm));
+    setFilmsList(isMoviesList.slice(0, isFilmsList.length + countMoreFilm));
   };
+  //JSON.parse(localStorage.getItem('movies'))
+  useEffect(() => {
+    setFilmsList(isMoviesList.slice(0, countFilm));
+  }, [countFilm, isMoviesList]);
+
 
   useEffect(() => {
     if (width <= 1136) {
@@ -29,28 +35,25 @@ function MoviesCardList(props) {
   }, [width]);
 
   useEffect(() => {
-    setFilms(film.slice(0, countFilm));
-  }, [countFilm, film]);
-
-  useEffect(() => {
-    if (film.length === isFilms.length) {
+    if (isMoviesList.length === isFilmsList.length) {
       setsMoreMovies(false);
     } else {
       setsMoreMovies(true);
     }
-  }, [film.length, isFilms.length]);
-
+  }, [isMoviesList.length, isFilmsList.length]);
+  
   return (
     <>
       <section className='movies-card-list'>
         <div className='movies-card-list__list'>
-          {isFilms.map((film) => {
+          {isFilmsList.map((film) => {
             return (
               <MoviesCard
                 card={film}
                 key={film.id}
                 moviesApiUrl={moviesApiUrl}
                 currentUser={currentUser}
+                location={location}
               ></MoviesCard>
             );
           })}

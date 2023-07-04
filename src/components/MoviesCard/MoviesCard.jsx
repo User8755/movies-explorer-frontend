@@ -3,26 +3,23 @@ import { useState, useEffect } from 'react';
 import api from '../../utils/Api';
 import ButtonLike from '../ButtonLike/ButtonLike';
 import ButtonDelete from '../ButtonDelete/ButtonDelete';
-import { useLocation } from 'react-router-dom';
 
 function MoviesCard(props) {
-  const { card, moviesApiUrl, currentUser } = props;
+  const { card, moviesApiUrl, currentUser, location } = props;
   const [islike, setLike] = useState(false);
   const [film, setFilm] = useState(false);
-  const [loc, setLoc] = useState(false);
-  const location = useLocation();
+  const [currentlocation, setCurrentlocation] = useState(false);
 
-  
   useEffect(() => {
-    if (location.pathname === '/movies') {
-      setLoc(true);
+    if (location === '/movies') {
+      setCurrentlocation(true);
     }
-  }, [location.pathname]);
+  }, [location]);
 
   const handleDeleteSavedCard = (item) => {
     api
       .deleteSaveFilm(item._id)
-      .then((res) => setFilm(res))
+      .then((res) => setFilm(res), localStorage.removeItem(item.movieId))
       .catch((res) => console.log(res));
   };
 
@@ -49,7 +46,6 @@ function MoviesCard(props) {
     }
   }, [card.id, currentUser._id]);
 
-  const cardImg = card.image.url;
   return (
     <article className='movies-cards'>
       <a
@@ -59,14 +55,18 @@ function MoviesCard(props) {
         className='movies-cards__link'
       >
         <img
-          src={`${moviesApiUrl}/${cardImg}`}
+          src={
+            currentlocation
+              ? `${moviesApiUrl}/${card.image.url}`
+              : `${card.image}`
+          }
           alt={card.nameRU}
           className='movies-cards__image'
         ></img>
       </a>
       <div className='movies-cards__description'>
         <h2 className='movies-cards__title'>{card.nameRU}</h2>
-        {loc ? (
+        {currentlocation ? (
           <ButtonLike like={handleLike} islike={islike}></ButtonLike>
         ) : (
           <ButtonDelete del={() => handleDeleteSavedCard(card)}></ButtonDelete>

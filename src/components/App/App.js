@@ -25,11 +25,11 @@ function App() {
   const [error, setError] = useState(false);
   const [errorMessge, setErrorMessge] = useState('');
   const [isLogin, setLogin] = useState(false);
-  const [isFindFilms, setFindFilms] = useState([]);
   const [isFoundFilm, setFoundFilm] = useState([]);
 
   const location = useLocation().pathname;
   const component = useRef();
+
 
   const moviesApiUrl = 'https://api.nomoreparties.co/';
 
@@ -141,15 +141,14 @@ function App() {
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
-                film={isFindFilms}
                 lowWidth={isWidth}
                 modal={setModal}
                 width={width}
-                setFindFilms={setFindFilms}
                 moviesApiUrl={moviesApiUrl}
                 currentUser={currentUser}
                 isFoundFilm={isFoundFilm}
                 setFoundFilm={setFoundFilm}
+                location={location}
               ></Movies>
               // <ProtectedRouteElement
               //   loggedIn={isLogin}
@@ -169,10 +168,10 @@ function App() {
                 lowWidth={isWidth}
                 modal={setModal}
                 currentUser={currentUser}
-                setFindFilms={setFindFilms}
-                isFindFilms={isFindFilms}
                 isFoundFilm={isFoundFilm}
                 setFoundFilm={setFoundFilm}
+                moviesApiUrl={moviesApiUrl}
+                location={location}
               />
             }
           ></Route>

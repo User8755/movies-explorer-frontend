@@ -3,52 +3,87 @@ import films from '../../utils/MoviesApi';
 import { useEffect, useState } from 'react';
 
 function SearchForm(props) {
-  const { film, setFindFilms, isFoundFilm, setFoundFilm } = props;
+  const { setMoviesList, SavedFilms, setSavedFilms, location } = props;
   const [isFilms, setFilms] = useState([]);
   const [isToggleBtn, setToggleBtn] = useState(false);
   const [isInput, setInput] = useState({ search: '' });
   const [errors, setErrors] = useState('');
+  const [currentlocation, setCurrentlocation] = useState(false);
+
+  useEffect(() => {
+    if (location === '/movies') {
+      setCurrentlocation(true);
+    }
+  }, [location]);
 
   useEffect(() => {
     films
       .getFilms()
       .then((res) => setFilms(res))
-      //.then((res) => localStorage.setItem('movies', JSON.stringify((res))))
       .catch((err) => console.log(err));
   }, []);
-const movies = JSON.parse(localStorage.getItem('movies'))
+
   const handleToggleBtn = () => {
     setToggleBtn(!isToggleBtn);
+    currentlocation ? handleShortsFilms() : handleSavedShortsFilms();
   };
-  
-  const hendleSearchFilms = (evt) => {
-    const findFilm = [];
-    evt.preventDefault();
 
-    isFilms.map((item) => {
-      if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
-        findFilm.push(item);
-      } else {
-        console.log('нет совпадений');
-      }
-      return setFindFilms(findFilm);
-    });
+  const handleShortsFilms = () => {
+    const shortsFilms = [];
+    if (!isToggleBtn) {
+      JSON.parse(localStorage.getItem('movies')).map((item) => {
+        if (item.duration <= 40) {
+          shortsFilms.push(item);
+          localStorage.setItem('shortsFilm', JSON.stringify(shortsFilms));
+        }
+        return setMoviesList(JSON.parse(localStorage.getItem('shortsFilm')));
+      });
+    } else {
+      return setMoviesList(JSON.parse(localStorage.getItem('movies')));
+    }
+  };
+
+  const handleSavedShortsFilms = () => {
+    const savedShortsFilms = [];
+    if (!isToggleBtn) {
+      SavedFilms.map((item) => {
+        if (item.duration <= 40) {
+          savedShortsFilms.push(item);
+          localStorage.setItem(
+            'savedShortsFilms',
+            JSON.stringify(savedShortsFilms)
+          );
+        }
+        return setSavedFilms(
+          JSON.parse(localStorage.getItem('savedShortsFilms'))
+        );
+      });
+    } else {
+      return setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
+    }
   };
 
   useEffect(() => {
     if (isToggleBtn) {
-      const shortFilms = [];
-      setFoundFilm(film);
-      film.map((item) => {
-        if (item.duration <= 40) {
-          shortFilms.push(item);
-        }
-        return setFindFilms(shortFilms);
-      });
+      localStorage.setItem('shortsFilms', true);
     } else {
-      return setFindFilms(isFoundFilm);
+      localStorage.setItem('shortsFilms', false);
     }
-  }, [ isToggleBtn ]);
+  }, [isToggleBtn]);
+
+  const hendleSearchFilms = (evt) => {
+    const findFilm = [];
+    evt.preventDefault();
+    isFilms.map((item) => {
+      if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
+        findFilm.push(item);
+        localStorage.setItem('movies', JSON.stringify(findFilm));
+      } else {
+        console.log('нет совпадений');
+      }
+      return setMoviesList(JSON.parse(localStorage.getItem('movies')));
+    });
+  };
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;

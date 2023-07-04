@@ -9,14 +9,16 @@ import StartSearch from '../StartSearch/StartSearch';
 import { useEffect, useState } from 'react';
 
 function Movies(props) {
-  const { film } = props;
-  const [isFilsm, setFilm] = useState(false);
+  const [isFilms, setFilms] = useState(false);
+  const [isMoviesList, setMoviesList] = useState([]);
 
   useEffect(() => {
-    if (film.length > 0) {
-      setFilm(true);
-    } else {setFilm(false);}
-  }, [film]);
+    if (isMoviesList.length > 0) {
+      setFilms(true);
+    } else {
+      setFilms(false);
+    }
+  }, [isMoviesList]);
 
   return (
     <>
@@ -25,25 +27,23 @@ function Movies(props) {
         <NavButton lowWidth={props.lowWidth} modal={props.modal}></NavButton>
       </Header>
       <SearchForm
-        setFindFilms={props.setFindFilms}
-        moviesApiUrl={props.moviesApiUrl}
-        film={props.film}
-        isFoundFilm={props.isFoundFilm}
-        setFoundFilm={props.setFoundFilm}
+        setMoviesList={setMoviesList}
+        location={props.location}
       ></SearchForm>
-      {isFilsm ? (
+      {isFilms ? (
         <main className='main-movies'>
           <MoviesCardList
-            film={props.film}
+            isMoviesList={isMoviesList}
             onLike={props.onLike}
             isLike={props.isLike}
             width={props.width}
             moviesApiUrl={props.moviesApiUrl}
             currentUser={props.currentUser}
+            location={props.location}
           ></MoviesCardList>
         </main>
       ) : (
-        <StartSearch></StartSearch>
+        <StartSearch text={'Ничего не найдено'}></StartSearch>
       )}
 
       <Footer></Footer>
