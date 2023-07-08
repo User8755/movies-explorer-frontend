@@ -26,10 +26,10 @@ function App() {
   const [errorMessge, setErrorMessge] = useState('');
   const [isLogin, setLogin] = useState(false);
   const [isFoundFilm, setFoundFilm] = useState([]);
+  const [preloader, setPreloader] = useState(false);
 
   const location = useLocation().pathname;
   const component = useRef();
-
 
   const moviesApiUrl = 'https://api.nomoreparties.co/';
 
@@ -149,6 +149,8 @@ function App() {
                 isFoundFilm={isFoundFilm}
                 setFoundFilm={setFoundFilm}
                 location={location}
+                preloader={preloader}
+                setPreloader={setPreloader}
               ></Movies>
               // <ProtectedRouteElement
               //   loggedIn={isLogin}

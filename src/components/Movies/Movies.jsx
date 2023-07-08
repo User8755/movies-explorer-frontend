@@ -6,12 +6,13 @@ import Header from '../Header/Header';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
 import StartSearch from '../StartSearch/StartSearch';
+import Preloader from '../Preloader/Preloader';
 import { useEffect, useState } from 'react';
 
 function Movies(props) {
   const [isFilms, setFilms] = useState(false);
   const [isMoviesList, setMoviesList] = useState([]);
-
+console.log(isMoviesList)
   useEffect(() => {
     if (isMoviesList.length > 0) {
       setFilms(true);
@@ -19,6 +20,22 @@ function Movies(props) {
       setFilms(false);
     }
   }, [isMoviesList]);
+
+  const Films = isFilms ? (
+    <main className='main-movies'>
+      <MoviesCardList
+        isMoviesList={isMoviesList}
+        onLike={props.onLike}
+        isLike={props.isLike}
+        width={props.width}
+        moviesApiUrl={props.moviesApiUrl}
+        currentUser={props.currentUser}
+        location={props.location}
+      ></MoviesCardList>
+    </main>
+  ) : (
+    <StartSearch text={'Ничего не найдено'}></StartSearch>
+  );
 
   return (
     <>
@@ -29,22 +46,10 @@ function Movies(props) {
       <SearchForm
         setMoviesList={setMoviesList}
         location={props.location}
+        setFilms={setFilms}
+        setPreloader={props.setPreloader}
       ></SearchForm>
-      {isFilms ? (
-        <main className='main-movies'>
-          <MoviesCardList
-            isMoviesList={isMoviesList}
-            onLike={props.onLike}
-            isLike={props.isLike}
-            width={props.width}
-            moviesApiUrl={props.moviesApiUrl}
-            currentUser={props.currentUser}
-            location={props.location}
-          ></MoviesCardList>
-        </main>
-      ) : (
-        <StartSearch text={'Ничего не найдено'}></StartSearch>
-      )}
+      {props.preloader ? <Preloader></Preloader> : Films}
 
       <Footer></Footer>
     </>

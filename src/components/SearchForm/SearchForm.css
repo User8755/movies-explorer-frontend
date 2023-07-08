@@ -68,6 +68,10 @@
   appearance: none;
 }
 
+.search-form__button:disabled {
+  opacity: .4;
+}
+
 .search-form__toggle-button::after {
   content: '';
   display: inline-block;
@@ -87,6 +91,10 @@
 }
 .search-form__toggle-button:checked {
   background-color: #2be080;
+}
+
+.search-form__toggle-button:disabled {
+  opacity: .3;
 }
 
 .search-form__span {

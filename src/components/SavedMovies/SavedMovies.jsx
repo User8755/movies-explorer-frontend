@@ -14,7 +14,7 @@ function SavedMovies(props) {
   const [isFilms, setFilms] = useState(false);
 
   useEffect(() => {
-    if (SavedFilms.length > 0) {
+    if (SavedFilms) {
       setFilms(true);
     } else {
       setFilms(false);
@@ -41,6 +41,7 @@ function SavedMovies(props) {
         <SearchForm
           SavedFilms={SavedFilms}
           setSavedFilms={setSavedFilms}
+          setFilms={setFilms}
         ></SearchForm>
         {isFilms ? (
           <div className='saved-movies__list'>
