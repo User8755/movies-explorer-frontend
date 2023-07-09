@@ -174,6 +174,8 @@ function App() {
                 setFoundFilm={setFoundFilm}
                 moviesApiUrl={moviesApiUrl}
                 location={location}
+                preloader={preloader}
+                setPreloader={setPreloader}
               />
             }
           ></Route>

@@ -12,9 +12,11 @@ import { useEffect, useState } from 'react';
 function Movies(props) {
   const [isFilms, setFilms] = useState(false);
   const [isMoviesList, setMoviesList] = useState([]);
-console.log(isMoviesList)
+
   useEffect(() => {
-    if (isMoviesList.length > 0) {
+    if (isMoviesList === null) {
+      setFilms(false);
+    } else if (isMoviesList.length > 0) {
       setFilms(true);
     } else {
       setFilms(false);
