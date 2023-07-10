@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './Form.css';
 
 function Form(props) {
-  const { submit, children, btnText, errors, location, isvalid } = props;
+  const { submit, children, btnText, errors, location, isValid } = props;
   const [isLocation, setLocation] = useState(false);
 
   useEffect(() => {
@@ -17,9 +17,7 @@ function Form(props) {
     }
   }, [location]);
 
-  const btnDisable = isvalid
-    ? 'form__button'
-    : 'form__button form__button-disabled';
+console.log(isValid)
 
   return (
     <form
@@ -32,14 +30,14 @@ function Form(props) {
       {children}
       <span className='form__span'>{errors}</span>
       {isLocation ? (
-        <button className={btnDisable} disabled={!isvalid}>
+        <button className='form__button' disabled={!isValid}>
           {btnText}
         </button>
       ) : (
         <button
           type='submit'
           className='form__button-profile'
-          disabled={!isvalid}
+          disabled={!isValid}
         >
           {btnText}
         </button>

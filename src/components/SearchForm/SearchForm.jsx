@@ -10,9 +10,9 @@ function SearchForm(props) {
     location,
     setFilms,
     setPreloader,
+    isFilms,
   } = props;
 
-  const [isMovies, setMovies] = useState([]);
   const [isToggleBtn, setToggleBtn] = useState(false);
   const [isInput, setInput] = useState({ search: '' });
   const [errors, setErrors] = useState('');
@@ -71,42 +71,51 @@ function SearchForm(props) {
   }, [setFilms, setSavedFilms, setPreloader]);
 
   const hendleSearchFilms = (evt) => {
+    evt.preventDefault();
+    const findFilm = [];
     films
       .getFilms()
-      .then((res) => setMovies(res), setPreloader(true))
+      .then((res) =>
+        res.map((item) => {
+          if (
+            item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())
+          ) {
+            setPreloader(true);
+            findFilm.push(item);
+            localStorage.setItem('movies', JSON.stringify(findFilm));
+            setDisabledBtnShort(false);
+            setTimeout(() => setPreloader(false), 1000);
+            return setMoviesList(JSON.parse(localStorage.getItem('movies')));
+          } else {
+            return setTimeout(() => setPreloader(false), 1000);
+          }
+        })
+      )
+
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
-
-    const findFilm = [];
-
-    evt.preventDefault();
-
-    isMovies.map((item) => {
-      if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
-        setPreloader(true);
-        findFilm.push(item);
-        localStorage.setItem('movies', JSON.stringify(findFilm));
-        setDisabledBtnShort(false);
-        setTimeout(() => setPreloader(false), 1000);
-        return setMoviesList(JSON.parse(localStorage.getItem('movies')));
-      } else {
-        return setTimeout(() => setPreloader(false), 1000);
-      }
-    });
   };
 
   const hendleSearchSavedFilms = (evt) => {
+    //console.log(typeof(SavedFilms.message))
     const findFilm = [];
+
     evt.preventDefault();
-    SavedFilms.map((item) => {
-      if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
-        findFilm.push(item);
-        localStorage.setItem('findSavedFilm', JSON.stringify(findFilm));
-      } else {
-        console.log('нет совпадений');
-      }
-      return setSavedFilms(JSON.parse(localStorage.getItem('findSavedFilm')));
-    });
+    isFilms
+      ? SavedFilms.map((item) => {
+          if (
+            item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())
+          ) {
+            findFilm.push(item);
+            localStorage.setItem('findSavedFilm', JSON.stringify(findFilm));
+            return setSavedFilms(
+              JSON.parse(localStorage.getItem('findSavedFilm'))
+            );
+          } else {
+            return setFilms(false);
+          }
+        })
+      : setFilms(false);
   };
 
   const handleChange = (evt) => {
@@ -131,17 +140,14 @@ function SearchForm(props) {
   }, [handleShortsFilms, location, setMoviesList, setPreloader, toggle]);
 
   useEffect(() => {
-    console.log(1);
     if (location === '/saved-movies') {
-      console.log(2);
       if (localStorage.getItem('savedFilms') && toggle === 'true') {
         handleSavedShortsFilms();
       } else {
-        console.log(3);
         setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
       }
     }
-  }, [ handleSavedShortsFilms, location, setSavedFilms, toggle]);
+  }, [handleSavedShortsFilms, location, setSavedFilms, toggle]);
 
   return (
     <section className='search-form'>

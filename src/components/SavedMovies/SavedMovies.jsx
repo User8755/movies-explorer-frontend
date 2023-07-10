@@ -19,6 +19,7 @@ function SavedMovies(props) {
     currentUser,
     moviesApiUrl,
   } = props;
+
   const [SavedFilms, setSavedFilms] = useState([]);
   const [isFilms, setFilms] = useState(false);
 
@@ -35,15 +36,16 @@ function SavedMovies(props) {
   }, [location, setPreloader]);
 
   useEffect(() => {
-    if (SavedFilms === undefined) {
-      setFilms(false);
-    }
-    if (SavedFilms.length > 0) {
+    if (SavedFilms.length > 0 && !SavedFilms.hasOwnProperty('message')) {
       setFilms(true);
+      console.log(1)
     } else {
+      console.log(2)
       setFilms(false);
     }
   }, [SavedFilms]);
+  console.log(isFilms);
+  console.log(SavedFilms.length > 0 && !SavedFilms.hasOwnProperty('message'));
 
   return (
     <>
@@ -58,6 +60,7 @@ function SavedMovies(props) {
           setFilms={setFilms}
           location={location}
           setPreloader={setPreloader}
+          isFilms={isFilms}
         ></SearchForm>
         {isFilms ? (
           <div className='saved-movies__list'>
@@ -69,6 +72,7 @@ function SavedMovies(props) {
                   currentUser={currentUser}
                   moviesApiUrl={moviesApiUrl}
                   location={location}
+                  setSavedFilms={setSavedFilms}
                 ></MoviesCard>
               );
             })}

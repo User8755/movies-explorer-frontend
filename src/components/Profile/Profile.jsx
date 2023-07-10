@@ -16,6 +16,7 @@ function Profile(props) {
   const [email, setEmail] = useState('');
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState('');
+  const [isValid, setValid] = useState(true);
 
   useEffect(() => {
     setName(currentUser.name);
@@ -52,11 +53,13 @@ function Profile(props) {
   const handleChangeName = (evt) => {
     setName(evt.target.value);
     setErrors(evt.target.validationMessage);
+    //setValid(evt.target.validity.valid)
   };
 
   const handleChangeEmail = (evt) => {
     setEmail(evt.target.value);
     setErrors(evt.target.validationMessage);
+    //setValid(evt.target.validity.valid)
   };
 
   return (
@@ -67,7 +70,12 @@ function Profile(props) {
       </Header>
       <section className='profile'>
         <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
-        <Form submit={handleSubmit} btnText={'Редактировать'} errors={errors}>
+        <Form
+          submit={handleSubmit}
+          btnText={'Редактировать'}
+          errors={errors}
+          isValid={isValid}
+        >
           <label className='form__lable'>
             Имя
             <input
@@ -95,7 +103,6 @@ function Profile(props) {
               onChange={handleChangeEmail}
             ></input>
           </label>
-          
         </Form>
         <button className='profile__signout' onClick={hendleSignOut}>
           Выйти из аккаунта

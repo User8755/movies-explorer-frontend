@@ -14,7 +14,7 @@ function Login(props) {
     email: '',
     password: '',
   });
-  const [isvalid, setValid] = useState(false);
+  const [isValid, setValid] = useState(false);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -57,7 +57,7 @@ function Login(props) {
       <Form
         submit={hendleSubmit}
         errors={errors}
-        isvalid={isvalid}
+        isValid={isValid}
         location={location}
         btnText={'Войти'}
       >
