@@ -12,7 +12,7 @@ function Register(props) {
     email: '',
     password: '',
   });
-  const [isvalid, setValid] = useState(false);
+  const [isValid, setValid] = useState(false);
   const [errors, setErrors] = useState('');
 
   const handleChange = (evt) => {
@@ -22,8 +22,9 @@ function Register(props) {
       ...formValue,
       [name]: value,
     });
-    setValid(evt.target.validity.valid);
+    setValid(evt.target.closest('.form').checkValidity());
   };
+   
 
   const hendleSubmit = (evt) => {
     evt.preventDefault();
@@ -49,7 +50,7 @@ function Register(props) {
       <Form
         submit={hendleSubmit}
         errors={errors}
-        isvalid={isvalid}
+        isValid={isValid}
         location={props.location}
         btnText={'Зарегистрироваться'}
       >

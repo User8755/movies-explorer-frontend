@@ -11,7 +11,7 @@ export function useFormAndValidation() {
     setErrors({ ...errors, [name]: e.target.validationMessage });
     setIsValid(e.target.closest('.profile__form').checkValidity());
   };
-
+  
   const resetForm = useCallback(
     (newValues = {}, newErrors = {}, newIsValid = false) => {
       setValues(newValues);

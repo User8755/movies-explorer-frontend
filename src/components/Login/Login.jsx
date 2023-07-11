@@ -8,7 +8,9 @@ import Form from '../Form/Form';
 function Login(props) {
   const { isLogin, error, message, location } = props;
 
+
   const navigate = useNavigate();
+
   const [errors, setErrors] = useState('');
   const [formValue, setFormValue] = useState({
     email: '',
@@ -23,11 +25,12 @@ function Login(props) {
       ...formValue,
       [name]: value,
     });
-    setValid(evt.target.validity.valid);
+    setValid(evt.target.closest('.form').checkValidity())
   };
 
   const hendleSubmit = (evt) => {
     evt.preventDefault();
+    
     auth
       .signin(formValue)
       .then((res) => {
@@ -43,7 +46,7 @@ function Login(props) {
         console.log(err);
       });
   };
-  
+
   return (
     <section className='login'>
       <NavLink to='/'>
@@ -87,7 +90,6 @@ function Login(props) {
             onChange={handleChange}
           ></input>
         </label>
-
       </Form>
       <nav className='login__nav'>
         <span className='login__span'>Ещё не зарегистрированы?</span>

@@ -9,34 +9,56 @@ import NavButton from '../NavButton/NavButton';
 import Form from '../Form/Form';
 
 function Profile(props) {
-  const { userInfo, lowWidth, modal } = props;
+  const { userInfo, lowWidth, modal, error, message } = props;
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [values, setValues] = useState({});
   const [errors, setErrors] = useState('');
   const [isValid, setValid] = useState(true);
+  const [formValue, setFormValue] = useState({
+    name: '',
+    email: '',
+  });
 
-  useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-  }, [currentUser]);
-
-  useEffect(() => {
-    setValues({
-      name,
-      email,
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setErrors(evt.target.validationMessage);
+    setFormValue({
+      ...formValue,
+      [name]: value,
     });
-  }, [email, name, setValues]);
+
+    setValid(evt.target.closest('.form').checkValidity());
+  };
+  console.log(
+    formValue.name === currentUser.name || formValue.email === currentUser.email
+  );
+  useEffect(() => {
+    if (
+      formValue.name !== currentUser.name ||
+      formValue.email !== currentUser.email
+    ) {
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  }, [currentUser.email, currentUser.name, formValue.email, formValue.name]);
+
+  useEffect(() => {
+    setFormValue({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [currentUser.email, currentUser.name, setFormValue]);
 
   const handleUpdateUser = () => {
     api
-      .updateUserInfo(values)
-      .then((res) => userInfo(res))
+      .updateUserInfo(formValue)
+      .then((res) => userInfo(res), error(true), message('Данные обновлены'))
       .catch((err) => {
         props.error(true);
         props.message(err.message);
+        error(true);
+        message('Произошла ошибка, данные не обновлены');
       });
   };
 
@@ -48,18 +70,6 @@ function Profile(props) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     handleUpdateUser();
-  };
-
-  const handleChangeName = (evt) => {
-    setName(evt.target.value);
-    setErrors(evt.target.validationMessage);
-    //setValid(evt.target.validity.valid)
-  };
-
-  const handleChangeEmail = (evt) => {
-    setEmail(evt.target.value);
-    setErrors(evt.target.validationMessage);
-    //setValid(evt.target.validity.valid)
   };
 
   return (
@@ -86,8 +96,8 @@ function Profile(props) {
               minLength={2}
               maxLength={30}
               required
-              value={name || ''}
-              onChange={handleChangeName}
+              value={formValue.name || ''}
+              onChange={handleChange}
               autoComplete='off'
             ></input>
           </label>
@@ -99,8 +109,8 @@ function Profile(props) {
               name='email'
               placeholder='Введите email'
               required
-              value={email || ''}
-              onChange={handleChangeEmail}
+              value={formValue.email || ''}
+              onChange={handleChange}
             ></input>
           </label>
         </Form>
