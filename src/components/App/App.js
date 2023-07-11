@@ -16,7 +16,7 @@ import useResize from '../../hook/useResize';
 import ModalMenu from '../ModalMenu/ModalMenu';
 import ModalError from '../ModalError/ModalError';
 import auth from '../../utils/Auth';
-
+import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -110,7 +110,8 @@ function App() {
           <Route
             path='/profile'
             element={
-              <Profile
+              <ProtectedRouteElement
+                element={Profile}
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
@@ -118,14 +119,7 @@ function App() {
                 modal={setModal}
                 error={setError}
                 message={setErrorMessge}
-              ></Profile>
-              // <ProtectedRouteElement
-              //   loggedIn={isLogin}
-              //   element={Profile}
-              //   submit={handleSubmit}
-              //   userInfo={setCurrentUser}
-              //   lowWidth={isWidth}
-              // />
+              />
             }
           ></Route>
           <Route
@@ -137,7 +131,8 @@ function App() {
           <Route
             path='/movies'
             element={
-              <Movies
+              <ProtectedRouteElement
+                element={Movies}
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
@@ -151,21 +146,14 @@ function App() {
                 location={location}
                 preloader={preloader}
                 setPreloader={setPreloader}
-              ></Movies>
-              // <ProtectedRouteElement
-              //   loggedIn={isLogin}
-              //   element={Movies}
-              //   submit={handleSubmit}
-              //   userInfo={setCurrentUser}
-              //   film={tempFilm}
-              //   lowWidth={isWidth}
-              // />
+              />
             }
           ></Route>
           <Route
             path='/saved-movies'
             element={
-              <SavedMovies
+              <ProtectedRouteElement
+              element={SavedMovies}
                 loggedIn={isLogin}
                 lowWidth={isWidth}
                 modal={setModal}
