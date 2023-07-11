@@ -2,34 +2,15 @@ import './Register.css';
 import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import Form from '../Form/Form';
 
 function Register(props) {
   const navigate = useNavigate();
-  const [formValue, setFormValue] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-  const [isValid, setValid] = useState(false);
-  const [errors, setErrors] = useState('');
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setErrors(evt.target.validationMessage);
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-    setValid(evt.target.closest('.form').checkValidity());
-  };
-   
 
   const hendleSubmit = (evt) => {
     evt.preventDefault();
     auth
-      .register(formValue)
+      .register(props.formValue)
       .then(() => navigate('/sign-in', { replace: true }))
       .catch((err) => {
         props.error(true);
@@ -49,8 +30,8 @@ function Register(props) {
       <h2 className='register__title'>Добро пожаловать!</h2>
       <Form
         submit={hendleSubmit}
-        errors={errors}
-        isValid={isValid}
+        errors={props.errors}
+        isValid={props.isValid}
         location={props.location}
         btnText={'Зарегистрироваться'}
       >
@@ -65,7 +46,7 @@ function Register(props) {
             minLength='2'
             maxLength={30}
             name='name'
-            onChange={handleChange}
+            onChange={props.handleChange}
           ></input>
         </label>
         <label className='register__lable'>
@@ -76,7 +57,7 @@ function Register(props) {
             placeholder='Укажите Вашу почту'
             autoComplete='off'
             name='email'
-            onChange={handleChange}
+            onChange={props.handleChange}
             required
           ></input>
         </label>
@@ -90,7 +71,7 @@ function Register(props) {
             minLength={4}
             maxLength={8}
             name='password'
-            onChange={handleChange}
+            onChange={props.handleChange}
             required
           ></input>
         </label>

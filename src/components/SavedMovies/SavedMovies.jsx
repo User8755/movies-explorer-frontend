@@ -38,14 +38,10 @@ function SavedMovies(props) {
   useEffect(() => {
     if (SavedFilms.length > 0 && !SavedFilms.hasOwnProperty('message')) {
       setFilms(true);
-      console.log(1)
     } else {
-      console.log(2)
       setFilms(false);
     }
   }, [SavedFilms]);
-  console.log(isFilms);
-  console.log(SavedFilms.length > 0 && !SavedFilms.hasOwnProperty('message'));
 
   return (
     <>

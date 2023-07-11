@@ -12,7 +12,7 @@
   object-fit: contain;
   object-position: center;
   max-width: 364px;
-  max-height: 203px;
+  height: 203px;
   margin: 0 auto;
   display: block;
 }

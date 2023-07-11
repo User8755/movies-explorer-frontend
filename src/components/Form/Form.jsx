@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './Form.css';
 
 function Form(props) {
-  const { submit, children, btnText, errors, location, isValid, resetForm } = props;
+  const { submit, children, btnText, errors, location, isValid } = props;
   const [isLocation, setLocation] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function Form(props) {
       {children}
       <span className='form__span'>{errors}</span>
       {isLocation ? (
-        <button className='form__button' disabled={!isValid} onClick={resetForm}>
+        <button className='form__button' disabled={!isValid}>
           {btnText}
         </button>
       ) : (

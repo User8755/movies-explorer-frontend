@@ -15,15 +15,18 @@ function MoviesCard(props) {
       setCurrentlocation(true);
     }
   }, [location]);
-  
+
   const handleDeleteSavedCard = (item) => {
     api
       .deleteSaveFilm(item._id)
       .then(
-        setSavedFilms((res) =>res.filter((film) =>film._id !== item._id),
-        localStorage.removeItem(item.movieId),
-      ))
-      .catch((res) => console.log(res));
+        setSavedFilms(
+          (res) => res.filter((film) => film._id !== item._id),
+          localStorage.setItem('savedFilms', JSON.stringify([])),
+          localStorage.removeItem(item.movieId)
+        )
+      )
+      .catch((err) => console.log(err));
   };
 
   const handleLike = () => {

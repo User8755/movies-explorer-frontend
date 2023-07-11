@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import '../../vendor/normalize.css';
 import './App.css';
 import Login from '../Login/Login.jsx';
@@ -17,6 +17,7 @@ import ModalMenu from '../ModalMenu/ModalMenu';
 import ModalError from '../ModalError/ModalError';
 import auth from '../../utils/Auth';
 import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
+
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -27,19 +28,41 @@ function App() {
   const [isLogin, setLogin] = useState(false);
   const [isFoundFilm, setFoundFilm] = useState([]);
   const [preloader, setPreloader] = useState(false);
+  const [isValid, setValid] = useState(false);
+  const [errors, setErrors] = useState('');
+  const [formValue, setFormValue] = useState({});
 
+  const jwt = localStorage.getItem('token');
   const location = useLocation().pathname;
   const component = useRef();
-
   const moviesApiUrl = 'https://api.nomoreparties.co/';
-
   const { width } = useResize(component);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (jwt) {
+      auth
+        .tokenValid()
+        .then(() => {
+          setLogin(true);
+          //navigate('/', { replace: true });
+        })
+        .catch((err) => console.log(err.status));
+    }
+  }, [jwt, location, navigate]);
+//console.log(location)
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setErrors(evt.target.validationMessage);
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+    setValid(evt.target.closest('.form').checkValidity());
+  };
 
   const handleMoreInfo = () => {
     setMoreInfo(!isMoreInfo);
   };
-
-  const jwt = localStorage.getItem('token');
 
   useEffect(() => {
     if (width < 770) {
@@ -61,15 +84,6 @@ function App() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
-
-  useEffect(() => {
-    auth
-      .tokenValid()
-      .then(() => {
-        setLogin(true);
-      })
-      .catch((err) => console.log(err.status));
-  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -93,6 +107,10 @@ function App() {
                 error={setError}
                 message={setErrorMessge}
                 location={location}
+                errors={errors}
+                isValid={isValid}
+                formValue={formValue}
+                handleChange={handleChange}
               ></Register>
             }
           ></Route>
@@ -101,9 +119,13 @@ function App() {
             element={
               <Login
                 location={location}
-                isLogin={setLogin}
+                setLogin={setLogin}
                 error={setError}
                 message={setErrorMessge}
+                errors={errors}
+                isValid={isValid}
+                formValue={formValue}
+                handleChange={handleChange}
               ></Login>
             }
           ></Route>
@@ -151,20 +173,29 @@ function App() {
           ></Route>
           <Route
             path='/saved-movies'
-            element={
-              <ProtectedRouteElement
-              element={SavedMovies}
-                loggedIn={isLogin}
-                lowWidth={isWidth}
-                modal={setModal}
-                currentUser={currentUser}
-                isFoundFilm={isFoundFilm}
-                setFoundFilm={setFoundFilm}
-                moviesApiUrl={moviesApiUrl}
-                location={location}
-                preloader={preloader}
-                setPreloader={setPreloader}
-              />
+            element={<SavedMovies                 loggedIn={isLogin}
+            lowWidth={isWidth}
+            modal={setModal}
+            currentUser={currentUser}
+            isFoundFilm={isFoundFilm}
+            setFoundFilm={setFoundFilm}
+            moviesApiUrl={moviesApiUrl}
+            location={location}
+            preloader={preloader}
+            setPreloader={setPreloader}></SavedMovies>
+              // <ProtectedRouteElement
+              //   element={SavedMovies}
+              //   loggedIn={isLogin}
+              //   lowWidth={isWidth}
+              //   modal={setModal}
+              //   currentUser={currentUser}
+              //   isFoundFilm={isFoundFilm}
+              //   setFoundFilm={setFoundFilm}
+              //   moviesApiUrl={moviesApiUrl}
+              //   location={location}
+              //   preloader={preloader}
+              //   setPreloader={setPreloader}
+              // />
             }
           ></Route>
         </Routes>

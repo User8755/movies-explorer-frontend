@@ -18,7 +18,7 @@ function SearchForm(props) {
   const [errors, setErrors] = useState('');
   const [currentlocation, setCurrentlocation] = useState(false);
   const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
-  const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(true);
+  const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
 
   useEffect(() => {
     if (location === '/movies') {
@@ -83,7 +83,6 @@ function SearchForm(props) {
             setPreloader(true);
             findFilm.push(item);
             localStorage.setItem('movies', JSON.stringify(findFilm));
-            setDisabledBtnShort(false);
             setTimeout(() => setPreloader(false), 1000);
             return setMoviesList(JSON.parse(localStorage.getItem('movies')));
           } else {
@@ -93,11 +92,13 @@ function SearchForm(props) {
       )
 
       .catch((err) => console.log(err))
-      .finally(setTimeout(() => setPreloader(false), 1000));
+      .finally(
+        setTimeout(() => setPreloader(false), 1000),
+        setDisabledBtnShort(false)
+      );
   };
 
   const hendleSearchSavedFilms = (evt) => {
-    //console.log(typeof(SavedFilms.message))
     const findFilm = [];
 
     evt.preventDefault();
@@ -122,7 +123,9 @@ function SearchForm(props) {
     const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
     setInput({ [name]: value });
-    setDisabledBtnSubmit(evt.target.validity.valid);
+    setDisabledBtnSubmit(
+      evt.target.closest('.search-form__form').checkValidity()
+    );
   };
 
   const toggle = localStorage.getItem('toggle');
@@ -154,6 +157,7 @@ function SearchForm(props) {
       <form
         className='search-form__form'
         onSubmit={currentlocation ? hendleSearchFilms : hendleSearchSavedFilms}
+        minLength={1}
         noValidate
       >
         <input

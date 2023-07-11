@@ -2,41 +2,31 @@ import './Login.css';
 import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import Form from '../Form/Form';
 
 function Login(props) {
-  const { isLogin, error, message, location } = props;
-
+  const {
+    setLogin,
+    error,
+    message,
+    location,
+    isValid,
+    formValue,
+    handleChange,
+    errors,
+  } = props;
 
   const navigate = useNavigate();
 
-  const [errors, setErrors] = useState('');
-  const [formValue, setFormValue] = useState({
-    email: '',
-    password: '',
-  });
-  const [isValid, setValid] = useState(false);
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setErrors(evt.target.validationMessage);
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-    setValid(evt.target.closest('.form').checkValidity())
-  };
-
   const hendleSubmit = (evt) => {
     evt.preventDefault();
-    
+
     auth
       .signin(formValue)
       .then((res) => {
         if (res) {
           localStorage.setItem('token', res.token);
-          isLogin(true);
+          setLogin(true);
           navigate('/movies', { replace: true });
         }
       })
