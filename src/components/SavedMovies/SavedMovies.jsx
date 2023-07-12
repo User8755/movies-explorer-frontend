@@ -9,6 +9,7 @@ import NavButton from '../NavButton/NavButton';
 import './SavedMovies.css';
 import StartSearch from '../StartSearch/StartSearch';
 import Preloader from '../Preloader/Preloader';
+
 function SavedMovies(props) {
   const {
     location,
@@ -19,6 +20,9 @@ function SavedMovies(props) {
     modal,
     currentUser,
     moviesApiUrl,
+    jwt,
+    isDisabledBtnShort,
+    setDisabledBtnShort,
   } = props;
 
   const [SavedFilms, setSavedFilms] = useState([]);
@@ -26,22 +30,25 @@ function SavedMovies(props) {
 
   useEffect(() => {
     api
-      .getSaveFilm()
+      .getSaveFilm(jwt)
       .then((res) => {
         localStorage.setItem('savedFilms', JSON.stringify(res));
         setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
       }, setPreloader(true))
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
-  }, [location, setPreloader]);
+  }, [jwt, location, setPreloader]);
 
   useEffect(() => {
-    if (SavedFilms.length > 0 && !SavedFilms.hasOwnProperty('message')) {
+    if (SavedFilms.length > 0) {
       setFilms(true);
+      setDisabledBtnShort(false)
     } else {
       setFilms(false);
+      setDisabledBtnShort(true)
     }
-  }, [SavedFilms]);
+  }, [SavedFilms, setDisabledBtnShort]);
+
   const savedMovies = isFilms ? (
     <div className='saved-movies__list'>
       {SavedFilms.map((film) => {
@@ -53,6 +60,7 @@ function SavedMovies(props) {
             moviesApiUrl={moviesApiUrl}
             location={location}
             setSavedFilms={setSavedFilms}
+            jwt={jwt}
           ></MoviesCard>
         );
       })}
@@ -60,6 +68,7 @@ function SavedMovies(props) {
   ) : (
     <StartSearch text={'У вас нет сохраненных фильмов'}></StartSearch>
   );
+
   return (
     <>
       <Header isLogin={loggedIn}>
@@ -74,6 +83,7 @@ function SavedMovies(props) {
           location={location}
           setPreloader={setPreloader}
           isFilms={isFilms}
+        isDisabledBtnShort={isDisabledBtnShort}
         ></SearchForm>
         {preloader ? <Preloader /> : savedMovies}
         <Footer></Footer>

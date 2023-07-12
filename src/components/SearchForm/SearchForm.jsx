@@ -11,13 +11,13 @@ function SearchForm(props) {
     setFilms,
     setPreloader,
     isFilms,
+    isDisabledBtnShort,
   } = props;
 
   const [isToggleBtn, setToggleBtn] = useState(false);
   const [isInput, setInput] = useState({ search: '' });
   const [errors, setErrors] = useState('');
   const [currentlocation, setCurrentlocation] = useState(false);
-  const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
 
   useEffect(() => {
@@ -86,16 +86,13 @@ function SearchForm(props) {
             setTimeout(() => setPreloader(false), 1000);
             return setMoviesList(JSON.parse(localStorage.getItem('movies')));
           } else {
-            return setTimeout(() => setPreloader(false), 1000);
+            return setFilms(false);
           }
         })
       )
 
       .catch((err) => console.log(err))
-      .finally(
-        setTimeout(() => setPreloader(false), 1000),
-        setDisabledBtnShort(false)
-      );
+      .finally(setTimeout(() => setPreloader(false), 1000));
   };
 
   const hendleSearchSavedFilms = (evt) => {
@@ -181,7 +178,7 @@ function SearchForm(props) {
           type='checkbox'
           className='search-form__toggle-button'
           onClick={handleToggleBtn}
-          disabled={!isDisabledBtnShort}
+          disabled={isDisabledBtnShort}
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>

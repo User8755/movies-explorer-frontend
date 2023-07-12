@@ -9,7 +9,7 @@ import NavButton from '../NavButton/NavButton';
 import Form from '../Form/Form';
 
 function Profile(props) {
-  const { userInfo, lowWidth, modal, error, message } = props;
+  const { userInfo, lowWidth, modal, error, message, jwt } = props;
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState('');
@@ -52,7 +52,7 @@ function Profile(props) {
 
   const handleUpdateUser = () => {
     api
-      .updateUserInfo(formValue)
+      .updateUserInfo(formValue, jwt)
       .then((res) => userInfo(res), error(true), message('Данные обновлены'))
       .catch((err) => {
         props.error(true);

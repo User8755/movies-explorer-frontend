@@ -5,7 +5,7 @@ import ButtonLike from '../ButtonLike/ButtonLike';
 import ButtonDelete from '../ButtonDelete/ButtonDelete';
 
 function MoviesCard(props) {
-  const { card, moviesApiUrl, currentUser, location, setSavedFilms } = props;
+  const { card, moviesApiUrl, currentUser, location, setSavedFilms, jwt } = props;
   const [islike, setLike] = useState(false);
   const [film, setFilm] = useState([]);
   const [currentlocation, setCurrentlocation] = useState(false);
@@ -18,13 +18,15 @@ function MoviesCard(props) {
 
   const handleDeleteSavedCard = (item) => {
     api
-      .deleteSaveFilm(item._id)
+      .deleteSaveFilm(item._id, jwt)
       .then(
-        setSavedFilms(
-          (res) => res.filter((film) => film._id !== item._id),
-          //localStorage.setItem('savedFilms', JSON.stringify([])),
-          localStorage.removeItem(item.movieId)
-        )
+        currentlocation
+          ? localStorage.removeItem(item.movieId)
+          : setSavedFilms(
+              (res) => res.filter((film) => film._id !== item._id),
+
+              localStorage.removeItem(item.movieId)
+            )
       )
       .catch((err) => console.log(err));
   };
@@ -34,7 +36,7 @@ function MoviesCard(props) {
       setLike(!islike);
       localStorage.setItem(card.id, currentUser._id);
       api
-        .createSaveFilm(card)
+        .createSaveFilm(card, jwt)
         .then((res) => {
           setFilm(res);
         })

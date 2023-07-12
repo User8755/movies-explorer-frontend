@@ -18,10 +18,12 @@ function Movies(props) {
       setFilms(false);
     } else if (isMoviesList.length > 0) {
       setFilms(true);
+      props.setDisabledBtnShort(false);
     } else {
       setFilms(false);
+      props.setDisabledBtnShort(true);
     }
-  }, [isMoviesList]);
+  }, [isMoviesList, props]);
 
   const Films = isFilms ? (
     <main className='main-movies'>
@@ -33,6 +35,7 @@ function Movies(props) {
         moviesApiUrl={props.moviesApiUrl}
         currentUser={props.currentUser}
         location={props.location}
+        jwt={props.jwt}
       ></MoviesCardList>
     </main>
   ) : (
@@ -50,6 +53,7 @@ function Movies(props) {
         location={props.location}
         setFilms={setFilms}
         setPreloader={props.setPreloader}
+        isDisabledBtnShort={props.isDisabledBtnShort}
       ></SearchForm>
       {props.preloader ? <Preloader></Preloader> : Films}
 

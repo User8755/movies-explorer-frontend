@@ -26,10 +26,11 @@ class Api {
     }).then(this._checkRes);
   }
 
-  updateUserInfo(item) {
+  updateUserInfo(item, jwt) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
+        Authorization: `Bearer ${jwt}`,
         ...this._headers,
       },
       body: JSON.stringify({
@@ -48,10 +49,11 @@ class Api {
     }).then(this._checkRes);
   }
 
-  createSaveFilm(item) {
+  createSaveFilm(item, jwt) {
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${jwt}`,
         ...this._headers,
       },
       body: JSON.stringify({
@@ -71,10 +73,13 @@ class Api {
     }).then(this._checkRes);
   }
 
-  deleteSaveFilm(cardId) {
+  deleteSaveFilm(cardId, jwt) {
     return fetch(`${this._baseUrl}/movies/${cardId}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
     }).then(this._checkRes);
   }
 
@@ -84,7 +89,6 @@ const api = new Api({
   moviesIgmUrl: 'https://api.nomoreparties.co/',
   baseUrl: 'https://api.movies.user87.nomoredomains.rocks',
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json',
   },
 });

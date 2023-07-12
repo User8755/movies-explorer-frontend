@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList(props) {
-  const { isMoviesList, width, moviesApiUrl, currentUser, location } = props;
+  const { isMoviesList, width, moviesApiUrl, currentUser, location, jwt } = props;
   const [isMoreMovies, setsMoreMovies] = useState(true);
   const [countFilm, setCountFilm] = useState(0);
   const [countMoreFilm, setCountMoreFilm] = useState(0);
@@ -54,6 +54,7 @@ function MoviesCardList(props) {
                 moviesApiUrl={moviesApiUrl}
                 currentUser={currentUser}
                 location={location}
+                jwt={jwt}
               ></MoviesCard>
             );
           })}

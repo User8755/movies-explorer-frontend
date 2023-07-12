@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import '../../vendor/normalize.css';
 import './App.css';
 import Login from '../Login/Login.jsx';
@@ -18,6 +18,7 @@ import ModalError from '../ModalError/ModalError';
 import auth from '../../utils/Auth';
 import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
 import Preloader from '../Preloader/Preloader';
+
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -31,25 +32,33 @@ function App() {
   const [isValid, setValid] = useState(false);
   const [errors, setErrors] = useState('');
   const [formValue, setFormValue] = useState({});
+  const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
 
   const jwt = localStorage.getItem('token');
   const location = useLocation().pathname;
   const component = useRef();
   const moviesApiUrl = 'https://api.nomoreparties.co/';
   const { width } = useResize(component);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (width < 770) {
+      setWidth(true);
+    } else {
+      setWidth(false);
+    }
+  }, [width]);
+
   useEffect(() => {
     if (jwt) {
       auth
         .tokenValid()
         .then(() => {
           setLogin(true);
-          //navigate({location}, { replace: true });
         })
         .catch((err) => console.log(err.status));
     }
-  }, [jwt, location, navigate]);
-  console.log(preloader)
+  }, [jwt]);
+
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
@@ -63,14 +72,6 @@ function App() {
   const handleMoreInfo = () => {
     setMoreInfo(!isMoreInfo);
   };
-
-  useEffect(() => {
-    if (width < 770) {
-      setWidth(true);
-    } else {
-      setWidth(false);
-    }
-  }, [width]);
 
   useEffect(() => {
     api
@@ -145,6 +146,7 @@ function App() {
                 modal={setModal}
                 error={setError}
                 message={setErrorMessge}
+                jwt={jwt}
               />
             }
           ></Route>
@@ -172,6 +174,9 @@ function App() {
                 location={location}
                 preloader={preloader}
                 setPreloader={setPreloader}
+                jwt={jwt}
+                isDisabledBtnShort={isDisabledBtnShort}
+                setDisabledBtnShort={setDisabledBtnShort}
               />
             }
           ></Route>
@@ -190,6 +195,9 @@ function App() {
                 location={location}
                 preloader={preloader}
                 setPreloader={setPreloader}
+                jwt={jwt}
+                isDisabledBtnShort={isDisabledBtnShort}
+                setDisabledBtnShort={setDisabledBtnShort}
               />
             }
           ></Route>
