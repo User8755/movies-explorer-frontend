@@ -17,7 +17,7 @@ import ModalMenu from '../ModalMenu/ModalMenu';
 import ModalError from '../ModalError/ModalError';
 import auth from '../../utils/Auth';
 import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
-
+import Preloader from '../Preloader/Preloader';
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -44,12 +44,12 @@ function App() {
         .tokenValid()
         .then(() => {
           setLogin(true);
-          //navigate('/', { replace: true });
+          //navigate({location}, { replace: true });
         })
         .catch((err) => console.log(err.status));
     }
   }, [jwt, location, navigate]);
-//console.log(location)
+  console.log(preloader)
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
@@ -84,6 +84,10 @@ function App() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
+
+  if (!isLogin) {
+    return <Preloader />;
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -173,29 +177,20 @@ function App() {
           ></Route>
           <Route
             path='/saved-movies'
-            element={<SavedMovies                 loggedIn={isLogin}
-            lowWidth={isWidth}
-            modal={setModal}
-            currentUser={currentUser}
-            isFoundFilm={isFoundFilm}
-            setFoundFilm={setFoundFilm}
-            moviesApiUrl={moviesApiUrl}
-            location={location}
-            preloader={preloader}
-            setPreloader={setPreloader}></SavedMovies>
-              // <ProtectedRouteElement
-              //   element={SavedMovies}
-              //   loggedIn={isLogin}
-              //   lowWidth={isWidth}
-              //   modal={setModal}
-              //   currentUser={currentUser}
-              //   isFoundFilm={isFoundFilm}
-              //   setFoundFilm={setFoundFilm}
-              //   moviesApiUrl={moviesApiUrl}
-              //   location={location}
-              //   preloader={preloader}
-              //   setPreloader={setPreloader}
-              // />
+            element={
+              <ProtectedRouteElement
+                element={SavedMovies}
+                loggedIn={isLogin}
+                lowWidth={isWidth}
+                modal={setModal}
+                currentUser={currentUser}
+                isFoundFilm={isFoundFilm}
+                setFoundFilm={setFoundFilm}
+                moviesApiUrl={moviesApiUrl}
+                location={location}
+                preloader={preloader}
+                setPreloader={setPreloader}
+              />
             }
           ></Route>
         </Routes>

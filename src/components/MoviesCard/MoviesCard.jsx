@@ -22,7 +22,7 @@ function MoviesCard(props) {
       .then(
         setSavedFilms(
           (res) => res.filter((film) => film._id !== item._id),
-          localStorage.setItem('savedFilms', JSON.stringify([])),
+          //localStorage.setItem('savedFilms', JSON.stringify([])),
           localStorage.removeItem(item.movieId)
         )
       )

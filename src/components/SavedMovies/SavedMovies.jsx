@@ -8,11 +8,12 @@ import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
 import './SavedMovies.css';
 import StartSearch from '../StartSearch/StartSearch';
-
+import Preloader from '../Preloader/Preloader';
 function SavedMovies(props) {
   const {
     location,
     setPreloader,
+    preloader,
     loggedIn,
     lowWidth,
     modal,
@@ -27,10 +28,9 @@ function SavedMovies(props) {
     api
       .getSaveFilm()
       .then((res) => {
-        setPreloader(true);
         localStorage.setItem('savedFilms', JSON.stringify(res));
         setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
-      })
+      }, setPreloader(true))
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
   }, [location, setPreloader]);
@@ -42,7 +42,24 @@ function SavedMovies(props) {
       setFilms(false);
     }
   }, [SavedFilms]);
-
+  const savedMovies = isFilms ? (
+    <div className='saved-movies__list'>
+      {SavedFilms.map((film) => {
+        return (
+          <MoviesCard
+            card={film}
+            key={film.movieId}
+            currentUser={currentUser}
+            moviesApiUrl={moviesApiUrl}
+            location={location}
+            setSavedFilms={setSavedFilms}
+          ></MoviesCard>
+        );
+      })}
+    </div>
+  ) : (
+    <StartSearch text={'У вас нет сохраненных фильмов'}></StartSearch>
+  );
   return (
     <>
       <Header isLogin={loggedIn}>
@@ -58,24 +75,7 @@ function SavedMovies(props) {
           setPreloader={setPreloader}
           isFilms={isFilms}
         ></SearchForm>
-        {isFilms ? (
-          <div className='saved-movies__list'>
-            {SavedFilms.map((film) => {
-              return (
-                <MoviesCard
-                  card={film}
-                  key={film.movieId}
-                  currentUser={currentUser}
-                  moviesApiUrl={moviesApiUrl}
-                  location={location}
-                  setSavedFilms={setSavedFilms}
-                ></MoviesCard>
-              );
-            })}
-          </div>
-        ) : (
-          <StartSearch text={'У вас нет сохраненных фильмов'}></StartSearch>
-        )}
+        {preloader ? <Preloader /> : savedMovies}
         <Footer></Footer>
       </main>
     </>
