@@ -40,12 +40,15 @@ function SavedMovies(props) {
   }, [jwt, location, setPreloader]);
 
   useEffect(() => {
-    if (SavedFilms.length > 0) {
+    if (SavedFilms === null) {
+      setFilms(false);
+      setDisabledBtnShort(true);
+    } else if (SavedFilms.length > 0) {
       setFilms(true);
-      setDisabledBtnShort(false)
+      setDisabledBtnShort(false);
     } else {
       setFilms(false);
-      setDisabledBtnShort(true)
+      setDisabledBtnShort(true);
     }
   }, [SavedFilms, setDisabledBtnShort]);
 
@@ -83,7 +86,7 @@ function SavedMovies(props) {
           location={location}
           setPreloader={setPreloader}
           isFilms={isFilms}
-        isDisabledBtnShort={isDisabledBtnShort}
+          isDisabledBtnShort={isDisabledBtnShort}
         ></SearchForm>
         {preloader ? <Preloader /> : savedMovies}
         <Footer></Footer>

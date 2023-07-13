@@ -33,6 +33,7 @@ function App() {
   const [errors, setErrors] = useState('');
   const [formValue, setFormValue] = useState({});
   const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
+  const [isLoading, setLoading] = useState(true);
 
   const jwt = localStorage.getItem('token');
   const location = useLocation().pathname;
@@ -47,17 +48,6 @@ function App() {
       setWidth(false);
     }
   }, [width]);
-
-  useEffect(() => {
-    if (jwt) {
-      auth
-        .tokenValid()
-        .then(() => {
-          setLogin(true);
-        })
-        .catch((err) => console.log(err.status));
-    }
-  }, [jwt]);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -86,7 +76,21 @@ function App() {
     evt.preventDefault();
   };
 
-  if (!isLogin) {
+  useEffect(() => {
+    if (jwt) {
+      auth
+        .tokenValid(jwt)
+        .then(() => {
+          setLogin(true);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [isLogin, jwt]);
+
+  if (isLoading) {
     return <Preloader />;
   }
 
@@ -160,8 +164,8 @@ function App() {
             path='/movies'
             element={
               <ProtectedRouteElement
-                element={Movies}
                 loggedIn={isLogin}
+                element={Movies}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
                 lowWidth={isWidth}

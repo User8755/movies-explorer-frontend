@@ -7,11 +7,12 @@ class Auth {
     if (res.ok) {
       return res.json();
     } else {
-      return res.text().then(err=>Promise.reject({
-        status: res.status,
-        message: JSON.parse(err).message,
-        
-      }));
+      return res.text().then((err) =>
+        Promise.reject({
+          status: res.status,
+          message: JSON.parse(err).message,
+        })
+      );
     }
   }
 
@@ -38,11 +39,11 @@ class Auth {
     }).then(this._checkRes);
   }
 
-  tokenValid() {
+  tokenValid(jwt) {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: {
+        Authorization: `Bearer ${jwt}`,
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     }).then(this._checkRes);
   }
