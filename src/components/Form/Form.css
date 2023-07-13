@@ -17,8 +17,7 @@
   font-size: 13px;
   line-height: 16px;
 }
-
-.form__button-disabled {
+.form__button-profile:disabled {
   opacity: 0.4;
 }
 
@@ -36,7 +35,7 @@
   cursor: pointer;
 }
 
-.form__button-disabled {
+.form__button:disabled {
   opacity: 0.4;
 }
 

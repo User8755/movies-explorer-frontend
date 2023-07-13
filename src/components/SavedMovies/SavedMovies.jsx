@@ -1,35 +1,91 @@
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
-import './SavedMovies.css'
+import './SavedMovies.css';
+import StartSearch from '../StartSearch/StartSearch';
+import Preloader from '../Preloader/Preloader';
+
 function SavedMovies(props) {
-  const [sevedFilm, setSvaedFilm] = useState([]);
+  const {
+    location,
+    setPreloader,
+    preloader,
+    loggedIn,
+    lowWidth,
+    modal,
+    currentUser,
+    moviesApiUrl,
+    jwt,
+    isDisabledBtnShort,
+    setDisabledBtnShort,
+  } = props;
+
+  const [SavedFilms, setSavedFilms] = useState([]);
+  const [isFilms, setFilms] = useState(false);
 
   useEffect(() => {
     api
-      .getSaveFilm()
-      .then((res) => setSvaedFilm(res))
-      .catch((res) => console.log(res));
-  }, []);
+      .getSaveFilm(jwt)
+      .then((res) => {
+        localStorage.setItem('savedFilms', JSON.stringify(res));
+        setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
+      }, setPreloader(true))
+      .catch((err) => console.log(err))
+      .finally(setTimeout(() => setPreloader(false), 1000));
+  }, [jwt, location, setPreloader]);
+
+  useEffect(() => {
+    if (SavedFilms.length > 0) {
+      setFilms(true);
+      setDisabledBtnShort(false)
+    } else {
+      setFilms(false);
+      setDisabledBtnShort(true)
+    }
+  }, [SavedFilms, setDisabledBtnShort]);
+
+  const savedMovies = isFilms ? (
+    <div className='saved-movies__list'>
+      {SavedFilms.map((film) => {
+        return (
+          <MoviesCard
+            card={film}
+            key={film.movieId}
+            currentUser={currentUser}
+            moviesApiUrl={moviesApiUrl}
+            location={location}
+            setSavedFilms={setSavedFilms}
+            jwt={jwt}
+          ></MoviesCard>
+        );
+      })}
+    </div>
+  ) : (
+    <StartSearch text={'У вас нет сохраненных фильмов'}></StartSearch>
+  );
 
   return (
     <>
-      <Header isLogin={props.loggedIn}>
-      <NavBar lowWidth={props.lowWidth}></NavBar>
-       <NavButton lowWidth={props.lowWidth} modal={props.modal}></NavButton>
+      <Header isLogin={loggedIn}>
+        <NavBar lowWidth={lowWidth}></NavBar>
+        <NavButton lowWidth={lowWidth} modal={modal}></NavButton>
       </Header>
       <main className='saved-movies'>
-        <SearchForm></SearchForm>
-        <div className='saved-movies__list'>
-        {sevedFilm.map((film) => {
-          return <MoviesCard card={film} key={film.movieId}></MoviesCard>;
-        })}
-        </div>
+        <SearchForm
+          SavedFilms={SavedFilms}
+          setSavedFilms={setSavedFilms}
+          setFilms={setFilms}
+          location={location}
+          setPreloader={setPreloader}
+          isFilms={isFilms}
+        isDisabledBtnShort={isDisabledBtnShort}
+        ></SearchForm>
+        {preloader ? <Preloader /> : savedMovies}
         <Footer></Footer>
       </main>
     </>

@@ -6,18 +6,18 @@ import Login from '../Login/Login.jsx';
 import Movies from '../Movies/Movies';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import Profile from '../Profile/Profile';
-import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
 import Register from '../Register/Register.jsx';
 import { CurrentUserContext } from '../Contexts/CurrentUserContext';
 import Main from '../Main/Main';
 import api from '../../utils/Api';
-import tempFilm from '../../utils/tempFilms';
 import '../../vendor/font/Inter_Web/inter.css';
 import SavedMovies from '../SavedMovies/SavedMovies.jsx';
 import useResize from '../../hook/useResize';
 import ModalMenu from '../ModalMenu/ModalMenu';
 import ModalError from '../ModalError/ModalError';
 import auth from '../../utils/Auth';
+import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
+import Preloader from '../Preloader/Preloader';
 
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
@@ -26,19 +26,19 @@ function App() {
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessge, setErrorMessge] = useState('');
-
-  const location = useLocation().pathname;
-  const component = useRef();
-
-  const { width } = useResize(component);
-
-  const handleMoreInfo = () => {
-    setMoreInfo(!isMoreInfo);
-  };
+  const [isLogin, setLogin] = useState(false);
+  const [isFoundFilm, setFoundFilm] = useState([]);
+  const [preloader, setPreloader] = useState(false);
+  const [isValid, setValid] = useState(false);
+  const [errors, setErrors] = useState('');
+  const [formValue, setFormValue] = useState({});
+  const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
 
   const jwt = localStorage.getItem('token');
-
-  const [isLogin, setLogin] = useState(false);
+  const location = useLocation().pathname;
+  const component = useRef();
+  const moviesApiUrl = 'https://api.nomoreparties.co/';
+  const { width } = useResize(component);
 
   useEffect(() => {
     if (width < 770) {
@@ -47,6 +47,31 @@ function App() {
       setWidth(false);
     }
   }, [width]);
+
+  useEffect(() => {
+    if (jwt) {
+      auth
+        .tokenValid()
+        .then(() => {
+          setLogin(true);
+        })
+        .catch((err) => console.log(err.status));
+    }
+  }, [jwt]);
+
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setErrors(evt.target.validationMessage);
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+    setValid(evt.target.closest('.form').checkValidity());
+  };
+
+  const handleMoreInfo = () => {
+    setMoreInfo(!isMoreInfo);
+  };
 
   useEffect(() => {
     api
@@ -61,14 +86,9 @@ function App() {
     evt.preventDefault();
   };
 
-  useEffect(() => {
-    auth
-      .tokenValid()
-      .then(() => {
-        setLogin(true);
-      })
-      .catch((err) => console.log(err.status));
-  }, []);
+  if (!isLogin) {
+    return <Preloader />;
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -92,6 +112,10 @@ function App() {
                 error={setError}
                 message={setErrorMessge}
                 location={location}
+                errors={errors}
+                isValid={isValid}
+                formValue={formValue}
+                handleChange={handleChange}
               ></Register>
             }
           ></Route>
@@ -100,16 +124,21 @@ function App() {
             element={
               <Login
                 location={location}
-                isLogin={setLogin}
+                setLogin={setLogin}
                 error={setError}
                 message={setErrorMessge}
+                errors={errors}
+                isValid={isValid}
+                formValue={formValue}
+                handleChange={handleChange}
               ></Login>
             }
           ></Route>
           <Route
             path='/profile'
             element={
-              <Profile
+              <ProtectedRouteElement
+                element={Profile}
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
@@ -117,14 +146,8 @@ function App() {
                 modal={setModal}
                 error={setError}
                 message={setErrorMessge}
-              ></Profile>
-              // <ProtectedRouteElement
-              //   loggedIn={isLogin}
-              //   element={Profile}
-              //   submit={handleSubmit}
-              //   userInfo={setCurrentUser}
-              //   lowWidth={isWidth}
-              // />
+                jwt={jwt}
+              />
             }
           ></Route>
           <Route
@@ -136,32 +159,45 @@ function App() {
           <Route
             path='/movies'
             element={
-              <Movies
+              <ProtectedRouteElement
+                element={Movies}
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
-                film={tempFilm}
                 lowWidth={isWidth}
                 modal={setModal}
                 width={width}
-              ></Movies>
-              // <ProtectedRouteElement
-              //   loggedIn={isLogin}
-              //   element={Movies}
-              //   submit={handleSubmit}
-              //   userInfo={setCurrentUser}
-              //   film={tempFilm}
-              //   lowWidth={isWidth}
-              // />
+                moviesApiUrl={moviesApiUrl}
+                currentUser={currentUser}
+                isFoundFilm={isFoundFilm}
+                setFoundFilm={setFoundFilm}
+                location={location}
+                preloader={preloader}
+                setPreloader={setPreloader}
+                jwt={jwt}
+                isDisabledBtnShort={isDisabledBtnShort}
+                setDisabledBtnShort={setDisabledBtnShort}
+              />
             }
           ></Route>
           <Route
             path='/saved-movies'
             element={
-              <SavedMovies
+              <ProtectedRouteElement
+                element={SavedMovies}
                 loggedIn={isLogin}
                 lowWidth={isWidth}
                 modal={setModal}
+                currentUser={currentUser}
+                isFoundFilm={isFoundFilm}
+                setFoundFilm={setFoundFilm}
+                moviesApiUrl={moviesApiUrl}
+                location={location}
+                preloader={preloader}
+                setPreloader={setPreloader}
+                jwt={jwt}
+                isDisabledBtnShort={isDisabledBtnShort}
+                setDisabledBtnShort={setDisabledBtnShort}
               />
             }
           ></Route>

@@ -2,38 +2,31 @@ import './Login.css';
 import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import Form from '../Form/Form';
 
 function Login(props) {
-  const { isLogin, error, message, location } = props;
+  const {
+    setLogin,
+    error,
+    message,
+    location,
+    isValid,
+    formValue,
+    handleChange,
+    errors,
+  } = props;
 
   const navigate = useNavigate();
-  const [errors, setErrors] = useState('');
-  const [formValue, setFormValue] = useState({
-    email: '',
-    password: '',
-  });
-  const [isvalid, setValid] = useState(false);
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setErrors(evt.target.validationMessage);
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-    setValid(evt.target.validity.valid);
-  };
 
   const hendleSubmit = (evt) => {
     evt.preventDefault();
+
     auth
       .signin(formValue)
       .then((res) => {
         if (res) {
           localStorage.setItem('token', res.token);
-          isLogin(true);
+          setLogin(true);
           navigate('/movies', { replace: true });
         }
       })
@@ -43,7 +36,7 @@ function Login(props) {
         console.log(err);
       });
   };
-  
+
   return (
     <section className='login'>
       <NavLink to='/'>
@@ -57,7 +50,7 @@ function Login(props) {
       <Form
         submit={hendleSubmit}
         errors={errors}
-        isvalid={isvalid}
+        isValid={isValid}
         location={location}
         btnText={'Войти'}
       >
@@ -87,7 +80,6 @@ function Login(props) {
             onChange={handleChange}
           ></input>
         </label>
-
       </Form>
       <nav className='login__nav'>
         <span className='login__span'>Ещё не зарегистрированы?</span>
