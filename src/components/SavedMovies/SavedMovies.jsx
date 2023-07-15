@@ -23,21 +23,26 @@ function SavedMovies(props) {
     jwt,
     isDisabledBtnShort,
     setDisabledBtnShort,
+    SavedFilms,
+    setSavedFilms,
   } = props;
 
-  const [SavedFilms, setSavedFilms] = useState([]);
   const [isFilms, setFilms] = useState(false);
 
   useEffect(() => {
     api
       .getSaveFilm(jwt)
-      .then((res) => {
-        localStorage.setItem('savedFilms', JSON.stringify(res));
-        setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
-      }, setPreloader(true))
+      .then((res) =>
+        localStorage.setItem(
+          `savedFilms ${currentUser._id}`,
+          JSON.stringify(res),
+          setSavedFilms(res),
+          setPreloader(true)
+        )
+      )
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
-  }, [jwt, location, setPreloader]);
+  }, [currentUser._id, jwt, setPreloader, setSavedFilms]);
 
   useEffect(() => {
     if (SavedFilms === null) {
@@ -63,6 +68,7 @@ function SavedMovies(props) {
             moviesApiUrl={moviesApiUrl}
             location={location}
             setSavedFilms={setSavedFilms}
+            SavedFilms={SavedFilms}
             jwt={jwt}
           ></MoviesCard>
         );
@@ -80,6 +86,7 @@ function SavedMovies(props) {
       </Header>
       <main className='saved-movies'>
         <SearchForm
+          currentUser={currentUser}
           SavedFilms={SavedFilms}
           setSavedFilms={setSavedFilms}
           setFilms={setFilms}

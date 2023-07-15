@@ -55,6 +55,7 @@ function MoviesCardList(props) {
                 currentUser={currentUser}
                 location={location}
                 jwt={jwt}
+                handleLike={props.handleLike}
               ></MoviesCard>
             );
           })}

@@ -17,58 +17,72 @@ function SearchForm(props) {
   const [isToggleBtn, setToggleBtn] = useState(false);
   const [isInput, setInput] = useState({ search: '' });
   const [errors, setErrors] = useState('');
-  const [currentlocation, setCurrentlocation] = useState(false);
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
 
-  useEffect(() => {
-    if (location === '/movies') {
-      setCurrentlocation(true);
-    } else {
-      setCurrentlocation(false);
-    }
-  }, [location]);
+  const toggle = localStorage.getItem(`toggle ${props.currentUser._id}`);
+  const movies = localStorage.getItem(`movies ${props.currentUser._id}`);
+  const savedMovies = localStorage.getItem(
+    `savedFilms ${props.currentUser._id}`
+  );
 
   const handleToggleBtn = () => {
     setToggleBtn(!isToggleBtn);
-    localStorage.setItem('toggle', !isToggleBtn);
+    localStorage.setItem(`toggle ${props.currentUser._id}`, !isToggleBtn);
   };
+
+  
 
   const handleShortsFilms = useCallback(() => {
     const shortsFilms = [];
 
-    JSON.parse(localStorage.getItem('movies')).map((item) => {
+    JSON.parse(movies).map((item) => {
       if (item.duration <= 40) {
         setPreloader(true);
         shortsFilms.push(item);
-        localStorage.setItem('shortsFilm', JSON.stringify(shortsFilms));
+        localStorage.setItem(
+          `shortsFilm ${props.currentUser._id}`,
+          JSON.stringify(shortsFilms)
+        );
         setTimeout(() => setPreloader(false), 1000);
-        return setMoviesList(JSON.parse(localStorage.getItem('shortsFilm')));
+        return setMoviesList(
+          JSON.parse(
+            localStorage.getItem(`shortsFilm ${props.currentUser._id}`)
+          )
+        );
       } else {
         return setFilms(false);
       }
     });
-  }, [setFilms, setMoviesList, setPreloader]);
+  }, [movies, props.currentUser._id, setFilms, setMoviesList, setPreloader]);
 
   const handleSavedShortsFilms = useCallback(() => {
     const savedShortsFilms = [];
 
-    JSON.parse(localStorage.getItem('savedFilms')).map((item) => {
+    JSON.parse(savedMovies).map((item) => {
       if (item.duration <= 40) {
         setPreloader(true);
         savedShortsFilms.push(item);
         localStorage.setItem(
-          'savedShortsFilms',
+          `savedShortsFilms ${props.currentUser._id}`,
           JSON.stringify(savedShortsFilms)
         );
         setTimeout(() => setPreloader(false), 1000);
         return setSavedFilms(
-          JSON.parse(localStorage.getItem('savedShortsFilms'))
+          JSON.parse(
+            localStorage.getItem(`savedShortsFilms ${props.currentUser._id}`)
+          )
         );
       } else {
         return setFilms(false);
       }
     });
-  }, [setFilms, setSavedFilms, setPreloader]);
+  }, [
+    savedMovies,
+    setPreloader,
+    props.currentUser._id,
+    setSavedFilms,
+    setFilms,
+  ]);
 
   const hendleSearchFilms = (evt) => {
     evt.preventDefault();
@@ -82,9 +96,12 @@ function SearchForm(props) {
           ) {
             setPreloader(true);
             findFilm.push(item);
-            localStorage.setItem('movies', JSON.stringify(findFilm));
+            localStorage.setItem(
+              `movies ${props.currentUser._id}`,
+              JSON.stringify(findFilm)
+            );
             setTimeout(() => setPreloader(false), 1000);
-            return setMoviesList(JSON.parse(localStorage.getItem('movies')));
+            return setMoviesList(JSON.parse(movies));
           } else {
             return setFilms(false);
           }
@@ -105,9 +122,14 @@ function SearchForm(props) {
             item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())
           ) {
             findFilm.push(item);
-            localStorage.setItem('findSavedFilm', JSON.stringify(findFilm));
+            localStorage.setItem(
+              `findSavedFilm ${props.currentUser._id}`,
+              JSON.stringify(findFilm)
+            );
             return setSavedFilms(
-              JSON.parse(localStorage.getItem('findSavedFilm'))
+              JSON.parse(
+                localStorage.getItem(`findSavedFilm ${props.currentUser._id}`)
+              )
             );
           } else {
             return setFilms(false);
@@ -125,35 +147,40 @@ function SearchForm(props) {
     );
   };
 
-  const toggle = localStorage.getItem('toggle');
-
   useEffect(() => {
     if (location === '/movies') {
-      if (localStorage.getItem('movies') && toggle === 'true') {
+      if (movies && toggle === 'true') {
         handleShortsFilms();
       } else {
         setPreloader(true);
-        setMoviesList(JSON.parse(localStorage.getItem('movies')));
+        setMoviesList(JSON.parse(movies));
         setTimeout(() => setPreloader(false), 1000);
       }
     }
-  }, [handleShortsFilms, location, setMoviesList, setPreloader, toggle]);
+  }, [
+    handleShortsFilms,
+    location,
+    movies,
+    setMoviesList,
+    setPreloader,
+    toggle,
+  ]);
 
   useEffect(() => {
     if (location === '/saved-movies') {
-      if (localStorage.getItem('savedFilms') && toggle === 'true') {
+      if (savedMovies && toggle === 'true') {
         handleSavedShortsFilms();
       } else {
-        setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
+        setSavedFilms(JSON.parse(savedMovies));
       }
     }
-  }, [handleSavedShortsFilms, location, setSavedFilms, toggle]);
+  }, [handleSavedShortsFilms, location, savedMovies, setSavedFilms, toggle]);
 
   return (
     <section className='search-form'>
       <form
         className='search-form__form'
-        onSubmit={currentlocation ? hendleSearchFilms : hendleSearchSavedFilms}
+        onSubmit={location === '/movies' ? hendleSearchFilms : hendleSearchSavedFilms}
         minLength={1}
         noValidate
       >
@@ -178,6 +205,7 @@ function SearchForm(props) {
           type='checkbox'
           className='search-form__toggle-button'
           onClick={handleToggleBtn}
+          checked={JSON.parse(toggle) || ''}
           disabled={isDisabledBtnShort}
         ></input>
         <label className='search-form__lable'>Короткометражки</label>

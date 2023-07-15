@@ -1,59 +1,55 @@
 import './MoviesCard.css';
-import { useState, useEffect } from 'react';
-import api from '../../utils/Api';
+import { useState } from 'react';
+//import api from '../../utils/Api';
 import ButtonLike from '../ButtonLike/ButtonLike';
 import ButtonDelete from '../ButtonDelete/ButtonDelete';
 
 function MoviesCard(props) {
-  const { card, moviesApiUrl, currentUser, location, setSavedFilms, jwt } = props;
+  const {
+    card,
+    moviesApiUrl,
+    location,
+    handleLike
+
+  } = props;
   const [islike, setLike] = useState(false);
-  const [film, setFilm] = useState([]);
-  const [currentlocation, setCurrentlocation] = useState(false);
 
-  useEffect(() => {
-    if (location === '/movies') {
-      setCurrentlocation(true);
-    }
-  }, [location]);
 
-  const handleDeleteSavedCard = (item) => {
-    api
-      .deleteSaveFilm(item._id, jwt)
-      .then(
-        currentlocation
-          ? localStorage.removeItem(item.movieId)
-          : setSavedFilms(
-              (res) => res.filter((film) => film._id !== item._id),
 
-              localStorage.removeItem(item.movieId)
-            )
-      )
-      .catch((err) => console.log(err));
-  };
+  // useEffect(() => {
+  //   if (location === '/movies') {
+  //     setCurrentlocation(true);
+  //   } 
+  // }, [location]);
 
-  const handleLike = () => {
-    if (!islike) {
-      setLike(!islike);
-      localStorage.setItem(card.id, currentUser._id);
-      api
-        .createSaveFilm(card, jwt)
-        .then((res) => {
-          setFilm(res);
-        })
-        .catch((res) => console.log(res));
-    } else {
-      setLike(!islike);
-      localStorage.removeItem(card.id);
-      handleDeleteSavedCard(film);
-    }
-  };
+  // const handleDeleteSavedCard = (item) => {
+  //   api
+  //     .deleteSaveFilm(item._id, jwt)
+  //     .then(setSavedFilms((res) => res.filter((film) => film._id !== item._id)))
+  //     .catch((err) => console.log(err));
+  // };
 
-  useEffect(() => {
-    if (localStorage.getItem(card.id) === currentUser._id) {
-      setLike(true);
-    }
-  }, [card.id, currentUser._id]);
+  // const handleLike = () => {
+  //   if (!islike) {
+  //     setLike(!islike);
+  //     api
+  //       .createSaveFilm(card, jwt)
+  //       .then(res => 
+  //         setSavedFilms([res])
+  //       )
+  //       .catch((res) => console.log(res));
+  //   } else {
+  //     setLike(!islike);
+  //     handleDeleteSavedCard(film);
+  //   }
+  // };
 
+  // useEffect(() => {
+  //   if (localStorage.getItem(card.id) === currentUser._id) {
+  //     setLike(true);
+  //   }
+  // }, [card.id, currentUser._id]);
+console.log(location)
   return (
     <article className='movies-cards'>
       <a
@@ -64,7 +60,7 @@ function MoviesCard(props) {
       >
         <img
           src={
-            currentlocation
+            location === '/movies'
               ? `${moviesApiUrl}/${card.image.url}`
               : `${card.image}`
           }
@@ -74,10 +70,10 @@ function MoviesCard(props) {
       </a>
       <div className='movies-cards__description'>
         <h2 className='movies-cards__title'>{card.nameRU}</h2>
-        {currentlocation ? (
-          <ButtonLike like={handleLike} islike={islike}></ButtonLike>
+        {location === '/movies' ? (
+          <ButtonLike like={handleLike(card)} islike={islike}></ButtonLike>
         ) : (
-          <ButtonDelete del={() => handleDeleteSavedCard(card)}></ButtonDelete>
+          <ButtonDelete ></ButtonDelete>
         )}
       </div>
       <span className='movies-cards__duration'>{`${Math.floor(

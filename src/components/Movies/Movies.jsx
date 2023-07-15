@@ -10,21 +10,21 @@ import Preloader from '../Preloader/Preloader';
 import { useEffect, useState } from 'react';
 
 function Movies(props) {
-  const [isFilms, setFilms] = useState(false);
-  const [isMoviesList, setMoviesList] = useState([]);
+  const {isFilms, isMoviesList} = props
 
-  useEffect(() => {
-    if (isMoviesList === null) {
-      setFilms(false);
-    } else if (isMoviesList.length > 0) {
-      setFilms(true);
-      props.setDisabledBtnShort(false);
-    } else {
-      setFilms(false);
-      props.setDisabledBtnShort(true);
-    }
-  }, [isMoviesList, props]);
-
+  // useEffect(() => {
+  //   if (isMoviesList === null) {
+  //     setFilms(false);
+  //     setDisabledBtnShort(true);
+  //   } else if (isMoviesList.length > 0) {
+  //     setFilms(true);
+  //     setDisabledBtnShort(false);
+  //   } else {
+  //     setFilms(false);
+  //     setDisabledBtnShort(true);
+  //   }
+  // }, [isMoviesList, setDisabledBtnShort]);
+console.log(isFilms)
   const Films = isFilms ? (
     <main className='main-movies'>
       <MoviesCardList
@@ -36,6 +36,7 @@ function Movies(props) {
         currentUser={props.currentUser}
         location={props.location}
         jwt={props.jwt}
+        handleLike={props.handleLike}
       ></MoviesCardList>
     </main>
   ) : (
@@ -49,11 +50,12 @@ function Movies(props) {
         <NavButton lowWidth={props.lowWidth} modal={props.modal}></NavButton>
       </Header>
       <SearchForm
-        setMoviesList={setMoviesList}
+        setMoviesList={props.setMoviesList}
         location={props.location}
-        setFilms={setFilms}
+        setFilms={props.setFilms}
         setPreloader={props.setPreloader}
         isDisabledBtnShort={props.isDisabledBtnShort}
+        currentUser={props.currentUser}
       ></SearchForm>
       {props.preloader ? <Preloader></Preloader> : Films}
 

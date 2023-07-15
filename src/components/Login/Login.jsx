@@ -1,11 +1,12 @@
 import './Login.css';
 import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Navigate } from 'react-router-dom';
 import Form from '../Form/Form';
 
 function Login(props) {
   const {
+    loggedIn,
     setLogin,
     error,
     message,
@@ -36,6 +37,10 @@ function Login(props) {
         console.log(err);
       });
   };
+
+  // loggedIn ? (
+  //   <Navigate to='/movies' replace />
+  // ) : 
 
   return (
     <section className='login'>

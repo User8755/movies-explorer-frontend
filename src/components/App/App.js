@@ -34,6 +34,10 @@ function App() {
   const [formValue, setFormValue] = useState({});
   const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
   const [isLoading, setLoading] = useState(true);
+  const [SavedFilms, setSavedFilms] = useState([]);
+  const [islike, setLike] = useState(false);
+  const [isFilms, setFilms] = useState(false);
+  const [isMoviesList, setMoviesList] = useState([]);
 
   const jwt = localStorage.getItem('token');
   const location = useLocation().pathname;
@@ -48,6 +52,43 @@ function App() {
       setWidth(false);
     }
   }, [width]);
+
+  useEffect(() => {
+    if (isMoviesList === null) {
+      setFilms(false);
+      setDisabledBtnShort(true);
+
+    } else if (isMoviesList.length > 0) {
+      setFilms(true);
+      setDisabledBtnShort(false);
+      
+    } else {
+      setFilms(false);
+      setDisabledBtnShort(true);
+    }
+  }, []);
+
+  const handleDeleteSavedCard = (item) => {
+    api
+      .deleteSaveFilm(item._id, jwt)
+      .then(setSavedFilms((res) => res.filter((film) => film._id !== item._id)))
+      .catch((err) => console.log(err));
+  };
+
+  const handleLike = (card) => {
+    if (!islike) {
+      setLike(!islike);
+      api
+        .createSaveFilm(card, jwt)
+        .then(res => 
+          setSavedFilms(res)
+        )
+        .catch((res) => console.log(res));
+    } else {
+      setLike(!islike);
+      //handleDeleteSavedCard();
+    }
+  };
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -72,6 +113,7 @@ function App() {
       });
   }, [jwt]);
 
+  
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
@@ -127,6 +169,7 @@ function App() {
             path='/sign-in'
             element={
               <Login
+                loggedIn={isLogin}
                 location={location}
                 setLogin={setLogin}
                 error={setError}
@@ -181,6 +224,11 @@ function App() {
                 jwt={jwt}
                 isDisabledBtnShort={isDisabledBtnShort}
                 setDisabledBtnShort={setDisabledBtnShort}
+                handleLike={handleLike}
+                isFilms={isFilms}
+                setFilms={setFilms}
+                isMoviesList={isMoviesList}
+                setMoviesList={setMoviesList}
               />
             }
           ></Route>
@@ -202,6 +250,8 @@ function App() {
                 jwt={jwt}
                 isDisabledBtnShort={isDisabledBtnShort}
                 setDisabledBtnShort={setDisabledBtnShort}
+                SavedFilms={SavedFilms}
+                setSavedFilms={setSavedFilms}
               />
             }
           ></Route>
