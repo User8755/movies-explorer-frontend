@@ -4,29 +4,20 @@ import { useCallback, useEffect, useState } from 'react';
 
 function SearchForm(props) {
   const {
-    setMoviesList,
+    savedFilms,
     setSavedFilms,
-    SavedFilms,
+    setMoviesList,
     location,
     setFilms,
     setPreloader,
-    isFilms,
     isDisabledBtnShort,
   } = props;
 
   const [isToggleBtn, setToggleBtn] = useState(false);
   const [isInput, setInput] = useState({ search: '' });
   const [errors, setErrors] = useState('');
-  const [currentlocation, setCurrentlocation] = useState(false);
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
   const beatfilm = localStorage.getItem('beatfilm');
-  useEffect(() => {
-    if (location === '/movies') {
-      setCurrentlocation(true);
-    } else {
-      setCurrentlocation(false);
-    }
-  }, [location]);
 
   const handleToggleBtn = () => {
     setToggleBtn(!isToggleBtn);
@@ -49,27 +40,6 @@ function SearchForm(props) {
     });
   }, [setFilms, setMoviesList, setPreloader]);
 
-  // const handleSavedShortsFilms = useCallback(() => {
-  //   const savedShortsFilms = [];
-
-  //   JSON.parse(localStorage.getItem('savedFilms')).map((item) => {
-  //     if (item.duration <= 40) {
-  //       setPreloader(true);
-  //       savedShortsFilms.push(item);
-  //       localStorage.setItem(
-  //         'savedShortsFilms',
-  //         JSON.stringify(savedShortsFilms)
-  //       );
-  //       setTimeout(() => setPreloader(false), 1000);
-  //       return setSavedFilms(
-  //         JSON.parse(localStorage.getItem('savedShortsFilms'))
-  //       );
-  //     } else {
-  //       return setFilms(false);
-  //     }
-  //   });
-  // }, [setFilms, setSavedFilms, setPreloader]);
-
   const [a, b] = useState([]);
 
   useEffect(() => {
@@ -81,14 +51,27 @@ function SearchForm(props) {
           localStorage.setItem('beatfilm', JSON.stringify(res));
         })
         .catch((err) => console.log(err));
-    } else {
-      location === '/movies'
-        ? b(JSON.parse(beatfilm))
-        : b(JSON.parse(localStorage.getItem('savedFilms')));
     }
-  }, [beatfilm, location]);
+  }, [beatfilm]);
 
-  
+  useEffect(() => {
+    if (location === '/movies') {
+      b(JSON.parse(beatfilm));
+    } else {
+      b(savedFilms);
+    }
+  }, [beatfilm, location, savedFilms]);
+
+  useEffect(() => {
+    if (location === '/movies') {
+      if (localStorage.getItem('movies')) {
+        console.log(JSON.parse(localStorage.getItem('movies')));
+      } else {
+        setFilms(false);
+      }
+    }
+  }, [location, setFilms, setMoviesList]);
+
   // поиск фильмов
   const hendleSearchFilms = (evt) => {
     evt.preventDefault();
@@ -98,35 +81,18 @@ function SearchForm(props) {
       if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
         setPreloader(true);
         findFilm.push(item);
-        localStorage.setItem('movies', JSON.stringify(findFilm));
+        location === '/movies'
+          ? localStorage.setItem('movies', JSON.stringify(findFilm))
+          : localStorage.setItem('savedMovies', JSON.stringify(findFilm));
         setTimeout(() => setPreloader(false), 1000);
-        return setMoviesList(JSON.parse(localStorage.getItem('movies')));
+        return location === '/movies'
+          ? setMoviesList(JSON.parse(localStorage.getItem('movies')))
+          : setSavedFilms(JSON.parse(localStorage.getItem('savedMovies')));
       } else {
         return setFilms(false);
       }
     });
   };
-
-  // const hendleSearchSavedFilms = (evt) => {
-  //   const findFilm = [];
-
-  //   evt.preventDefault();
-  //   isFilms
-  //     ? SavedFilms.map((item) => {
-  //         if (
-  //           item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())
-  //         ) {
-  //           findFilm.push(item);
-  //           localStorage.setItem('findSavedFilm', JSON.stringify(findFilm));
-  //           return setSavedFilms(
-  //             JSON.parse(localStorage.getItem('findSavedFilm'))
-  //           );
-  //         } else {
-  //           return setFilms(false);
-  //         }
-  //       })
-  //     : setFilms(false);
-  // };
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -183,7 +149,9 @@ function SearchForm(props) {
           type='submit'
           disabled={!isDisabledBtnSubmit}
         ></button>
-        <span className='search-form__span'>{errors}</span>
+        <span className='search-form__span'>
+          {'Введите ключевое слово' || errors}
+        </span>
       </form>
       <div className='search-form__container'>
         <input

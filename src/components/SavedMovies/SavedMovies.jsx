@@ -25,33 +25,31 @@ function SavedMovies(props) {
     setDisabledBtnShort,
   } = props;
 
-  const [SavedFilms, setSavedFilms] = useState([]);
+  const [savedFilms, setSavedFilms] = useState([]);
   const [isFilms, setFilms] = useState(false);
 
-
-
     useEffect(() => {
-    if (SavedFilms.length > 0) {
+    if (savedFilms.length > 0) {
       setFilms(true);
       setDisabledBtnShort(false);
     } else {
       setFilms(false);
       setDisabledBtnShort(true);
     }
-  }, [SavedFilms, setDisabledBtnShort]);
+  }, [savedFilms, setDisabledBtnShort]);
 
   useEffect(() => {
-    //setPreloader(true)
+    setPreloader(true)
     api
       .getSaveFilm(jwt)
       .then((res) => setSavedFilms(res))
       .catch((err) => console.log(err))
-      //.finally(setTimeout(() => setPreloader(false), 1000));
-  }, [jwt]);
+      .finally(setTimeout(() => setPreloader(false), 1000));
+  }, [jwt, setPreloader]);
 
   const savedMovies = isFilms ? (
     <div className='saved-movies__list'>
-      {SavedFilms.map((film) => {
+      {savedFilms.map((film) => {
         return (
           <MoviesCard
             card={film}
@@ -59,7 +57,6 @@ function SavedMovies(props) {
             currentUser={currentUser}
             moviesApiUrl={moviesApiUrl}
             location={location}
-            setSavedFilms={setSavedFilms}
             jwt={jwt}
           ></MoviesCard>
         );
@@ -79,7 +76,7 @@ function SavedMovies(props) {
       </Header>
       <main className='saved-movies'>
         <SearchForm
-          SavedFilms={SavedFilms}
+          savedFilms={savedFilms}
           setSavedFilms={setSavedFilms}
           setFilms={setFilms}
           location={location}
