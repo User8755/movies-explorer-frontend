@@ -19,7 +19,7 @@ function SearchForm(props) {
   const [errors, setErrors] = useState('');
   const [currentlocation, setCurrentlocation] = useState(false);
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
-
+  const beatfilm = localStorage.getItem('beatfilm');
   useEffect(() => {
     if (location === '/movies') {
       setCurrentlocation(true);
@@ -70,29 +70,41 @@ function SearchForm(props) {
     });
   }, [setFilms, setSavedFilms, setPreloader]);
 
+  const [a, b] = useState([]);
+
+  useEffect(() => {
+    if (!localStorage.getItem('beatfilm')) {
+      films
+        .getFilms()
+        .then((res) => {
+          b(res);
+          localStorage.setItem('beatfilm', JSON.stringify(res));
+        })
+        .catch((err) => console.log(err));
+    } else {
+      location === '/movies'
+        ? b(JSON.parse(beatfilm))
+        : b(JSON.parse(localStorage.getItem('savedFilms')));
+    }
+  }, [beatfilm, location]);
+
+  
+  // поиск фильмов
   const hendleSearchFilms = (evt) => {
     evt.preventDefault();
     const findFilm = [];
-    films
-      .getFilms()
-      .then((res) =>
-        res.map((item) => {
-          if (
-            item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())
-          ) {
-            setPreloader(true);
-            findFilm.push(item);
-            localStorage.setItem('movies', JSON.stringify(findFilm));
-            setTimeout(() => setPreloader(false), 1000);
-            return setMoviesList(JSON.parse(localStorage.getItem('movies')));
-          } else {
-            return setFilms(false);
-          }
-        })
-      )
 
-      .catch((err) => console.log(err))
-      .finally(setTimeout(() => setPreloader(false), 1000));
+    a.map((item) => {
+      if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
+        setPreloader(true);
+        findFilm.push(item);
+        localStorage.setItem('movies', JSON.stringify(findFilm));
+        setTimeout(() => setPreloader(false), 1000);
+        return setMoviesList(JSON.parse(localStorage.getItem('movies')));
+      } else {
+        return setFilms(false);
+      }
+    });
   };
 
   const hendleSearchSavedFilms = (evt) => {

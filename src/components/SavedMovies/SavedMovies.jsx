@@ -28,26 +28,27 @@ function SavedMovies(props) {
   const [SavedFilms, setSavedFilms] = useState([]);
   const [isFilms, setFilms] = useState(false);
 
-  useEffect(() => {
-    api
-      .getSaveFilm(jwt)
-      .then((res) => {
-        localStorage.setItem('savedFilms', JSON.stringify(res));
-        setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
-      }, setPreloader(true))
-      .catch((err) => console.log(err))
-      .finally(setTimeout(() => setPreloader(false), 1000));
-  }, [jwt, location, setPreloader]);
 
-  useEffect(() => {
+
+    useEffect(() => {
     if (SavedFilms.length > 0) {
       setFilms(true);
-      setDisabledBtnShort(false)
+      setDisabledBtnShort(false);
     } else {
+      console.log(1)
       setFilms(false);
-      setDisabledBtnShort(true)
+      setDisabledBtnShort(true);
     }
   }, [SavedFilms, setDisabledBtnShort]);
+
+  useEffect(() => {
+    //setPreloader(true)
+    api
+      .getSaveFilm(jwt)
+      .then((res) => setSavedFilms(res))
+      .catch((err) => console.log(err))
+      //.finally(setTimeout(() => setPreloader(false), 1000));
+  }, [jwt]);
 
   const savedMovies = isFilms ? (
     <div className='saved-movies__list'>
@@ -69,6 +70,8 @@ function SavedMovies(props) {
     <StartSearch text={'У вас нет сохраненных фильмов'}></StartSearch>
   );
 
+
+
   return (
     <>
       <Header isLogin={loggedIn}>
@@ -83,7 +86,7 @@ function SavedMovies(props) {
           location={location}
           setPreloader={setPreloader}
           isFilms={isFilms}
-        isDisabledBtnShort={isDisabledBtnShort}
+          isDisabledBtnShort={isDisabledBtnShort}
         ></SearchForm>
         {preloader ? <Preloader /> : savedMovies}
         <Footer></Footer>
