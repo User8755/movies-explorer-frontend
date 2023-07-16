@@ -49,26 +49,26 @@ function SearchForm(props) {
     });
   }, [setFilms, setMoviesList, setPreloader]);
 
-  const handleSavedShortsFilms = useCallback(() => {
-    const savedShortsFilms = [];
+  // const handleSavedShortsFilms = useCallback(() => {
+  //   const savedShortsFilms = [];
 
-    JSON.parse(localStorage.getItem('savedFilms')).map((item) => {
-      if (item.duration <= 40) {
-        setPreloader(true);
-        savedShortsFilms.push(item);
-        localStorage.setItem(
-          'savedShortsFilms',
-          JSON.stringify(savedShortsFilms)
-        );
-        setTimeout(() => setPreloader(false), 1000);
-        return setSavedFilms(
-          JSON.parse(localStorage.getItem('savedShortsFilms'))
-        );
-      } else {
-        return setFilms(false);
-      }
-    });
-  }, [setFilms, setSavedFilms, setPreloader]);
+  //   JSON.parse(localStorage.getItem('savedFilms')).map((item) => {
+  //     if (item.duration <= 40) {
+  //       setPreloader(true);
+  //       savedShortsFilms.push(item);
+  //       localStorage.setItem(
+  //         'savedShortsFilms',
+  //         JSON.stringify(savedShortsFilms)
+  //       );
+  //       setTimeout(() => setPreloader(false), 1000);
+  //       return setSavedFilms(
+  //         JSON.parse(localStorage.getItem('savedShortsFilms'))
+  //       );
+  //     } else {
+  //       return setFilms(false);
+  //     }
+  //   });
+  // }, [setFilms, setSavedFilms, setPreloader]);
 
   const [a, b] = useState([]);
 
@@ -107,26 +107,26 @@ function SearchForm(props) {
     });
   };
 
-  const hendleSearchSavedFilms = (evt) => {
-    const findFilm = [];
+  // const hendleSearchSavedFilms = (evt) => {
+  //   const findFilm = [];
 
-    evt.preventDefault();
-    isFilms
-      ? SavedFilms.map((item) => {
-          if (
-            item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())
-          ) {
-            findFilm.push(item);
-            localStorage.setItem('findSavedFilm', JSON.stringify(findFilm));
-            return setSavedFilms(
-              JSON.parse(localStorage.getItem('findSavedFilm'))
-            );
-          } else {
-            return setFilms(false);
-          }
-        })
-      : setFilms(false);
-  };
+  //   evt.preventDefault();
+  //   isFilms
+  //     ? SavedFilms.map((item) => {
+  //         if (
+  //           item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())
+  //         ) {
+  //           findFilm.push(item);
+  //           localStorage.setItem('findSavedFilm', JSON.stringify(findFilm));
+  //           return setSavedFilms(
+  //             JSON.parse(localStorage.getItem('findSavedFilm'))
+  //           );
+  //         } else {
+  //           return setFilms(false);
+  //         }
+  //       })
+  //     : setFilms(false);
+  // };
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -151,21 +151,21 @@ function SearchForm(props) {
     }
   }, [handleShortsFilms, location, setMoviesList, setPreloader, toggle]);
 
-  useEffect(() => {
-    if (location === '/saved-movies') {
-      if (localStorage.getItem('savedFilms') && toggle === 'true') {
-        handleSavedShortsFilms();
-      } else {
-        setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
-      }
-    }
-  }, [handleSavedShortsFilms, location, setSavedFilms, toggle]);
+  // useEffect(() => {
+  //   if (location === '/saved-movies') {
+  //     if (localStorage.getItem('savedFilms') && toggle === 'true') {
+  //       handleSavedShortsFilms();
+  //     } else {
+  //       setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
+  //     }
+  //   }
+  // }, [handleSavedShortsFilms, location, setSavedFilms, toggle]);
 
   return (
     <section className='search-form'>
       <form
         className='search-form__form'
-        onSubmit={currentlocation ? hendleSearchFilms : hendleSearchSavedFilms}
+        onSubmit={hendleSearchFilms}
         minLength={1}
         noValidate
       >

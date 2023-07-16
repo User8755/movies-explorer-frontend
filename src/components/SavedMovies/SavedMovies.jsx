@@ -35,7 +35,6 @@ function SavedMovies(props) {
       setFilms(true);
       setDisabledBtnShort(false);
     } else {
-      console.log(1)
       setFilms(false);
       setDisabledBtnShort(true);
     }
