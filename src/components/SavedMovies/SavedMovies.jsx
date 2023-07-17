@@ -28,24 +28,38 @@ function SavedMovies(props) {
   const [savedFilms, setSavedFilms] = useState([]);
   const [isFilms, setFilms] = useState(false);
 
-    useEffect(() => {
-    if (savedFilms.length > 0) {
-      setFilms(true);
-      setDisabledBtnShort(false);
-    } else {
-      setFilms(false);
-      setDisabledBtnShort(true);
-    }
-  }, [savedFilms, setDisabledBtnShort]);
+const saveMovies=(item)=>{
+  localStorage.setItem('savedFilm', JSON.stringify(item))
+  setSavedFilms(item)
+}
 
   useEffect(() => {
-    setPreloader(true)
+    setPreloader(true);
     api
       .getSaveFilm(jwt)
-      .then((res) => setSavedFilms(res))
+      .then((res) => saveMovies(res))
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
   }, [jwt, setPreloader]);
+
+  // useEffect(() => {
+  //   if (localStorage.getItem('savedFilm')) {
+  //     console.log(3);
+  //     setSavedFilms(JSON.parse(localStorage.getItem('savedFilm')));
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    if (savedFilms.length > 0) {
+      setFilms(true);
+      setDisabledBtnShort(false);
+
+    } else {
+      setFilms(false);
+      setDisabledBtnShort(true);
+  
+    }
+  }, [savedFilms, setDisabledBtnShort]);
 
   const savedMovies = isFilms ? (
     <div className='saved-movies__list'>
@@ -65,8 +79,6 @@ function SavedMovies(props) {
   ) : (
     <StartSearch text={'У вас нет сохраненных фильмов'}></StartSearch>
   );
-
-
 
   return (
     <>

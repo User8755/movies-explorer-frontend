@@ -1,6 +1,6 @@
 import './SearchForm.css';
 import films from '../../utils/MoviesApi';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function SearchForm(props) {
   const {
@@ -17,6 +17,9 @@ function SearchForm(props) {
   const [isInput, setInput] = useState({ search: '' });
   const [errors, setErrors] = useState('');
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
+  const [serch, setSerch] = useState([]);
+  const [short, setShort] = useState([]);
+
   const beatfilm = localStorage.getItem('beatfilm');
 
   const handleToggleBtn = () => {
@@ -24,60 +27,24 @@ function SearchForm(props) {
     localStorage.setItem('toggle', !isToggleBtn);
   };
 
-  const handleShortsFilms = useCallback(() => {
-    const shortsFilms = [];
-
-    JSON.parse(localStorage.getItem('movies')).map((item) => {
-      if (item.duration <= 40) {
-        setPreloader(true);
-        shortsFilms.push(item);
-        localStorage.setItem('shortsFilm', JSON.stringify(shortsFilms));
-        setTimeout(() => setPreloader(false), 1000);
-        return setMoviesList(JSON.parse(localStorage.getItem('shortsFilm')));
-      } else {
-        return setFilms(false);
-      }
-    });
-  }, [setFilms, setMoviesList, setPreloader]);
-
-  const [a, b] = useState([]);
-
   useEffect(() => {
     if (!localStorage.getItem('beatfilm')) {
       films
         .getFilms()
         .then((res) => {
-          b(res);
+          setSerch(res);
           localStorage.setItem('beatfilm', JSON.stringify(res));
         })
         .catch((err) => console.log(err));
     }
   }, [beatfilm]);
 
-  useEffect(() => {
-    if (location === '/movies') {
-      b(JSON.parse(beatfilm));
-    } else {
-      b(savedFilms);
-    }
-  }, [beatfilm, location, savedFilms]);
-
-  useEffect(() => {
-    if (location === '/movies') {
-      if (localStorage.getItem('movies')) {
-        console.log(JSON.parse(localStorage.getItem('movies')));
-      } else {
-        setFilms(false);
-      }
-    }
-  }, [location, setFilms, setMoviesList]);
-
   // поиск фильмов
   const hendleSearchFilms = (evt) => {
     evt.preventDefault();
     const findFilm = [];
 
-    a.map((item) => {
+    serch.map((item) => {
       if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
         setPreloader(true);
         findFilm.push(item);
@@ -93,7 +60,30 @@ function SearchForm(props) {
       }
     });
   };
-
+  // фильтр короткометражек
+  const handleShortsFilms = () => {
+    const shortsFilms = [];
+    short.map((item) => {
+      if (item.duration <= 40) {
+        console.log(1);
+        setPreloader(true);
+        shortsFilms.push(item);
+        location === '/movies'
+          ? localStorage.setItem('shortsFilm', JSON.stringify(shortsFilms))
+          : localStorage.setItem(
+              'shortsFilmSaved',
+              JSON.stringify(shortsFilms)
+            );
+        setTimeout(() => setPreloader(false), 1000);
+        return location === '/movies'
+          ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilm')))
+          : setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
+      } else {
+        console.log(2);
+        return setFilms(false);
+      }
+    });
+  };
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
@@ -106,16 +96,18 @@ function SearchForm(props) {
   const toggle = localStorage.getItem('toggle');
 
   useEffect(() => {
-    if (location === '/movies') {
-      if (localStorage.getItem('movies') && toggle === 'true') {
-        handleShortsFilms();
-      } else {
-        setPreloader(true);
-        setMoviesList(JSON.parse(localStorage.getItem('movies')));
-        setTimeout(() => setPreloader(false), 1000);
-      }
+    //if (location === '/movies') {
+    if (toggle === 'true') {
+      handleShortsFilms();
+    } else {
+      setPreloader(true);
+      location === '/movies'
+        ? setMoviesList(JSON.parse(localStorage.getItem('movies')))
+        : setSavedFilms(JSON.parse(localStorage.getItem('savedFilm')));
+      setTimeout(() => setPreloader(false), 1000);
     }
-  }, [handleShortsFilms, location, setMoviesList, setPreloader, toggle]);
+    //}
+  }, [location, setMoviesList, setPreloader, toggle]);
 
   // useEffect(() => {
   //   if (location === '/saved-movies') {
@@ -126,6 +118,23 @@ function SearchForm(props) {
   //     }
   //   }
   // }, [handleSavedShortsFilms, location, setSavedFilms, toggle]);
+
+  useEffect(() => {
+    if (localStorage.getItem('movies')) {
+      setShort(JSON.parse(localStorage.getItem('movies')));
+    } else {
+      setFilms(false);
+    }
+  }, [setFilms]);
+
+  useEffect(() => {
+    if (location === '/movies') {
+      setSerch(JSON.parse(beatfilm));
+    } else {
+      setSerch(savedFilms);
+      setShort(savedFilms);
+    }
+  }, [beatfilm, location, savedFilms]);
 
   return (
     <section className='search-form'>
