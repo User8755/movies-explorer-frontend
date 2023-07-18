@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import '../../vendor/normalize.css';
 import './App.css';
@@ -87,24 +87,51 @@ function App() {
   };
 
   const [savedFilms, setSavedFilms] = useState([]);
-  const saveMovies=(item)=>{
-    localStorage.setItem('savedFilm', JSON.stringify(item))
-    setSavedFilms(item)
-  }
-  
-    useEffect(() => {
+
+  const saveMovies = useCallback((item) => {
+    localStorage.setItem('savedFilm', JSON.stringify(item));
+    setSavedFilms(item);
+  }, []);
+
+  useEffect(() => {
+    if (isLogin) {
       setPreloader(true);
       api
         .getSaveFilm(jwt)
         .then((res) => saveMovies(res))
         .catch((err) => console.log(err))
         .finally(setTimeout(() => setPreloader(false), 1000));
-    }, [jwt, setPreloader]);
+    }
+  }, [jwt, setPreloader, saveMovies, isLogin]);
 
+  const [islike, setLike] = useState(false);
+  //const [film, setFilm] = useState([]);
+
+  const handleDeleteSavedCard = (item) => {
+    api
+      .deleteSaveFilm(item._id, jwt)
+      .then(setSavedFilms((res) => res.filter((film) => film._id !== item._id)))
+      .catch((err) => console.log(err));
+  };
+
+  const handleLike = (card, like) => {
+    if (!like) {
+      setLike(true);
+      api
+        .createSaveFilm(card, jwt)
+        .then((res) => {
+          setSavedFilms([...savedFilms, res]);
+        })
+        .catch((res) => console.log(res));
+    } else {
+      setLike(false);
+      handleDeleteSavedCard(card);
+    }
+  };
+console.log(savedFilms)
   if (!isLogin) {
     return <Preloader />;
   }
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -193,6 +220,9 @@ function App() {
                 jwt={jwt}
                 isDisabledBtnShort={isDisabledBtnShort}
                 setDisabledBtnShort={setDisabledBtnShort}
+                savedFilms={savedFilms}
+                handleLike={handleLike}
+                islike={islike}
               />
             }
           ></Route>

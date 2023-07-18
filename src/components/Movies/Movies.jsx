@@ -36,6 +36,9 @@ function Movies(props) {
         currentUser={props.currentUser}
         location={props.location}
         jwt={props.jwt}
+        savedFilms={props.savedFilms}
+        handleLike={props.handleLike}
+        islike={props.islike}
       ></MoviesCardList>
     </main>
   ) : (

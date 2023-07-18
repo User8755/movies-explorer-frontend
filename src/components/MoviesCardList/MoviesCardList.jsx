@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList(props) {
-  const { isMoviesList, width, moviesApiUrl, currentUser, location, jwt } = props;
+  const { isMoviesList, width, moviesApiUrl, currentUser, location, islike, jwt, handleLike } = props;
   const [isMoreMovies, setsMoreMovies] = useState(true);
   const [countFilm, setCountFilm] = useState(0);
   const [countMoreFilm, setCountMoreFilm] = useState(0);
@@ -13,7 +13,7 @@ function MoviesCardList(props) {
   const handleClickButton = () => {
     setFilmsList(isMoviesList.slice(0, isFilmsList.length + countMoreFilm));
   };
-  //JSON.parse(localStorage.getItem('movies'))
+
   useEffect(() => {
     setFilmsList(isMoviesList.slice(0, countFilm));
   }, [countFilm, isMoviesList]);
@@ -55,6 +55,9 @@ function MoviesCardList(props) {
                 currentUser={currentUser}
                 location={location}
                 jwt={jwt}
+                handleLike={handleLike}
+                islike={islike}
+                savedFilms={props.savedFilms}
               ></MoviesCard>
             );
           })}

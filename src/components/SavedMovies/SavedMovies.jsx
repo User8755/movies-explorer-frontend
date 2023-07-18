@@ -2,7 +2,6 @@ import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import { useEffect, useState } from 'react';
-import api from '../../utils/Api';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import NavBar from '../NavBar/Navbar';
 import NavButton from '../NavButton/NavButton';
@@ -27,22 +26,8 @@ function SavedMovies(props) {
     setSavedFilms
   } = props;
 
- // const [savedFilms, setSavedFilms] = useState([]);
   const [isFilms, setFilms] = useState(false);
 
-// const saveMovies=(item)=>{
-//   localStorage.setItem('savedFilm', JSON.stringify(item))
-//   setSavedFilms(item)
-// }
-
-//   useEffect(() => {
-//     setPreloader(true);
-//     api
-//       .getSaveFilm(jwt)
-//       .then((res) => saveMovies(res))
-//       .catch((err) => console.log(err))
-//       .finally(setTimeout(() => setPreloader(false), 1000));
-//   }, [jwt, setPreloader]);
 
   useEffect(() => {
     if (savedFilms.length > 0) {

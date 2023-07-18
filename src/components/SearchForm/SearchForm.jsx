@@ -133,12 +133,8 @@ function SearchForm(props) {
       }
     }
   }, [toggle]);
-  useEffect(() => {
-    JSON.parse(localStorage.getItem('savedFilm')).filter(
-      (film) => console.log(film)
-    )
-  });
-  console.log(savedFilms)
+
+
   return (
     <section className='search-form'>
       <form

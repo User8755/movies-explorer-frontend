@@ -6,11 +6,11 @@ function ButtonLike(props) {
     <button
       type='button'
       className={
-        props.islike
+        props.likeMovie
           ? 'button-like-active'
           : 'button-like'
       }
-      onClick={props.like} 
+      onClick={()=>props.like(props.card, props.likeMovie)} 
     ></button>
   );
 }
