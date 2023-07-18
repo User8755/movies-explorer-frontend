@@ -65,7 +65,6 @@ function SearchForm(props) {
     const shortsFilms = [];
     short.map((item) => {
       if (item.duration <= 40) {
-        console.log(1);
         setPreloader(true);
         shortsFilms.push(item);
         location === '/movies'
@@ -79,7 +78,6 @@ function SearchForm(props) {
           ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilm')))
           : setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
       } else {
-        console.log(2);
         return setFilms(false);
       }
     });
@@ -109,16 +107,6 @@ function SearchForm(props) {
     //}
   }, [location, setMoviesList, setPreloader, toggle]);
 
-  // useEffect(() => {
-  //   if (location === '/saved-movies') {
-  //     if (localStorage.getItem('savedFilms') && toggle === 'true') {
-  //       handleSavedShortsFilms();
-  //     } else {
-  //       setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
-  //     }
-  //   }
-  // }, [handleSavedShortsFilms, location, setSavedFilms, toggle]);
-
   useEffect(() => {
     if (localStorage.getItem('movies')) {
       setShort(JSON.parse(localStorage.getItem('movies')));
@@ -135,7 +123,22 @@ function SearchForm(props) {
       setShort(savedFilms);
     }
   }, [beatfilm, location, savedFilms]);
-
+  const [a, b] = useState(false);
+  useEffect(() => {
+    if (toggle) {
+      if (toggle === true) {
+        b(true);
+      } else {
+        b(false);
+      }
+    }
+  }, [toggle]);
+  useEffect(() => {
+    JSON.parse(localStorage.getItem('savedFilm')).filter(
+      (film) => console.log(film)
+    )
+  });
+  console.log(savedFilms)
   return (
     <section className='search-form'>
       <form
@@ -168,6 +171,7 @@ function SearchForm(props) {
           className='search-form__toggle-button'
           onClick={handleToggleBtn}
           disabled={isDisabledBtnShort}
+          defaultChecked={a}
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>

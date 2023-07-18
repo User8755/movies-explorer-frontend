@@ -23,31 +23,26 @@ function SavedMovies(props) {
     jwt,
     isDisabledBtnShort,
     setDisabledBtnShort,
+    savedFilms,
+    setSavedFilms
   } = props;
 
-  const [savedFilms, setSavedFilms] = useState([]);
+ // const [savedFilms, setSavedFilms] = useState([]);
   const [isFilms, setFilms] = useState(false);
 
-const saveMovies=(item)=>{
-  localStorage.setItem('savedFilm', JSON.stringify(item))
-  setSavedFilms(item)
-}
+// const saveMovies=(item)=>{
+//   localStorage.setItem('savedFilm', JSON.stringify(item))
+//   setSavedFilms(item)
+// }
 
-  useEffect(() => {
-    setPreloader(true);
-    api
-      .getSaveFilm(jwt)
-      .then((res) => saveMovies(res))
-      .catch((err) => console.log(err))
-      .finally(setTimeout(() => setPreloader(false), 1000));
-  }, [jwt, setPreloader]);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem('savedFilm')) {
-  //     console.log(3);
-  //     setSavedFilms(JSON.parse(localStorage.getItem('savedFilm')));
-  //   }
-  // }, []);
+//   useEffect(() => {
+//     setPreloader(true);
+//     api
+//       .getSaveFilm(jwt)
+//       .then((res) => saveMovies(res))
+//       .catch((err) => console.log(err))
+//       .finally(setTimeout(() => setPreloader(false), 1000));
+//   }, [jwt, setPreloader]);
 
   useEffect(() => {
     if (savedFilms.length > 0) {

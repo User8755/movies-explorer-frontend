@@ -86,9 +86,25 @@ function App() {
     evt.preventDefault();
   };
 
+  const [savedFilms, setSavedFilms] = useState([]);
+  const saveMovies=(item)=>{
+    localStorage.setItem('savedFilm', JSON.stringify(item))
+    setSavedFilms(item)
+  }
+  
+    useEffect(() => {
+      setPreloader(true);
+      api
+        .getSaveFilm(jwt)
+        .then((res) => saveMovies(res))
+        .catch((err) => console.log(err))
+        .finally(setTimeout(() => setPreloader(false), 1000));
+    }, [jwt, setPreloader]);
+
   if (!isLogin) {
     return <Preloader />;
   }
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -198,6 +214,8 @@ function App() {
                 jwt={jwt}
                 isDisabledBtnShort={isDisabledBtnShort}
                 setDisabledBtnShort={setDisabledBtnShort}
+                savedFilms={savedFilms}
+                setSavedFilms={setSavedFilms}
               />
             }
           ></Route>
