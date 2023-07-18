@@ -23,7 +23,8 @@ function SavedMovies(props) {
     isDisabledBtnShort,
     setDisabledBtnShort,
     savedFilms,
-    setSavedFilms
+    setSavedFilms,
+    handleDeleteSavedCard
   } = props;
 
   const [isFilms, setFilms] = useState(false);
@@ -52,6 +53,7 @@ function SavedMovies(props) {
             moviesApiUrl={moviesApiUrl}
             location={location}
             jwt={jwt}
+            handleDeleteSavedCard={handleDeleteSavedCard}
           ></MoviesCard>
         );
       })}

@@ -92,35 +92,54 @@ function App() {
     localStorage.setItem('savedFilm', JSON.stringify(item));
     setSavedFilms(item);
   }, []);
-
+  const getSaveFilm = useCallback(() => {
+    api
+      .getSaveFilm(jwt)
+      .then((res) => saveMovies(res))
+      .catch((err) => console.log(err))
+      .finally(setTimeout(() => setPreloader(false), 1000));
+  }, [jwt, saveMovies]);
+  // useEffect(() => {
+  //   if (isLogin) {
+  //     setPreloader(true);
+  //     api
+  //       .getSaveFilm(jwt)
+  //       .then((res) => saveMovies(res))
+  //       .catch((err) => console.log(err))
+  //       .finally(setTimeout(() => setPreloader(false), 1000));
+  //   }
+  // }, [jwt, setPreloader, saveMovies, isLogin]);
   useEffect(() => {
     if (isLogin) {
-      setPreloader(true);
-      api
-        .getSaveFilm(jwt)
-        .then((res) => saveMovies(res))
-        .catch((err) => console.log(err))
-        .finally(setTimeout(() => setPreloader(false), 1000));
+      getSaveFilm();
     }
-  }, [jwt, setPreloader, saveMovies, isLogin]);
+  }, [getSaveFilm, isLogin]);
 
   const [islike, setLike] = useState(false);
-  //const [film, setFilm] = useState([]);
-
+  const abc = JSON.parse(localStorage.getItem('savedFilm'));
+  
   const handleDeleteSavedCard = (item) => {
+    location === '/saved-movies' ? setPreloader(true) : setPreloader(false);
     api
       .deleteSaveFilm(item._id, jwt)
       .then(setSavedFilms((res) => res.filter((film) => film._id !== item._id)))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(setTimeout(() => setPreloader(false), 1000));
+
+    if (localStorage.getItem('savedFilm')) {
+      getSaveFilm()
+    }
   };
 
   const handleLike = (card, like) => {
+    console.log(card)
     if (!like) {
       setLike(true);
       api
         .createSaveFilm(card, jwt)
         .then((res) => {
-          setSavedFilms([...savedFilms, res]);
+          //setSavedFilms([...savedFilms, res]);
+          setSavedFilms(getSaveFilm);
         })
         .catch((res) => console.log(res));
     } else {
@@ -128,7 +147,7 @@ function App() {
       handleDeleteSavedCard(card);
     }
   };
-console.log(savedFilms)
+
   if (!isLogin) {
     return <Preloader />;
   }
@@ -246,6 +265,8 @@ console.log(savedFilms)
                 setDisabledBtnShort={setDisabledBtnShort}
                 savedFilms={savedFilms}
                 setSavedFilms={setSavedFilms}
+                getSaveFilm={getSaveFilm}
+                handleDeleteSavedCard={handleDeleteSavedCard}
               />
             }
           ></Route>
