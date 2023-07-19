@@ -3,12 +3,20 @@ import { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList(props) {
-  const { isMoviesList, width, moviesApiUrl, currentUser, location, islike, jwt, handleLike } = props;
+  const {
+    isMoviesList,
+    width,
+    moviesApiUrl,
+    location,
+    islike,
+    jwt,
+    handleLike,
+  } = props;
+
   const [isMoreMovies, setsMoreMovies] = useState(true);
   const [countFilm, setCountFilm] = useState(0);
   const [countMoreFilm, setCountMoreFilm] = useState(0);
   const [isFilmsList, setFilmsList] = useState([]);
-  
 
   const handleClickButton = () => {
     setFilmsList(isMoviesList.slice(0, isFilmsList.length + countMoreFilm));
@@ -17,7 +25,6 @@ function MoviesCardList(props) {
   useEffect(() => {
     setFilmsList(isMoviesList.slice(0, countFilm));
   }, [countFilm, isMoviesList]);
-
 
   useEffect(() => {
     if (width <= 1136) {
@@ -41,7 +48,7 @@ function MoviesCardList(props) {
       setsMoreMovies(true);
     }
   }, [isMoviesList.length, isFilmsList.length]);
-  
+
   return (
     <>
       <section className='movies-card-list'>
@@ -52,7 +59,6 @@ function MoviesCardList(props) {
                 card={film}
                 key={film.id}
                 moviesApiUrl={moviesApiUrl}
-                currentUser={currentUser}
                 location={location}
                 jwt={jwt}
                 handleLike={handleLike}

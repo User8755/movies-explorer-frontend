@@ -15,7 +15,7 @@ function SearchForm(props) {
 
   const [isToggleBtn, setToggleBtn] = useState(false);
   const [isInput, setInput] = useState({ search: '' });
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState('Введите ключевое слово');
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
   const [serch, setSerch] = useState([]);
   const [short, setShort] = useState([]);
@@ -60,6 +60,7 @@ function SearchForm(props) {
       }
     });
   };
+
   // фильтр короткометражек
   const handleShortsFilms = () => {
     const shortsFilms = [];
@@ -68,20 +69,21 @@ function SearchForm(props) {
         setPreloader(true);
         shortsFilms.push(item);
         location === '/movies'
-          ? localStorage.setItem('shortsFilm', JSON.stringify(shortsFilms))
+          ? localStorage.setItem('shortsFilms', JSON.stringify(shortsFilms))
           : localStorage.setItem(
               'shortsFilmSaved',
               JSON.stringify(shortsFilms)
             );
         setTimeout(() => setPreloader(false), 1000);
         return location === '/movies'
-          ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilm')))
+          ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
           : setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
       } else {
         return setFilms(false);
       }
     });
   };
+
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
@@ -98,14 +100,17 @@ function SearchForm(props) {
     if (toggle === 'true') {
       handleShortsFilms();
     } else {
+      localStorage.removeItem('shortsFilm');
+      localStorage.removeItem('shortsFilmSaved');
       setPreloader(true);
       location === '/movies'
         ? setMoviesList(JSON.parse(localStorage.getItem('movies')))
-        : setSavedFilms(JSON.parse(localStorage.getItem('savedFilm')));
+        : setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
       setTimeout(() => setPreloader(false), 1000);
     }
     //}
   }, [location, setMoviesList, setPreloader, toggle]);
+
 
   useEffect(() => {
     if (localStorage.getItem('movies')) {
@@ -123,17 +128,6 @@ function SearchForm(props) {
       setShort(savedFilms);
     }
   }, [beatfilm, location, savedFilms]);
-  const [a, b] = useState(false);
-  useEffect(() => {
-    if (toggle) {
-      if (toggle === true) {
-        b(true);
-      } else {
-        b(false);
-      }
-    }
-  }, [toggle]);
-
 
   return (
     <section className='search-form'>
@@ -157,9 +151,7 @@ function SearchForm(props) {
           type='submit'
           disabled={!isDisabledBtnSubmit}
         ></button>
-        <span className='search-form__span'>
-          {'Введите ключевое слово' || errors}
-        </span>
+        <span className='search-form__span'>{errors}</span>
       </form>
       <div className='search-form__container'>
         <input
@@ -167,7 +159,6 @@ function SearchForm(props) {
           className='search-form__toggle-button'
           onClick={handleToggleBtn}
           disabled={isDisabledBtnShort}
-          defaultChecked={a}
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>

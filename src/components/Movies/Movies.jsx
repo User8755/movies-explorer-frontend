@@ -33,7 +33,6 @@ function Movies(props) {
         isLike={props.isLike}
         width={props.width}
         moviesApiUrl={props.moviesApiUrl}
-        currentUser={props.currentUser}
         location={props.location}
         jwt={props.jwt}
         savedFilms={props.savedFilms}

@@ -33,6 +33,9 @@ function App() {
   const [errors, setErrors] = useState('');
   const [formValue, setFormValue] = useState({});
   const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
+  const [islike, setLike] = useState(false);
+  const [savedFilms, setSavedFilms] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   const jwt = localStorage.getItem('token');
   const location = useLocation().pathname;
@@ -55,7 +58,10 @@ function App() {
         .then(() => {
           setLogin(true);
         })
-        .catch((err) => console.log(err.status));
+        .catch((err) => console.log(err.status))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [jwt]);
 
@@ -86,12 +92,11 @@ function App() {
     evt.preventDefault();
   };
 
-  const [savedFilms, setSavedFilms] = useState([]);
-
   const saveMovies = useCallback((item) => {
-    localStorage.setItem('savedFilm', JSON.stringify(item));
+    localStorage.setItem('savedFilms', JSON.stringify(item));
     setSavedFilms(item);
   }, []);
+
   const getSaveFilm = useCallback(() => {
     api
       .getSaveFilm(jwt)
@@ -99,27 +104,14 @@ function App() {
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
   }, [jwt, saveMovies]);
-  // useEffect(() => {
-  //   if (isLogin) {
-  //     setPreloader(true);
-  //     api
-  //       .getSaveFilm(jwt)
-  //       .then((res) => saveMovies(res))
-  //       .catch((err) => console.log(err))
-  //       .finally(setTimeout(() => setPreloader(false), 1000));
-  //   }
-  // }, [jwt, setPreloader, saveMovies, isLogin]);
+
   useEffect(() => {
     if (isLogin) {
       getSaveFilm();
     }
   }, [getSaveFilm, isLogin]);
 
-  const [islike, setLike] = useState(false);
-  
   const handleDeleteSavedCard = (item) => {
-    console.log(item
-      )
     location === '/saved-movies' ? setPreloader(true) : setPreloader(false);
     api
       .deleteSaveFilm(item, jwt)
@@ -127,13 +119,12 @@ function App() {
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
 
-    if (localStorage.getItem('savedFilm')) {
-      getSaveFilm()
+    if (localStorage.getItem('savedFilms')) {
+      getSaveFilm();
     }
   };
 
   const handleLike = (card, like, cadId) => {
-    console.log(card)
     if (!like) {
       setLike(true);
       api
@@ -149,7 +140,7 @@ function App() {
     }
   };
 
-  if (!isLogin) {
+  if (isLoading) {
     return <Preloader />;
   }
 

@@ -29,9 +29,7 @@ function Profile(props) {
 
     setValid(evt.target.closest('.form').checkValidity());
   };
-  console.log(
-    formValue.name === currentUser.name || formValue.email === currentUser.email
-  );
+
   useEffect(() => {
     if (
       formValue.name !== currentUser.name ||
@@ -63,7 +61,7 @@ function Profile(props) {
   };
 
   const hendleSignOut = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate('/', { replace: true });
   };
 
