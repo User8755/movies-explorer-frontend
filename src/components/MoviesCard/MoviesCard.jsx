@@ -5,9 +5,13 @@ import ButtonDelete from '../ButtonDelete/ButtonDelete';
 function MoviesCard(props) {
   const { card, moviesApiUrl, location, handleLike, savedFilms, handleDeleteSavedCard } = props;
   const likeMovie = savedFilms
-    ? savedFilms.find((item) => item.movieId === card.id)
+    ? savedFilms.some((item) => item.movieId === card.id)
     : '';
 
+    const likeMovieID = savedFilms
+    ? savedFilms.find((item) => item.movieId === card.id)
+    : false;
+console.log(likeMovie?._id)
   return (
     <article className='movies-cards'>
       <a
@@ -36,10 +40,10 @@ function MoviesCard(props) {
              ? 'button-like-active'
              : 'button-like'
          }
-         onClick={()=>handleLike(card, likeMovie)} 
+         onClick={()=>handleLike(card, likeMovie, likeMovieID?._id)} 
        ></button>
         ) : (
-          <ButtonDelete del={() => handleDeleteSavedCard(card)}></ButtonDelete>
+          <ButtonDelete del={() => handleDeleteSavedCard(card._id)}></ButtonDelete>
         )}
       </div>
       <span className='movies-cards__duration'>{`${Math.floor(

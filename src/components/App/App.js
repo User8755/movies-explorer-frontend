@@ -116,12 +116,13 @@ function App() {
   }, [getSaveFilm, isLogin]);
 
   const [islike, setLike] = useState(false);
-  const abc = JSON.parse(localStorage.getItem('savedFilm'));
   
   const handleDeleteSavedCard = (item) => {
+    console.log(item
+      )
     location === '/saved-movies' ? setPreloader(true) : setPreloader(false);
     api
-      .deleteSaveFilm(item._id, jwt)
+      .deleteSaveFilm(item, jwt)
       .then(setSavedFilms((res) => res.filter((film) => film._id !== item._id)))
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
@@ -131,7 +132,7 @@ function App() {
     }
   };
 
-  const handleLike = (card, like) => {
+  const handleLike = (card, like, cadId) => {
     console.log(card)
     if (!like) {
       setLike(true);
@@ -144,7 +145,7 @@ function App() {
         .catch((res) => console.log(res));
     } else {
       setLike(false);
-      handleDeleteSavedCard(card);
+      handleDeleteSavedCard(cadId);
     }
   };
 
