@@ -18,6 +18,7 @@ function Login(props) {
 
   const navigate = useNavigate();
 
+
   const hendleSubmit = (evt) => {
     evt.preventDefault();
 
@@ -36,7 +37,7 @@ function Login(props) {
         console.log(err);
       });
   };
-
+console.log(props.a)
   return (
     <section className='login'>
       <NavLink to='/'>
@@ -62,6 +63,7 @@ function Login(props) {
             placeholder='Укажите Вашу почту'
             name='email'
             autoComplete='off'
+            pattern='^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
             required
             onChange={handleChange}
           ></input>

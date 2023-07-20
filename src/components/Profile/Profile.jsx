@@ -84,6 +84,7 @@ function Profile(props) {
           btnText={'Редактировать'}
           errors={errors}
           isValid={isValid}
+          formValue={formValue}
         >
           <label className='form__lable'>
             Имя
@@ -107,6 +108,7 @@ function Profile(props) {
               type='email'
               name='email'
               placeholder='Введите email'
+              
               required
               value={formValue.email || ''}
               onChange={handleChange}

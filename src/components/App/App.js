@@ -65,6 +65,7 @@ function App() {
     }
   }, [jwt]);
 
+const [a]= useState(false)
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
@@ -72,7 +73,10 @@ function App() {
       ...formValue,
       [name]: value,
     });
-    setValid(evt.target.closest('.form').checkValidity());
+
+      setValid(evt.target.closest('.form').checkValidity());
+    
+    
   };
 
   const handleMoreInfo = () => {
@@ -177,6 +181,7 @@ function App() {
             path='/sign-in'
             element={
               <Login
+              a={a}
                 location={location}
                 setLogin={setLogin}
                 error={setError}
