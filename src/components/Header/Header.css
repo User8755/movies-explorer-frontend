@@ -1,6 +1,6 @@
 .header {
   padding: 18px 70px;
-  background: #073042;
+  background: inherit;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -8,7 +8,7 @@
 
 .header_login {
   padding-bottom: 0;
-  background: inherit;
+  background: #073042;
 }
 
 .header__container {

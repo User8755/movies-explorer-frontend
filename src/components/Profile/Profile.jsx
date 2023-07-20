@@ -9,7 +9,7 @@ import NavButton from '../NavButton/NavButton';
 import Form from '../Form/Form';
 
 function Profile(props) {
-  const { userInfo, lowWidth, modal, error, message, jwt } = props;
+  const { userInfo, lowWidth, modal, error, message, jwt, setLogin } = props;
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState('');
@@ -62,6 +62,7 @@ function Profile(props) {
 
   const hendleSignOut = () => {
     localStorage.clear();
+    setLogin(false)
     navigate('/', { replace: true });
   };
 

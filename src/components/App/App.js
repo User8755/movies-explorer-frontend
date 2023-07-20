@@ -201,13 +201,21 @@ function App() {
                 error={setError}
                 message={setErrorMessge}
                 jwt={jwt}
+                setLogin={setLogin}
               />
             }
           ></Route>
           <Route
             path='/'
             element={
-              <Main MoreInfo={handleMoreInfo} isMoreInfo={isMoreInfo}></Main>
+              <Main
+                MoreInfo={handleMoreInfo}
+                isMoreInfo={isMoreInfo}
+                location={location}
+                isLogin={isLogin}
+                lowWidth={isWidth}
+                modal={setModal}
+              ></Main>
             }
           ></Route>
           <Route
