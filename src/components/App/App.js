@@ -65,7 +65,6 @@ function App() {
     }
   }, [jwt]);
 
-const [a]= useState(false)
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
@@ -74,9 +73,7 @@ const [a]= useState(false)
       [name]: value,
     });
 
-      setValid(evt.target.closest('.form').checkValidity());
-    
-    
+    setValid(evt.target.closest('.form').checkValidity());
   };
 
   const handleMoreInfo = () => {
@@ -181,7 +178,6 @@ const [a]= useState(false)
             path='/sign-in'
             element={
               <Login
-              a={a}
                 location={location}
                 setLogin={setLogin}
                 error={setError}
@@ -207,6 +203,12 @@ const [a]= useState(false)
                 message={setErrorMessge}
                 jwt={jwt}
                 setLogin={setLogin}
+                errors={errors}
+                isValid={isValid}
+                formValue={formValue}
+                handleChange={handleChange}
+                setValid={setValid}
+                setFormValue={setFormValue}
               />
             }
           ></Route>

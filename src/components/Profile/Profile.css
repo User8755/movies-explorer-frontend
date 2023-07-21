@@ -39,6 +39,10 @@
   width: 60%;
 }
 
+.form__input:invalid{
+  color:  red;
+}
+
 ::placeholder {
   text-align: right;
 }

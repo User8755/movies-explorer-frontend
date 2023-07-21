@@ -13,7 +13,7 @@ function Profile(props) {
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState('');
-  const [isValid, setValid] = useState(true);
+  const [isValid, setValid] = useState(false);
   const [formValue, setFormValue] = useState({
     name: '',
     email: '',
@@ -27,19 +27,28 @@ function Profile(props) {
       [name]: value,
     });
 
-    setValid(evt.target.closest('.form').checkValidity());
-  };
-
-  useEffect(() => {
     if (
       formValue.name !== currentUser.name ||
       formValue.email !== currentUser.email
     ) {
-      setValid(true);
+      setValid(evt.target.closest('.form').checkValidity());
     } else {
-      setValid(false);
+      setValid(true);
     }
-  }, [currentUser.email, currentUser.name, formValue.email, formValue.name]);
+
+    //setValid(evt.target.closest('.form').checkValidity());
+  };
+
+  // useEffect(() => {
+  //   if (
+  //     formValue.name !== currentUser.name ||
+  //     formValue.email !== currentUser.email
+  //   ) {
+  //     setValid(false);
+  //   } else {
+  //     setValid(true);
+  //   }
+  // }, [currentUser, formValue, setValid]);
 
   useEffect(() => {
     setFormValue({
@@ -62,7 +71,7 @@ function Profile(props) {
 
   const hendleSignOut = () => {
     localStorage.clear();
-    setLogin(false)
+    setLogin(false);
     navigate('/', { replace: true });
   };
 
@@ -108,7 +117,7 @@ function Profile(props) {
               type='email'
               name='email'
               placeholder='Введите email'
-              
+              pattern='^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
               required
               value={formValue.email || ''}
               onChange={handleChange}
