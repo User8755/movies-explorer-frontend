@@ -1,17 +1,16 @@
 import './Register.css';
 import profileLogo from '../../images/ProfileLogo.svg';
 import auth from '../../utils/Auth';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Form from '../Form/Form';
 
 function Register(props) {
-  const navigate = useNavigate();
 
   const hendleSubmit = (evt) => {
     evt.preventDefault();
     auth
       .register(props.formValue)
-      .then(() => navigate('/sign-in', { replace: true }))
+      .then(()=> props.handlerLogin(evt))
       .catch((err) => {
         props.error(true);
         props.message(err.message);

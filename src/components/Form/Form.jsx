@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import './Form.css';
 
 function Form(props) {
-  const { submit, children, btnText, errors, location, isValid } = props;
+  const { submit, children, btnText, errors, location, isValid } =
+    props;
   const [isLocation, setLocation] = useState(false);
 
   useEffect(() => {

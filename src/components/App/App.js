@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import '../../vendor/normalize.css';
 import './App.css';
 import Login from '../Login/Login.jsx';
@@ -74,6 +74,25 @@ function App() {
     });
 
     setValid(evt.target.closest('.form').checkValidity());
+  };
+  const navigate = useNavigate();
+
+  const handlerLogin = (evt) => {
+    evt.preventDefault();
+    auth
+      .signin(formValue)
+      .then((res) => {
+        if (res) {
+          localStorage.setItem('token', res.token);
+          setLogin(true);
+          navigate('/movies', { replace: true });
+        }
+      })
+      .catch((err) => {
+        setError(true);
+        setErrors(err.message);
+        console.log(err);
+      });
   };
 
   const handleMoreInfo = () => {
@@ -171,6 +190,7 @@ function App() {
                 isValid={isValid}
                 formValue={formValue}
                 handleChange={handleChange}
+                handlerLogin={handlerLogin}
               ></Register>
             }
           ></Route>
@@ -179,13 +199,10 @@ function App() {
             element={
               <Login
                 location={location}
-                setLogin={setLogin}
-                error={setError}
-                message={setErrorMessge}
                 errors={errors}
                 isValid={isValid}
-                formValue={formValue}
                 handleChange={handleChange}
+                handlerLogin={handlerLogin}
               ></Login>
             }
           ></Route>

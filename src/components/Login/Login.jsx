@@ -1,43 +1,17 @@
 import './Login.css';
 import profileLogo from '../../images/ProfileLogo.svg';
-import auth from '../../utils/Auth';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Form from '../Form/Form';
 
 function Login(props) {
   const {
-    setLogin,
-    error,
-    message,
     location,
     isValid,
-    formValue,
     handleChange,
     errors,
+    handlerLogin,
   } = props;
 
-  const navigate = useNavigate();
-
-
-  const hendleSubmit = (evt) => {
-    evt.preventDefault();
-
-    auth
-      .signin(formValue)
-      .then((res) => {
-        if (res) {
-          localStorage.setItem('token', res.token);
-          setLogin(true);
-          navigate('/movies', { replace: true });
-        }
-      })
-      .catch((err) => {
-        error(true);
-        message(err.message);
-        console.log(err);
-      });
-  };
-console.log(props.a)
   return (
     <section className='login'>
       <NavLink to='/'>
@@ -49,7 +23,7 @@ console.log(props.a)
       </NavLink>
       <h2 className='login__title'>Рады видеть!</h2>
       <Form
-        submit={hendleSubmit}
+        submit={(evt) => handlerLogin(evt)}
         errors={errors}
         isValid={isValid}
         location={location}
