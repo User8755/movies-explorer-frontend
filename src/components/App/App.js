@@ -147,7 +147,6 @@ function App() {
   }, [savedFilms, isLogin]);
 
   const handleLike = (card, like, cadId) => {
-    
     if (!like) {
       setLike(true);
       api
@@ -157,7 +156,6 @@ function App() {
 
         })
         .catch((res) => console.log(res));
-        //localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
         console.log(savedFilms)
     } else {
       setLike(false);
