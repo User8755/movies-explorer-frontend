@@ -9,6 +9,7 @@ function MoviesCard(props) {
     handleLike,
     savedFilms,
     handleDeleteSavedCard,
+    
   } = props;
   const likeMovie = savedFilms
     ? savedFilms.some((item) => item.movieId === card.id)

@@ -113,8 +113,8 @@ function App() {
   };
 
   const saveMovies = useCallback((item) => {
-    localStorage.setItem('savedFilms', JSON.stringify(item));
     setSavedFilms(item);
+    localStorage.setItem('savedFilms', JSON.stringify(item));
   }, []);
 
   const getSaveFilm = useCallback(() => {
@@ -132,28 +132,33 @@ function App() {
   }, [getSaveFilm, isLogin]);
 
   const handleDeleteSavedCard = (item) => {
+    console.log(item)
     location === '/saved-movies' ? setPreloader(true) : setPreloader(false);
     api
       .deleteSaveFilm(item, jwt)
-      .then(setSavedFilms((res) => res.filter((film) => film._id !== item._id)))
+      .then(setSavedFilms((res) => res.filter((film) => film._id !== item)))
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
-
-    if (localStorage.getItem('savedFilms')) {
-      getSaveFilm();
-    }
   };
 
+  useEffect(() => {
+    isLogin &&
+      localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
+  }, [savedFilms, isLogin]);
+
   const handleLike = (card, like, cadId) => {
+    
     if (!like) {
       setLike(true);
       api
         .createSaveFilm(card, jwt)
         .then((res) => {
-          //setSavedFilms([...savedFilms, res]);
-          setSavedFilms(getSaveFilm);
+          setSavedFilms([...savedFilms, res]);
+
         })
         .catch((res) => console.log(res));
+        //localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
+        console.log(savedFilms)
     } else {
       setLike(false);
       handleDeleteSavedCard(cadId);

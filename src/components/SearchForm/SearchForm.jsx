@@ -43,7 +43,7 @@ function SearchForm(props) {
   const hendleSearchFilms = (evt) => {
     evt.preventDefault();
     const findFilm = [];
-
+    localStorage.setItem('search', JSON.stringify(isInput));
     serch.map((item) => {
       if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
         setPreloader(true);
@@ -110,7 +110,6 @@ function SearchForm(props) {
     }
     //}
   }, [location, setMoviesList, setPreloader, toggle]);
-
 
   useEffect(() => {
     if (localStorage.getItem('movies')) {

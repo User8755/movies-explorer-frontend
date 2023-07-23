@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
 
 function Main(props) {
   const { MoreInfo, isMoreInfo, location, isLogin } = props;
-  console.log(isLogin)
+
   const headerMenu = isLogin ? (
     <>
       <NavBar lowWidth={props.lowWidth}></NavBar>
