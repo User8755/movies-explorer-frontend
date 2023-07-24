@@ -18,10 +18,8 @@ function Movies(props) {
       setFilms(false);
     } else if (isMoviesList.length > 0) {
       setFilms(true);
-      props.setDisabledBtnShort(false);
     } else {
       setFilms(false);
-      props.setDisabledBtnShort(true);
     }
   }, [isMoviesList, props]);
 
@@ -55,7 +53,6 @@ function Movies(props) {
         location={props.location}
         setFilms={setFilms}
         setPreloader={props.setPreloader}
-        isDisabledBtnShort={props.isDisabledBtnShort}
       ></SearchForm>
       {props.preloader ? <Preloader></Preloader> : Films}
 

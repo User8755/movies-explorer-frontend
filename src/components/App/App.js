@@ -32,7 +32,7 @@ function App() {
   const [isValid, setValid] = useState(false);
   const [errors, setErrors] = useState('');
   const [formValue, setFormValue] = useState({});
-  const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
+  
   const [islike, setLike] = useState(false);
   const [savedFilms, setSavedFilms] = useState([]);
   const [isLoading, setLoading] = useState(true);
@@ -264,8 +264,6 @@ function App() {
                 preloader={preloader}
                 setPreloader={setPreloader}
                 jwt={jwt}
-                isDisabledBtnShort={isDisabledBtnShort}
-                setDisabledBtnShort={setDisabledBtnShort}
                 savedFilms={savedFilms}
                 handleLike={handleLike}
                 islike={islike}
@@ -288,8 +286,6 @@ function App() {
                 preloader={preloader}
                 setPreloader={setPreloader}
                 jwt={jwt}
-                isDisabledBtnShort={isDisabledBtnShort}
-                setDisabledBtnShort={setDisabledBtnShort}
                 savedFilms={savedFilms}
                 setSavedFilms={setSavedFilms}
                 getSaveFilm={getSaveFilm}

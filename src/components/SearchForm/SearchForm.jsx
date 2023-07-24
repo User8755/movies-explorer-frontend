@@ -10,7 +10,6 @@ function SearchForm(props) {
     location,
     setFilms,
     setPreloader,
-    isDisabledBtnShort,
   } = props;
 
   const [isToggleBtn, setToggleBtn] = useState(false);
@@ -19,12 +18,14 @@ function SearchForm(props) {
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
   const [serch, setSerch] = useState([]);
   const [short, setShort] = useState([]);
+  const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
 
   const beatfilm = localStorage.getItem('beatfilm');
+  const search = localStorage.getItem('search');
+  const check = document.querySelector('.search-form__toggle-button')
 
   const handleToggleBtn = () => {
-    setToggleBtn(!isToggleBtn);
-    localStorage.setItem('toggle', !isToggleBtn);
+    localStorage.setItem('toggle', check.checked);
   };
 
   useEffect(() => {
@@ -96,7 +97,6 @@ function SearchForm(props) {
   const toggle = localStorage.getItem('toggle');
 
   useEffect(() => {
-    //if (location === '/movies') {
     if (toggle === 'true') {
       handleShortsFilms();
     } else {
@@ -108,7 +108,6 @@ function SearchForm(props) {
         : setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
       setTimeout(() => setPreloader(false), 1000);
     }
-    //}
   }, [location, setMoviesList, setPreloader, toggle]);
 
   useEffect(() => {
@@ -119,6 +118,7 @@ function SearchForm(props) {
     }
   }, [setFilms]);
 
+//console.log(check.checked)
   useEffect(() => {
     if (location === '/movies') {
       setSerch(JSON.parse(beatfilm));
@@ -127,7 +127,7 @@ function SearchForm(props) {
       setShort(savedFilms);
     }
   }, [beatfilm, location, savedFilms]);
-
+console.log(toggle)
   return (
     <section className='search-form'>
       <form
@@ -157,7 +157,6 @@ function SearchForm(props) {
           type='checkbox'
           className='search-form__toggle-button'
           onClick={handleToggleBtn}
-          disabled={isDisabledBtnShort}
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>
