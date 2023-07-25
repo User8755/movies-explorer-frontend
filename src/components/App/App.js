@@ -90,7 +90,7 @@ function App() {
       })
       .catch((err) => {
         setError(true);
-        setErrors(err.message);
+        setErrorMessge(err.message)
         console.log(err);
       });
   };

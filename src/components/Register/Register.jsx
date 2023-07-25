@@ -14,6 +14,7 @@ function Register(props) {
       .catch((err) => {
         props.error(true);
         props.message(err.message);
+        console.log(err)
       });
   };
 
