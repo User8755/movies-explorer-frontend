@@ -26,16 +26,8 @@ function SearchForm(props) {
   const toggle = localStorage.getItem('toggle');
 
   const handleToggleBtn = () => {
-
     localStorage.setItem('toggle', check.checked);
-    if (!check.checked || check.checked === false) {
-      localStorage.removeItem('shortsFilms');
-      setMoviesList(JSON.parse(localStorage.getItem('movies')))
-console.log(1)
-    } else {
       handleShortsFilms();
-   console.log(2)
-    }
   };
 
   useEffect(() => {
@@ -51,7 +43,7 @@ console.log(1)
   }, [beatfilm]);
 
   // поиск фильмов
-  const hendleSearchFilms = (evt) => {
+  const hendleSearchFilms = (evt, ) => {
     evt.preventDefault();
     const findFilm = [];
     localStorage.setItem('search', JSON.stringify(isInput));
@@ -59,6 +51,7 @@ console.log(1)
       if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
         setPreloader(true);
         findFilm.push(item);
+
         location === '/movies'
           ? localStorage.setItem('movies', JSON.stringify(findFilm))
           : localStorage.setItem('savedMovies', JSON.stringify(findFilm));
@@ -73,26 +66,33 @@ console.log(1)
   };
 
   // фильтр короткометражек
-  const handleShortsFilms = () => {
+  const handleShortsFilms = (mov) => {
     const shortsFilms = [];
-    short.map((item) => {
-      if (item.duration <= 40) {
-        setPreloader(true);
-        shortsFilms.push(item);
-        location === '/movies'
-          ? localStorage.setItem('shortsFilms', JSON.stringify(shortsFilms))
-          : localStorage.setItem(
-              'shortsFilmSaved',
-              JSON.stringify(shortsFilms)
-            );
-        setTimeout(() => setPreloader(false), 1000);
-        return location === '/movies'
-          ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
-          : setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
-      } else {
-        return setFilms(false);
-      }
-    });
+    localStorage.setItem('toggle', check.checked);
+    if(localStorage.getItem('toggle')==='false'){
+      setMoviesList(JSON.parse(localStorage.getItem('movies')))
+    } else {
+      mov.map((item) => {
+        if (item.duration <= 40) {
+          setPreloader(true);
+          shortsFilms.push(item);
+          location === '/movies'
+            ? localStorage.setItem('shortsFilms', JSON.stringify(shortsFilms))
+            : localStorage.setItem(
+                'shortsFilmSaved',
+                JSON.stringify(shortsFilms)
+              );
+          setTimeout(() => setPreloader(false), 1000);
+          return location === '/movies'
+            ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
+            : setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
+        } else {
+          return setFilms(false);
+        }
+      });
+    }
+    
+ 
   };
 
   const handleChange = (evt) => {
@@ -164,7 +164,7 @@ console.log(1)
         <input
           type='checkbox'
           className='search-form__toggle-button'
-          onClick={()=>handleToggleBtn()}
+          onClick={()=>handleShortsFilms(JSON.parse(localStorage.getItem('movies')))}
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>
