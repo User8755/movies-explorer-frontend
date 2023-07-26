@@ -13,7 +13,7 @@ function SearchForm(props) {
   } = props;
 
   const [isToggleBtn, setToggleBtn] = useState(true);
-  const [isInput, setInput] = useState({ search: '' });
+  const [isInput, setInput] = useState('');
   const [errors, setErrors] = useState('Введите ключевое слово');
   const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
   const [serch, setSerch] = useState([]);
@@ -41,11 +41,8 @@ function SearchForm(props) {
         .catch((err) => console.log(err));
     }
   }, [beatfilm]);
+
   const [searchRequest, setSearchRequest] = useState({ value: '' });
-
-  console.log(searchRequest);
-
-
 
   // поиск фильмов
   const hendleSearchFilms = (evt) => {
@@ -71,21 +68,28 @@ function SearchForm(props) {
     });
   };
 
-  useEffect(()=>{
-    if(localStorage.getItem('search') && location === '/movies') {
-      setInput(localStorage.getItem('search'))
-      setMoviesList(JSON.parse(localStorage.getItem('movies')))
+  useEffect(() => {
+    if (search && location === '/movies') {
+      setInput(localStorage.getItem('search'));
+      setMoviesList(JSON.parse(localStorage.getItem('movies')));
     }
-  },[location, setMoviesList])
+  }, [location, setMoviesList, search]);
 
   useEffect(() => {
-    if(location === '/movies') {
+    if (location === '/saved-movies') {
       setSearchRequest({ value: isInput });
     }
-    
   }, [isInput, location]);
 
-  // фильтр короткометражек
+  useEffect(() => {
+    if (location === '/movies') {
+      setSearchRequest({ value: isInput });
+    }
+  }, [isInput, location]);
+
+
+
+  // фильтркороткометражек
   const handleShortsFilms = (mov) => {
     const shortsFilms = [];
 
@@ -127,20 +131,6 @@ function SearchForm(props) {
     );
   };
 
-  // useEffect(() => {
-  //   if (toggle === 'true') {
-  //     setMoviesList(JSON.parse(localStorage.getItem('shortsFilm')))
-  //   } else {
-  //     localStorage.removeItem('shortsFilm');
-  //     localStorage.removeItem('shortsFilmSaved');
-  //     setPreloader(true);
-  //     location === '/movies'
-  //       ? setMoviesList(JSON.parse(localStorage.getItem('movies')))
-  //       : setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
-  //     setTimeout(() => setPreloader(false), 1000);
-  //   }
-  // }, [location, setMoviesList, setPreloader, setSavedFilms, toggle]);
-
   useEffect(() => {
     if (localStorage.getItem('movies')) {
       setShort(JSON.parse(localStorage.getItem('movies')));
@@ -157,6 +147,11 @@ function SearchForm(props) {
       setShort(savedFilms);
     }
   }, [beatfilm, location, savedFilms]);
+   useEffect(()=>{
+    location === '/movies'
+      ? localStorage.setItem('toggle', false)
+      : localStorage.setItem('toggleSaves', false);
+   },[ location])
 
   return (
     <section className='search-form'>
@@ -190,6 +185,7 @@ function SearchForm(props) {
           onClick={() =>
             handleShortsFilms(JSON.parse(localStorage.getItem('movies')))
           }
+
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>
