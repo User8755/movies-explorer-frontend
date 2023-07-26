@@ -27,7 +27,7 @@ function SearchForm(props) {
 
   const handleToggleBtn = () => {
     localStorage.setItem('toggle', check.checked);
-      handleShortsFilms();
+    handleShortsFilms();
   };
 
   useEffect(() => {
@@ -41,14 +41,20 @@ function SearchForm(props) {
         .catch((err) => console.log(err));
     }
   }, [beatfilm]);
+  const [searchRequest, setSearchRequest] = useState({ value: '' });
+
+  console.log(searchRequest);
+
+
 
   // поиск фильмов
-  const hendleSearchFilms = (evt, ) => {
+  const hendleSearchFilms = (evt) => {
     evt.preventDefault();
     const findFilm = [];
-    localStorage.setItem('search', JSON.stringify(isInput));
+    localStorage.setItem('search', isInput);
+
     serch.map((item) => {
-      if (item.nameRU.toLowerCase().includes(isInput.search.toLowerCase())) {
+      if (item.nameRU.toLowerCase().includes(isInput.toLowerCase())) {
         setPreloader(true);
         findFilm.push(item);
 
@@ -65,12 +71,30 @@ function SearchForm(props) {
     });
   };
 
+  useEffect(()=>{
+    if(localStorage.getItem('search') && location === '/movies') {
+      setInput(localStorage.getItem('search'))
+      setMoviesList(JSON.parse(localStorage.getItem('movies')))
+    }
+  },[location, setMoviesList])
+
+  useEffect(() => {
+    if(location === '/movies') {
+      setSearchRequest({ value: isInput });
+    }
+    
+  }, [isInput, location]);
+
   // фильтр короткометражек
   const handleShortsFilms = (mov) => {
     const shortsFilms = [];
-    localStorage.setItem('toggle', check.checked);
-    if(localStorage.getItem('toggle')==='false'){
-      setMoviesList(JSON.parse(localStorage.getItem('movies')))
+
+    location === '/movies'
+      ? localStorage.setItem('toggle', check.checked)
+      : localStorage.setItem('toggleSaves', check.checked);
+
+    if (localStorage.getItem('toggle') === 'false' && location === '/movies') {
+      setMoviesList(JSON.parse(localStorage.getItem('movies')));
     } else {
       mov.map((item) => {
         if (item.duration <= 40) {
@@ -85,20 +109,19 @@ function SearchForm(props) {
           setTimeout(() => setPreloader(false), 1000);
           return location === '/movies'
             ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
-            : setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
+            : setSavedFilms(
+                JSON.parse(localStorage.getItem('shortsFilmSaved'))
+              );
         } else {
           return setFilms(false);
         }
       });
     }
-    
- 
   };
 
   const handleChange = (evt) => {
-    const { name, value } = evt.target;
     setErrors(evt.target.validationMessage);
-    setInput({ [name]: value });
+    setInput(evt.target.value);
     setDisabledBtnSubmit(
       evt.target.closest('.search-form__form').checkValidity()
     );
@@ -126,7 +149,6 @@ function SearchForm(props) {
     }
   }, [setFilms]);
 
-  //console.log(check.checked)
   useEffect(() => {
     if (location === '/movies') {
       setSerch(JSON.parse(beatfilm));
@@ -152,6 +174,7 @@ function SearchForm(props) {
           onChange={handleChange}
           required
           minLength={1}
+          value={searchRequest.value || ''}
         ></input>
         <button
           className='search-form__button'
@@ -164,7 +187,9 @@ function SearchForm(props) {
         <input
           type='checkbox'
           className='search-form__toggle-button'
-          onClick={()=>handleShortsFilms(JSON.parse(localStorage.getItem('movies')))}
+          onClick={() =>
+            handleShortsFilms(JSON.parse(localStorage.getItem('movies')))
+          }
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>

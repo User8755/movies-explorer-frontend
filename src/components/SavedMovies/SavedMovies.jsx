@@ -23,7 +23,7 @@ function SavedMovies(props) {
     setDisabledBtnShort,
     savedFilms,
     setSavedFilms,
-    handleDeleteSavedCard
+    handleDeleteSavedCard,
   } = props;
 
   const [isFilms, setFilms] = useState(false);
