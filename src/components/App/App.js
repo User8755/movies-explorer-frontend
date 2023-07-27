@@ -137,6 +137,7 @@ function App() {
       .then(setSavedFilms((res) => res.filter((film) => film._id !== item)))
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
+      localStorage.setItem('savedFilms', JSON.stringify(savedFilms))
   };
 
   // useEffect(() => {

@@ -13,7 +13,7 @@ function SearchForm(props) {
   } = props;
 
   const [isInput, setInput] = useState('');
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState('Введите ключевое слово');
   const [serch, setSerch] = useState([]);
 
   const beatfilm = localStorage.getItem('beatfilm');
@@ -123,17 +123,18 @@ function SearchForm(props) {
       }
     }
   };
+const input = document.querySelector('.search-form__input')
+console.log(input)
 
   const handleChange = (evt) => {
-    if (evt.target.value.length === 0) {
-      setErrors('Введите ключевое слово');
-    } else {
-      setErrors('');
-    }
-    console.log(evt.target.value.length);
-
     setInput(evt.target.value);
   };
+
+  useEffect(()=>{
+    if(isInput) {
+      setErrors('')
+    }
+  },[isInput])
 
   useEffect(() => {
     if (location === '/movies') {
@@ -149,12 +150,12 @@ function SearchForm(props) {
     }
   }, [setMoviesList, toggle, location]);
 
-  useEffect(() => {
-    if (JSON.parse(toggleSaves) === true && location === '/saved-movies') {
-      console.log(JSON.parse(localStorage.getItem('shortsFilmSaved')))
-      setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
-    }
-  }, [setSavedFilms, toggleSaves, location]);
+  // useEffect(() => {
+  //   if (JSON.parse(toggleSaves) === true && location === '/saved-movies') {
+  //     console.log(JSON.parse(localStorage.getItem('shortsFilmSaved')))
+  //     setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
+  //   }
+  // }, [setSavedFilms, toggleSaves, location]);
 
   return (
     <section className='search-form'>
