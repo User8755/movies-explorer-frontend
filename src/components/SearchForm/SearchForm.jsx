@@ -12,23 +12,15 @@ function SearchForm(props) {
     setPreloader,
   } = props;
 
-  const [isToggleBtn, setToggleBtn] = useState(true);
   const [isInput, setInput] = useState('');
-  const [errors, setErrors] = useState('Введите ключевое слово');
-  const [isDisabledBtnSubmit, setDisabledBtnSubmit] = useState(false);
+  const [errors, setErrors] = useState('');
   const [serch, setSerch] = useState([]);
-  const [short, setShort] = useState([]);
-  const [isDisabledBtnShort, setDisabledBtnShort] = useState(true);
 
   const beatfilm = localStorage.getItem('beatfilm');
   const search = localStorage.getItem('search');
   const check = document.querySelector('.search-form__toggle-button');
   const toggle = localStorage.getItem('toggle');
-
-  const handleToggleBtn = () => {
-    localStorage.setItem('toggle', check.checked);
-    handleShortsFilms();
-  };
+  const toggleSaves = localStorage.getItem('toggleSaves');
 
   useEffect(() => {
     if (!localStorage.getItem('beatfilm')) {
@@ -87,71 +79,82 @@ function SearchForm(props) {
     }
   }, [isInput, location]);
 
-
-
-  // фильтркороткометражек
+  // фильтр короткометражек
   const handleShortsFilms = (mov) => {
     const shortsFilms = [];
 
+    if (mov === null) {
+      setFilms(false);
+    }
     location === '/movies'
       ? localStorage.setItem('toggle', check.checked)
       : localStorage.setItem('toggleSaves', check.checked);
-
     if (localStorage.getItem('toggle') === 'false' && location === '/movies') {
       setMoviesList(JSON.parse(localStorage.getItem('movies')));
+    } else if (
+      localStorage.getItem('toggleSaves') === 'false' &&
+      location === '/saved-movies'
+    ) {
+      setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
     } else {
-      mov.map((item) => {
-        if (item.duration <= 40) {
-          setPreloader(true);
-          shortsFilms.push(item);
-          location === '/movies'
-            ? localStorage.setItem('shortsFilms', JSON.stringify(shortsFilms))
-            : localStorage.setItem(
-                'shortsFilmSaved',
-                JSON.stringify(shortsFilms)
-              );
-          setTimeout(() => setPreloader(false), 1000);
-          return location === '/movies'
-            ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
-            : setSavedFilms(
-                JSON.parse(localStorage.getItem('shortsFilmSaved'))
-              );
-        } else {
-          return setFilms(false);
-        }
-      });
+      if (mov === null) {
+        setFilms(false);
+      } else {
+        mov.map((item) => {
+          if (item.duration <= 40) {
+            setPreloader(true);
+            shortsFilms.push(item);
+            location === '/movies'
+              ? localStorage.setItem('shortsFilms', JSON.stringify(shortsFilms))
+              : localStorage.setItem(
+                  'shortsFilmSaved',
+                  JSON.stringify(shortsFilms)
+                );
+            setTimeout(() => setPreloader(false), 1000);
+            return location === '/movies'
+              ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
+              : setSavedFilms(
+                  JSON.parse(localStorage.getItem('shortsFilmSaved'))
+                );
+          } else {
+            return setFilms(false);
+          }
+        });
+      }
     }
   };
 
   const handleChange = (evt) => {
-    setErrors(evt.target.validationMessage);
-    setInput(evt.target.value);
-    setDisabledBtnSubmit(
-      evt.target.closest('.search-form__form').checkValidity()
-    );
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem('movies')) {
-      setShort(JSON.parse(localStorage.getItem('movies')));
+    if (evt.target.value.length === 0) {
+      setErrors('Введите ключевое слово');
     } else {
-      setFilms(false);
+      setErrors('');
     }
-  }, [setFilms]);
+    console.log(evt.target.value.length);
+
+    setInput(evt.target.value);
+  };
 
   useEffect(() => {
     if (location === '/movies') {
       setSerch(JSON.parse(beatfilm));
     } else {
       setSerch(savedFilms);
-      setShort(savedFilms);
     }
   }, [beatfilm, location, savedFilms]);
-   useEffect(()=>{
-    location === '/movies'
-      ? localStorage.setItem('toggle', false)
-      : localStorage.setItem('toggleSaves', false);
-   },[ location])
+
+  useEffect(() => {
+    if (JSON.parse(toggle) === true && location === '/movies') {
+      setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')));
+    }
+  }, [setMoviesList, toggle, location]);
+
+  useEffect(() => {
+    if (JSON.parse(toggleSaves) === true && location === '/saved-movies') {
+      console.log(JSON.parse(localStorage.getItem('shortsFilmSaved')))
+      setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
+    }
+  }, [setSavedFilms, toggleSaves, location]);
 
   return (
     <section className='search-form'>
@@ -171,11 +174,7 @@ function SearchForm(props) {
           minLength={1}
           value={searchRequest.value || ''}
         ></input>
-        <button
-          className='search-form__button'
-          type='submit'
-          disabled={!isDisabledBtnSubmit}
-        ></button>
+        <button className='search-form__button' type='submit'></button>
         <span className='search-form__span'>{errors}</span>
       </form>
       <div className='search-form__container'>
@@ -183,9 +182,17 @@ function SearchForm(props) {
           type='checkbox'
           className='search-form__toggle-button'
           onClick={() =>
-            handleShortsFilms(JSON.parse(localStorage.getItem('movies')))
+            handleShortsFilms(
+              location === '/movies'
+                ? JSON.parse(localStorage.getItem('movies'))
+                : JSON.parse(localStorage.getItem('savedFilms'))
+            )
           }
-
+          defaultChecked={
+            location === '/movies'
+              ? JSON.parse(localStorage.getItem('toggle'))
+              : JSON.parse(localStorage.getItem('toggleSaves'))
+          }
         ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>

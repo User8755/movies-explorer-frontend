@@ -32,7 +32,7 @@ function App() {
   const [isValid, setValid] = useState(false);
   const [errors, setErrors] = useState('');
   const [formValue, setFormValue] = useState({});
-  
+
   const [islike, setLike] = useState(false);
   const [savedFilms, setSavedFilms] = useState([]);
   const [isLoading, setLoading] = useState(true);
@@ -90,7 +90,7 @@ function App() {
       })
       .catch((err) => {
         setError(true);
-        setErrorMessge(err.message)
+        setErrorMessge(err.message);
         console.log(err);
       });
   };
@@ -112,18 +112,16 @@ function App() {
     evt.preventDefault();
   };
 
-  const saveMovies = useCallback((item) => {
-    setSavedFilms(item);
-    localStorage.setItem('savedFilms', JSON.stringify(item));
-  }, []);
-
   const getSaveFilm = useCallback(() => {
     api
       .getSaveFilm(jwt)
-      .then((res) => saveMovies(res))
+      .then((res) => {
+        setSavedFilms(res);
+        localStorage.setItem('savedFilms', JSON.stringify(res));
+      })
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
-  }, [jwt, saveMovies]);
+  }, [jwt]);
 
   useEffect(() => {
     if (isLogin) {
@@ -132,7 +130,7 @@ function App() {
   }, [getSaveFilm, isLogin]);
 
   const handleDeleteSavedCard = (item) => {
-    console.log(item)
+    console.log(item);
     location === '/saved-movies' ? setPreloader(true) : setPreloader(false);
     api
       .deleteSaveFilm(item, jwt)
@@ -141,10 +139,12 @@ function App() {
       .finally(setTimeout(() => setPreloader(false), 1000));
   };
 
-  useEffect(() => {
-    isLogin &&
-      localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
-  }, [savedFilms, isLogin]);
+  // useEffect(() => {
+  //   if(isLogin) {
+  //     localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
+  //   }
+
+  // }, [savedFilms, isLogin]);
 
   const handleLike = (card, like, cadId) => {
     if (!like) {
@@ -153,10 +153,8 @@ function App() {
         .createSaveFilm(card, jwt)
         .then((res) => {
           setSavedFilms([...savedFilms, res]);
-
         })
         .catch((res) => console.log(res));
-        console.log(savedFilms)
     } else {
       setLike(false);
       handleDeleteSavedCard(cadId);
@@ -290,6 +288,7 @@ function App() {
                 setSavedFilms={setSavedFilms}
                 getSaveFilm={getSaveFilm}
                 handleDeleteSavedCard={handleDeleteSavedCard}
+                
               />
             }
           ></Route>
