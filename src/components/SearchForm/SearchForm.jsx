@@ -20,7 +20,7 @@ function SearchForm(props) {
   const search = localStorage.getItem('search');
   const check = document.querySelector('.search-form__toggle-button');
   const toggle = localStorage.getItem('toggle');
-  const toggleSaves = localStorage.getItem('toggleSaves');
+  
 
   useEffect(() => {
     if (!localStorage.getItem('beatfilm')) {
