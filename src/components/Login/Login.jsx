@@ -1,49 +1,17 @@
 import './Login.css';
 import profileLogo from '../../images/ProfileLogo.svg';
-import auth from '../../utils/Auth';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import Form from '../Form/Form';
 
 function Login(props) {
-  const { isLogin, error, message, location } = props;
+  const {
+    location,
+    isValid,
+    handleChange,
+    errors,
+    handlerLogin,
+  } = props;
 
-  const navigate = useNavigate();
-  const [errors, setErrors] = useState('');
-  const [formValue, setFormValue] = useState({
-    email: '',
-    password: '',
-  });
-  const [isvalid, setValid] = useState(false);
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setErrors(evt.target.validationMessage);
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-    setValid(evt.target.validity.valid);
-  };
-
-  const hendleSubmit = (evt) => {
-    evt.preventDefault();
-    auth
-      .signin(formValue)
-      .then((res) => {
-        if (res) {
-          localStorage.setItem('token', res.token);
-          isLogin(true);
-          navigate('/movies', { replace: true });
-        }
-      })
-      .catch((err) => {
-        error(true);
-        message(err.message);
-        console.log(err);
-      });
-  };
-  
   return (
     <section className='login'>
       <NavLink to='/'>
@@ -55,9 +23,9 @@ function Login(props) {
       </NavLink>
       <h2 className='login__title'>Рады видеть!</h2>
       <Form
-        submit={hendleSubmit}
+        submit={(evt) => handlerLogin(evt)}
         errors={errors}
-        isvalid={isvalid}
+        isValid={isValid}
         location={location}
         btnText={'Войти'}
       >
@@ -69,6 +37,7 @@ function Login(props) {
             placeholder='Укажите Вашу почту'
             name='email'
             autoComplete='off'
+            pattern='^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
             required
             onChange={handleChange}
           ></input>
@@ -87,7 +56,6 @@ function Login(props) {
             onChange={handleChange}
           ></input>
         </label>
-
       </Form>
       <nav className='login__nav'>
         <span className='login__span'>Ещё не зарегистрированы?</span>

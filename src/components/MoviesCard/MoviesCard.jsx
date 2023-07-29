@@ -1,51 +1,23 @@
 import './MoviesCard.css';
-import { useState, useEffect } from 'react';
-import api from '../../utils/Api';
-import ButtonLike from '../ButtonLike/ButtonLike';
 import ButtonDelete from '../ButtonDelete/ButtonDelete';
-import { useLocation } from 'react-router-dom';
+
 function MoviesCard(props) {
-  const { card } = props;
-  const [islike, setLike] = useState(false);
-  const [film, setFilm] = useState(false);
-  const [loc, setLoc] = useState(false);
-  const location = useLocation();
+  const {
+    card,
+    moviesApiUrl,
+    location,
+    handleLike,
+    savedFilms,
+    handleDeleteSavedCard,
+  } = props;
 
-  useEffect(() => {
-    if (location.pathname === '/movies') {
-      setLoc(true);
-    }
-  }, [location.pathname]);
+  const likeMovie = savedFilms
+    ? savedFilms.some((item) => item.movieId === card.id)
+    : '';
 
-const handleDeleteSavedCard = (item) =>{
-  api
-  .deleteSaveFilm(item._id)
-  .then((res) => setFilm(res))
-  .catch((res) => console.log(res));
-}
-
-  const handleLike = () => {
-    if (!islike) {
-      setLike(!islike);
-      localStorage.setItem(card.movieId, true);
-      api
-        .createSaveFilm(card)
-        .then((res) => {
-          setFilm(res);
-        })
-        .catch((res) => console.log(res));
-    } else {
-      setLike(!islike);
-      localStorage.removeItem(card.movieId);
-      handleDeleteSavedCard(film)
-    }
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem(card.movieId)) {
-      setLike(true);
-    }
-  }, [card.movieId]);
+  const likeMovieID = savedFilms
+    ? savedFilms.find((item) => item.movieId === card.id)
+    : false;
 
   return (
     <article className='movies-cards'>
@@ -56,19 +28,28 @@ const handleDeleteSavedCard = (item) =>{
         className='movies-cards__link'
       >
         <img
-          src={card.image}
+          src={
+            location === '/movies'
+              ? `${moviesApiUrl}/${card.image.url}`
+              : `${card.image}`
+          }
           alt={card.nameRU}
           className='movies-cards__image'
         ></img>
       </a>
       <div className='movies-cards__description'>
         <h2 className='movies-cards__title'>{card.nameRU}</h2>
-        {loc ? 
-          <ButtonLike like={handleLike} islike={islike}></ButtonLike>
-         : 
-         <ButtonDelete del={()=>handleDeleteSavedCard(card)}></ButtonDelete >
-          
-        }
+        {location === '/movies' ? (
+          <button
+            type='button'
+            className={likeMovie ? 'button-like-active' : 'button-like'}
+            onClick={() => handleLike(card, likeMovie, likeMovieID?._id)}
+          ></button>
+        ) : (
+          <ButtonDelete
+            del={() => handleDeleteSavedCard(card._id)}
+          ></ButtonDelete>
+        )}
       </div>
       <span className='movies-cards__duration'>{`${Math.floor(
         card.duration / 60

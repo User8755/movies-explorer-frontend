@@ -3,3 +3,5 @@
 гит https://github.com/User8755/movies-explorer-frontend/tree/level-2
 
 сайт https://movies.user87.nomoredomains.rocks/
+
+пул реквест https://github.com/User8755/movies-explorer-frontend/pull/3

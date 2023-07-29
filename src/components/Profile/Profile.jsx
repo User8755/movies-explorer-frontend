@@ -9,54 +9,75 @@ import NavButton from '../NavButton/NavButton';
 import Form from '../Form/Form';
 
 function Profile(props) {
-  const { userInfo, lowWidth, modal } = props;
+  const { userInfo, lowWidth, modal, error, message, jwt, setLogin } = props;
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [values, setValues] = useState({});
   const [errors, setErrors] = useState('');
+  const [isValid, setValid] = useState(false);
+  const [formValue, setFormValue] = useState({
+    name: '',
+    email: '',
+  });
 
-  useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-  }, [currentUser]);
-
-  useEffect(() => {
-    setValues({
-      name,
-      email,
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setErrors(evt.target.validationMessage);
+    setFormValue({
+      ...formValue,
+      [name]: value,
     });
-  }, [email, name, setValues]);
+
+    if (
+      formValue.name !== currentUser.name ||
+      formValue.email !== currentUser.email
+    ) {
+      setValid(evt.target.closest('.form').checkValidity());
+    } else {
+      setValid(true);
+    }
+
+    //setValid(evt.target.closest('.form').checkValidity());
+  };
+
+  // useEffect(() => {
+  //   if (
+  //     formValue.name !== currentUser.name ||
+  //     formValue.email !== currentUser.email
+  //   ) {
+  //     setValid(false);
+  //   } else {
+  //     setValid(true);
+  //   }
+  // }, [currentUser, formValue, setValid]);
+
+  useEffect(() => {
+    setFormValue({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [currentUser.email, currentUser.name, setFormValue]);
 
   const handleUpdateUser = () => {
     api
-      .updateUserInfo(values)
-      .then((res) => userInfo(res))
+      .updateUserInfo(formValue, jwt)
+      .then((res) => userInfo(res), error(true), message('Данные обновлены'))
       .catch((err) => {
         props.error(true);
         props.message(err.message);
+        error(true);
+        message('Произошла ошибка, данные не обновлены');
       });
   };
 
   const hendleSignOut = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
+    setLogin(false);
     navigate('/', { replace: true });
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     handleUpdateUser();
-  };
-
-  const handleChangeName = (evt) => {
-    setName(evt.target.value);
-    setErrors(evt.target.validationMessage);
-  };
-
-  const handleChangeEmail = (evt) => {
-    setEmail(evt.target.value);
-    setErrors(evt.target.validationMessage);
   };
 
   return (
@@ -67,7 +88,13 @@ function Profile(props) {
       </Header>
       <section className='profile'>
         <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
-        <Form submit={handleSubmit} btnText={'Редактировать'} errors={errors}>
+        <Form
+          submit={handleSubmit}
+          btnText={'Редактировать'}
+          errors={errors}
+          isValid={isValid}
+          formValue={formValue}
+        >
           <label className='form__lable'>
             Имя
             <input
@@ -78,8 +105,8 @@ function Profile(props) {
               minLength={2}
               maxLength={30}
               required
-              value={name || ''}
-              onChange={handleChangeName}
+              value={formValue.name || ''}
+              onChange={handleChange}
               autoComplete='off'
             ></input>
           </label>
@@ -90,12 +117,12 @@ function Profile(props) {
               type='email'
               name='email'
               placeholder='Введите email'
+              pattern='^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
               required
-              value={email || ''}
-              onChange={handleChangeEmail}
+              value={formValue.email || ''}
+              onChange={handleChange}
             ></input>
           </label>
-          
         </Form>
         <button className='profile__signout' onClick={hendleSignOut}>
           Выйти из аккаунта

@@ -12,7 +12,7 @@
   object-fit: contain;
   object-position: center;
   max-width: 364px;
-  max-height: 203px;
+  height: 203px;
   margin: 0 auto;
   display: block;
 }
@@ -46,6 +46,28 @@
   line-height: 13px;
   color: #8b8b8b;
   margin: 17px 0 0 17px;
+}
+
+.button-like {
+  background: transparent;
+  border: none;
+  background-image: url('../../images/buttonLike.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  min-width: 20px;
+  min-height: 14px;
+  padding: 0;
+}
+
+.button-like-active {
+  background: transparent;
+  border: none;
+  background-image: url('../../images/likeActive.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  min-width: 20px;
+  min-height: 14px;
+  padding: 0;
 }
 
 @media screen and (max-width: 1260px) {

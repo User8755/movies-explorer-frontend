@@ -3,52 +3,79 @@ import { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList(props) {
-  const { film, width } = props;
-  const [isMoreMovies, setsMoreMovies] = useState(false);
-  const [countFilm,setCountFilm] = useState(0)
+  const {
+    isMoviesList,
+    width,
+    moviesApiUrl,
+    location,
+    islike,
+    jwt,
+    handleLike,
+  } = props;
 
-useEffect(()=>{
-  if(width <= 320) {
-    return setCountFilm(5)
-  }
-  if(width <=768) {
-    return setCountFilm(8)
-  }
-  if(width >=1280) {
-    return setCountFilm(12)
-  }
-}, [width])
-console.log(countFilm)
+  const [isMoreMovies, setsMoreMovies] = useState(true);
+  const [countFilm, setCountFilm] = useState(0);
+  const [countMoreFilm, setCountMoreFilm] = useState(0);
+  const [isFilmsList, setFilmsList] = useState([]);
+
   const handleClickButton = () => {
-    setsMoreMovies(!isMoreMovies);
+    setFilmsList(isMoviesList.slice(0, isFilmsList.length + countMoreFilm));
   };
 
-  const sliceFilm = film.slice(0, countFilm);
-  const sliceFilmLen = sliceFilm.length;
+  useEffect(() => {
+    setFilmsList(isMoviesList.slice(0, countFilm));
+  }, [countFilm, isMoviesList]);
 
-  const addMoreFilm = () => {
-    if (isMoreMovies) {
-      const moreFilmCard = film.slice(sliceFilmLen, sliceFilmLen + 3);
-      return (
-        <>
-          {moreFilmCard.map((film) => {
-            return <MoviesCard card={film} key={film.movieId}></MoviesCard>;
-          })}
-        </>
-      );
+  useEffect(() => {
+    if (width <= 1136) {
+      setCountFilm(8);
+      setCountMoreFilm(2);
     }
-  };
+    if (width >= 1137) {
+      setCountFilm(12);
+      setCountMoreFilm(3);
+    }
+    if (width <= 767) {
+      setCountFilm(5);
+      setCountMoreFilm(1);
+    }
+  }, [width]);
+
+  useEffect(() => {
+    if (isMoviesList.length === isFilmsList.length) {
+      setsMoreMovies(false);
+    } else {
+      setsMoreMovies(true);
+    }
+  }, [isMoviesList.length, isFilmsList.length]);
 
   return (
     <>
       <section className='movies-card-list'>
         <div className='movies-card-list__list'>
-          {sliceFilm.map((film) => {
-            return <MoviesCard card={film} key={film.movieId}></MoviesCard>;
+          {isFilmsList.map((film) => {
+            return (
+              <MoviesCard
+                card={film}
+                key={film.id}
+                moviesApiUrl={moviesApiUrl}
+                location={location}
+                jwt={jwt}
+                handleLike={handleLike}
+                islike={islike}
+                savedFilms={props.savedFilms}
+              ></MoviesCard>
+            );
           })}
-          {addMoreFilm()}
         </div>
-        <button className='movies-card-list__button' onClick={handleClickButton}>
+        <button
+          className={
+            isMoreMovies
+              ? 'movies-card-list__button'
+              : 'movies-card-list__button-disabled'
+          }
+          onClick={handleClickButton}
+        >
           Еще
         </button>
       </section>

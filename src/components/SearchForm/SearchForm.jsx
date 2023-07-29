@@ -1,19 +1,209 @@
 import './SearchForm.css';
+import films from '../../utils/MoviesApi';
+import { useEffect, useState } from 'react';
 
-function SearchForm() {
+function SearchForm(props) {
+  const {
+    savedFilms,
+    setShort,
+    setSavedFilms,
+    setMoviesList,
+    location,
+    setFilms,
+    setPreloader,
+  } = props;
+
+  const [isInput, setInput] = useState('');
+  const [errors, setErrors] = useState('Введите ключевое слово');
+  const [serch, setSerch] = useState([]);
+
+  const beatfilm = localStorage.getItem('beatfilm');
+  const search = localStorage.getItem('search');
+  const check = document.querySelector('.search-form__toggle-button');
+  const toggle = localStorage.getItem('toggle');
+
+  const [toggleSaves, setToggleSaves] = useState(false);
+  useEffect(() => {
+    if (location === '/saved-movies') {
+      localStorage.setItem('toggleSaves', false);
+      setToggleSaves(false);
+      // setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')))
+    }
+  }, [location, setSavedFilms]);
+
+  useEffect(() => {
+    if (!localStorage.getItem('beatfilm')) {
+      films
+        .getFilms()
+        .then((res) => {
+          setSerch(res);
+          localStorage.setItem('beatfilm', JSON.stringify(res));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [beatfilm]);
+
+  const [searchRequest, setSearchRequest] = useState({ value: '' });
+
+  // поиск фильмов
+  const hendleSearchFilms = (evt) => {
+    evt.preventDefault();
+    const findFilm = [];
+    location === '/movies'
+      ? localStorage.setItem('search', isInput)
+      : localStorage.setItem('searchSave', isInput);
+
+    serch.map((item) => {
+      if (item.nameRU.toLowerCase().includes(isInput.toLowerCase())) {
+        setPreloader(true);
+        findFilm.push(item);
+
+        location === '/movies'
+          ? localStorage.setItem('movies', JSON.stringify(findFilm))
+          : localStorage.setItem('savedMovies', JSON.stringify(findFilm));
+        setTimeout(() => setPreloader(false), 1000);
+        return location === '/movies'
+          ? setMoviesList(JSON.parse(localStorage.getItem('movies')))
+          : setSavedFilms(JSON.parse(localStorage.getItem('savedMovies')));
+      } else {
+        return setFilms(false);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (search && location === '/movies') {
+      setInput(localStorage.getItem('search'));
+      setMoviesList(JSON.parse(localStorage.getItem('movies')));
+    }
+  }, [location, setMoviesList, search]);
+
+  useEffect(() => {
+    if (location === '/saved-movies') {
+      setSearchRequest({ value: isInput });
+    }
+  }, [isInput, location]);
+
+  useEffect(() => {
+    if (location === '/movies') {
+      setSearchRequest({ value: isInput });
+    }
+  }, [isInput, location]);
+
+  console.log();
+  // фильтр короткометражек
+  const handleShortsFilms = (mov) => {
+    const shortsFilms = [];
+
+    if (mov === null) {
+      setFilms(false);
+    }
+    location === '/movies'
+      ? localStorage.setItem('toggle', check.checked)
+      : localStorage.setItem('toggleSaves', check.checked);
+    if (localStorage.getItem('toggle') === 'false' && location === '/movies') {
+      setMoviesList(JSON.parse(localStorage.getItem('movies')));
+    } else if (
+      localStorage.getItem('toggleSaves') === 'false' &&
+      location === '/saved-movies'
+    ) {
+      setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')));
+    } else {
+      if (mov === null) {
+        setFilms(false);
+      } else {
+        mov.map((item) => {
+          if (item.duration <= 40) {
+            setPreloader(true);
+            shortsFilms.push(item);
+            location === '/movies'
+              ? localStorage.setItem('shortsFilms', JSON.stringify(shortsFilms))
+              : localStorage.setItem(
+                  'shortsFilmSaved',
+                  JSON.stringify(shortsFilms)
+                );
+            //setShort(JSON.parse(localStorage.getItem('shortsFilmSaved')))
+            setTimeout(() => setPreloader(false), 1000);
+            return location === '/movies'
+              ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
+              : setShort(JSON.parse(localStorage.getItem('shortsFilmSaved')));
+          } else {
+            return setFilms(false);
+          }
+        });
+      }
+    }
+  };
+
+  const handleChange = (evt) => {
+    setInput(evt.target.value);
+  };
+
+  useEffect(() => {
+    if (isInput) {
+      setErrors('');
+    }
+  }, [isInput]);
+
+  useEffect(() => {
+    if (location === '/movies') {
+      setSerch(JSON.parse(beatfilm));
+    } else {
+      setSerch(savedFilms);
+    }
+  }, [beatfilm, location, savedFilms]);
+
+  useEffect(() => {
+    if (JSON.parse(toggle) === true && location === '/movies') {
+      setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')));
+    }
+  }, [setMoviesList, toggle, location]);
+
+  // useEffect(() => {
+  //   if (JSON.parse(toggleSaves) === true && location === '/saved-movies') {
+  //     console.log(JSON.parse(localStorage.getItem('shortsFilmSaved')))
+  //     setSavedFilms(JSON.parse(localStorage.getItem('shortsFilmSaved')));
+  //   }
+  // }, [setSavedFilms, toggleSaves, location]);
+
   return (
     <section className='search-form'>
-      <form className='search-form__form'>
+      <form
+        className='search-form__form'
+        onSubmit={hendleSearchFilms}
+        minLength={1}
+        noValidate
+      >
         <input
           className='search-form__input'
           placeholder='Фильм'
           type='text'
+          name='search'
+          onChange={handleChange}
           required
+          minLength={1}
+          value={searchRequest.value || ''}
         ></input>
-        <button className='search-form__button'></button>
+        <button className='search-form__button' type='submit'></button>
+        <span className='search-form__span'>{errors}</span>
       </form>
       <div className='search-form__container'>
-        <input type='checkbox' className='search-form__toggle-button'></input>
+        <input
+          type='checkbox'
+          className='search-form__toggle-button'
+          onClick={() =>
+            handleShortsFilms(
+              location === '/movies'
+                ? JSON.parse(localStorage.getItem('movies'))
+                : JSON.parse(localStorage.getItem('savedFilms'))
+            )
+          }
+          defaultChecked={
+            location === '/movies'
+              ? JSON.parse(localStorage.getItem('toggle'))
+              : toggleSaves
+          }
+        ></input>
         <label className='search-form__lable'>Короткометражки</label>
       </div>
     </section>

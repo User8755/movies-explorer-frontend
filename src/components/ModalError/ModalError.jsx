@@ -2,7 +2,6 @@ import './ModalError.css';
 
 function ModalError(props) {
   const { active, setActive, textMessage } = props;
-
   return (
     <div
       className={active ? 'modal-error-active' : 'modal-error'}

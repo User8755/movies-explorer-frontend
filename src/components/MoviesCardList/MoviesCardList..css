@@ -1,7 +1,5 @@
-
-
 .movies-card-list {
-  margin-bottom:  80px;
+  margin-bottom: 80px;
 }
 
 .movies-card-list__list {
@@ -29,8 +27,16 @@
   display: block;
 }
 
+.movies-card-list__button:active {
+  background: #444242;
+}
+
+.movies-card-list__button-disabled {
+  display: none;
+}
+
 @media screen and (max-width: 1260px) {
-  .movies-card-list{
+  .movies-card-list {
     margin-left: 0;
     margin-right: 0;
     margin-bottom: -29px;
@@ -62,4 +68,3 @@
     margin-bottom: 57px;
   }
 }
-

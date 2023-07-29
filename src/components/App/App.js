@@ -1,23 +1,23 @@
-import { useEffect, useState, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import '../../vendor/normalize.css';
 import './App.css';
 import Login from '../Login/Login.jsx';
 import Movies from '../Movies/Movies';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 import Profile from '../Profile/Profile';
-import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
 import Register from '../Register/Register.jsx';
 import { CurrentUserContext } from '../Contexts/CurrentUserContext';
 import Main from '../Main/Main';
 import api from '../../utils/Api';
-import tempFilm from '../../utils/tempFilms';
 import '../../vendor/font/Inter_Web/inter.css';
 import SavedMovies from '../SavedMovies/SavedMovies.jsx';
 import useResize from '../../hook/useResize';
 import ModalMenu from '../ModalMenu/ModalMenu';
 import ModalError from '../ModalError/ModalError';
 import auth from '../../utils/Auth';
+import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement.jsx';
+import Preloader from '../Preloader/Preloader';
 
 function App() {
   const [isMoreInfo, setMoreInfo] = useState(false);
@@ -26,19 +26,22 @@ function App() {
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessge, setErrorMessge] = useState('');
+  const [isLogin, setLogin] = useState(false);
+  const [isFoundFilm, setFoundFilm] = useState([]);
+  const [preloader, setPreloader] = useState(false);
+  const [isValid, setValid] = useState(false);
+  const [errors, setErrors] = useState('');
+  const [formValue, setFormValue] = useState({});
 
-  const location = useLocation().pathname;
-  const component = useRef();
-
-  const { width } = useResize(component);
-
-  const handleMoreInfo = () => {
-    setMoreInfo(!isMoreInfo);
-  };
+  const [islike, setLike] = useState(false);
+  const [savedFilms, setSavedFilms] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   const jwt = localStorage.getItem('token');
-
-  const [isLogin, setLogin] = useState(false);
+  const location = useLocation().pathname;
+  const component = useRef();
+  const moviesApiUrl = 'https://api.nomoreparties.co/';
+  const { width } = useResize(component);
 
   useEffect(() => {
     if (width < 770) {
@@ -47,6 +50,54 @@ function App() {
       setWidth(false);
     }
   }, [width]);
+
+  useEffect(() => {
+    if (jwt) {
+      auth
+        .tokenValid()
+        .then(() => {
+          setLogin(true);
+        })
+        .catch((err) => console.log(err.status))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [jwt]);
+
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setErrors(evt.target.validationMessage);
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+
+    setValid(evt.target.closest('.form').checkValidity());
+  };
+  const navigate = useNavigate();
+
+  const handlerLogin = (evt) => {
+    evt.preventDefault();
+    auth
+      .signin(formValue)
+      .then((res) => {
+        if (res) {
+          localStorage.setItem('token', res.token);
+          setLogin(true);
+          navigate('/movies', { replace: true });
+        }
+      })
+      .catch((err) => {
+        setError(true);
+        setErrorMessge(err.message);
+        console.log(err);
+      });
+  };
+
+  const handleMoreInfo = () => {
+    setMoreInfo(!isMoreInfo);
+  };
 
   useEffect(() => {
     api
@@ -61,14 +112,64 @@ function App() {
     evt.preventDefault();
   };
 
-  useEffect(() => {
-    auth
-      .tokenValid()
-      .then(() => {
-        setLogin(true);
+  const getSaveFilm = useCallback(() => {
+    api
+      .getSaveFilm(jwt)
+      .then((res) => {
+        setSavedFilms(res);
+        localStorage.setItem('savedFilms', JSON.stringify(res));
       })
-      .catch((err) => console.log(err.status));
-  }, []);
+      .catch((err) => console.log(err))
+      .finally(setTimeout(() => setPreloader(false), 1000));
+  }, [jwt]);
+
+  useEffect(() => {
+    if (isLogin) {
+      getSaveFilm();
+    }
+  }, [getSaveFilm, isLogin]);
+
+  const handleDelFilm = (item) => {
+    setSavedFilms((res) => res.filter((film) => film._id !== item));
+    setLike(false);
+    localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
+  };
+
+  const handleDeleteSavedCard = (item) => {
+    console.log(item);
+    location === '/saved-movies' ? setPreloader(true) : setPreloader(false);
+    api
+      .deleteSaveFilm(item, jwt)
+      .then(() => handleDelFilm(item))
+      .catch((err) => console.log(err))
+      .finally(setTimeout(() => setPreloader(false), 1000));
+    localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
+  };
+
+  useEffect(() => {
+    if (isLogin) {
+      localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
+    }
+  }, [savedFilms, isLogin]);
+
+  const handleLike = (card, like, cadId) => {
+    if (!like) {
+      setLike(true);
+      api
+        .createSaveFilm(card, jwt)
+        .then((res) => {
+          setSavedFilms([...savedFilms, res]);
+        })
+        .catch((res) => console.log(res));
+    } else {
+      setLike(false);
+      handleDeleteSavedCard(cadId);
+    }
+  };
+
+  if (isLoading) {
+    return <Preloader />;
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -92,6 +193,11 @@ function App() {
                 error={setError}
                 message={setErrorMessge}
                 location={location}
+                errors={errors}
+                isValid={isValid}
+                formValue={formValue}
+                handleChange={handleChange}
+                handlerLogin={handlerLogin}
               ></Register>
             }
           ></Route>
@@ -100,16 +206,18 @@ function App() {
             element={
               <Login
                 location={location}
-                isLogin={setLogin}
-                error={setError}
-                message={setErrorMessge}
+                errors={errors}
+                isValid={isValid}
+                handleChange={handleChange}
+                handlerLogin={handlerLogin}
               ></Login>
             }
           ></Route>
           <Route
             path='/profile'
             element={
-              <Profile
+              <ProtectedRouteElement
+                element={Profile}
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
@@ -117,51 +225,75 @@ function App() {
                 modal={setModal}
                 error={setError}
                 message={setErrorMessge}
-              ></Profile>
-              // <ProtectedRouteElement
-              //   loggedIn={isLogin}
-              //   element={Profile}
-              //   submit={handleSubmit}
-              //   userInfo={setCurrentUser}
-              //   lowWidth={isWidth}
-              // />
+                jwt={jwt}
+                setLogin={setLogin}
+                errors={errors}
+                isValid={isValid}
+                formValue={formValue}
+                handleChange={handleChange}
+                setValid={setValid}
+                setFormValue={setFormValue}
+              />
             }
           ></Route>
           <Route
             path='/'
             element={
-              <Main MoreInfo={handleMoreInfo} isMoreInfo={isMoreInfo}></Main>
+              <Main
+                MoreInfo={handleMoreInfo}
+                isMoreInfo={isMoreInfo}
+                location={location}
+                isLogin={isLogin}
+                lowWidth={isWidth}
+                modal={setModal}
+              ></Main>
             }
           ></Route>
           <Route
             path='/movies'
             element={
-              <Movies
+              <ProtectedRouteElement
+                element={Movies}
                 loggedIn={isLogin}
                 submit={handleSubmit}
                 userInfo={setCurrentUser}
-                film={tempFilm}
                 lowWidth={isWidth}
                 modal={setModal}
                 width={width}
-              ></Movies>
-              // <ProtectedRouteElement
-              //   loggedIn={isLogin}
-              //   element={Movies}
-              //   submit={handleSubmit}
-              //   userInfo={setCurrentUser}
-              //   film={tempFilm}
-              //   lowWidth={isWidth}
-              // />
+                moviesApiUrl={moviesApiUrl}
+                currentUser={currentUser}
+                isFoundFilm={isFoundFilm}
+                setFoundFilm={setFoundFilm}
+                location={location}
+                preloader={preloader}
+                setPreloader={setPreloader}
+                jwt={jwt}
+                savedFilms={savedFilms}
+                handleLike={handleLike}
+                islike={islike}
+              />
             }
           ></Route>
           <Route
             path='/saved-movies'
             element={
-              <SavedMovies
+              <ProtectedRouteElement
+                element={SavedMovies}
                 loggedIn={isLogin}
                 lowWidth={isWidth}
                 modal={setModal}
+                currentUser={currentUser}
+                isFoundFilm={isFoundFilm}
+                setFoundFilm={setFoundFilm}
+                moviesApiUrl={moviesApiUrl}
+                location={location}
+                preloader={preloader}
+                setPreloader={setPreloader}
+                jwt={jwt}
+                savedFilms={savedFilms}
+                setSavedFilms={setSavedFilms}
+                getSaveFilm={getSaveFilm}
+                handleDeleteSavedCard={handleDeleteSavedCard}
               />
             }
           ></Route>

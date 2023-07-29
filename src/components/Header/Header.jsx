@@ -3,12 +3,12 @@ import profileLogo from '../../images/ProfileLogo.svg';
 import { NavLink } from 'react-router-dom';
 
 function Header(props) {
-  const { children, isLogin } = props;
-
-  const login = isLogin ? 'header header_login' : 'header';
+  const { children, location } = props;
+  
+  const loginHeaderColor = location === '/' ? 'header header_login' : 'header';
 
   return (
-    <header className={login}>
+    <header className={loginHeaderColor}>
       <NavLink to='/'>
         <img
           className='header__logo'
