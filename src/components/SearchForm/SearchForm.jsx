@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 function SearchForm(props) {
   const {
     savedFilms,
+    setShort,
     setSavedFilms,
     setMoviesList,
     location,
@@ -21,6 +22,15 @@ function SearchForm(props) {
   const check = document.querySelector('.search-form__toggle-button');
   const toggle = localStorage.getItem('toggle');
   
+const [toggleSaves, setToggleSaves] = useState(false);
+useEffect(()=>{
+if(location === '/saved-movies') {
+  localStorage.setItem('toggleSaves', false);
+  setToggleSaves(false)
+  // setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')))
+}
+},[location, setSavedFilms])
+
 
   useEffect(() => {
     if (!localStorage.getItem('beatfilm')) {
@@ -79,6 +89,8 @@ function SearchForm(props) {
     }
   }, [isInput, location]);
 
+
+console.log()
   // фильтр короткометражек
   const handleShortsFilms = (mov) => {
     const shortsFilms = [];
@@ -110,11 +122,12 @@ function SearchForm(props) {
                   'shortsFilmSaved',
                   JSON.stringify(shortsFilms)
                 );
+                //setShort(JSON.parse(localStorage.getItem('shortsFilmSaved')))
             setTimeout(() => setPreloader(false), 1000);
             return location === '/movies'
               ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
-              : setSavedFilms(
-                  JSON.parse(localStorage.getItem('shortsFilmSaved'))
+              : setShort(
+                JSON.parse(localStorage.getItem('shortsFilmSaved'))
                 );
           } else {
             return setFilms(false);
@@ -123,8 +136,8 @@ function SearchForm(props) {
       }
     }
   };
-const input = document.querySelector('.search-form__input')
-console.log(input)
+
+
 
   const handleChange = (evt) => {
     setInput(evt.target.value);
@@ -192,7 +205,7 @@ console.log(input)
           defaultChecked={
             location === '/movies'
               ? JSON.parse(localStorage.getItem('toggle'))
-              : JSON.parse(localStorage.getItem('toggleSaves'))
+              : toggleSaves
           }
         ></input>
         <label className='search-form__lable'>Короткометражки</label>

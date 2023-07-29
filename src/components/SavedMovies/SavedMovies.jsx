@@ -27,19 +27,23 @@ function SavedMovies(props) {
   } = props;
 
   const [isFilms, setFilms] = useState(false);
-
-
+  const [short, setShort] = useState([])
+  const toogle = !JSON.parse(localStorage.getItem('toggleSaves')) 
+  ? savedFilms
+  : short
+  
   useEffect(() => {
-    if (savedFilms.length > 0) {
+    if (savedFilms.length > 0 || short.length > 0) {
       setFilms(true);
     } else {
       setFilms(false);  
     }
-  }, [savedFilms, setDisabledBtnShort]);
-
+  }, [savedFilms, setDisabledBtnShort,short]);
+ 
   const savedMovies = isFilms ? (
     <div className='saved-movies__list'>
-      {savedFilms.map((film) => {
+      {toogle.map((film) => {
+        console.log(film)
         return (
           <MoviesCard
             card={film}
@@ -66,6 +70,7 @@ function SavedMovies(props) {
       <main className='saved-movies'>
         <SearchForm
           savedFilms={savedFilms}
+          setShort={setShort}
           setSavedFilms={setSavedFilms}
           setFilms={setFilms}
           location={location}
