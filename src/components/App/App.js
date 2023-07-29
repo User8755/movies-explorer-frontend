@@ -140,17 +140,16 @@ function App() {
     location === '/saved-movies' ? setPreloader(true) : setPreloader(false);
     api
       .deleteSaveFilm(item, jwt)
-      .then(()=>handleDelFilm(item))
-      .catch((err) =>console.log(err) )
+      .then(() => handleDelFilm(item))
+      .catch((err) => console.log(err))
       .finally(setTimeout(() => setPreloader(false), 1000));
     localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
   };
 
   useEffect(() => {
-    if(isLogin) {
+    if (isLogin) {
       localStorage.setItem('savedFilms', JSON.stringify(savedFilms));
     }
-
   }, [savedFilms, isLogin]);
 
   const handleLike = (card, like, cadId) => {

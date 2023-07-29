@@ -21,16 +21,15 @@ function SearchForm(props) {
   const search = localStorage.getItem('search');
   const check = document.querySelector('.search-form__toggle-button');
   const toggle = localStorage.getItem('toggle');
-  
-const [toggleSaves, setToggleSaves] = useState(false);
-useEffect(()=>{
-if(location === '/saved-movies') {
-  localStorage.setItem('toggleSaves', false);
-  setToggleSaves(false)
-  // setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')))
-}
-},[location, setSavedFilms])
 
+  const [toggleSaves, setToggleSaves] = useState(false);
+  useEffect(() => {
+    if (location === '/saved-movies') {
+      localStorage.setItem('toggleSaves', false);
+      setToggleSaves(false);
+      // setSavedFilms(JSON.parse(localStorage.getItem('savedFilms')))
+    }
+  }, [location, setSavedFilms]);
 
   useEffect(() => {
     if (!localStorage.getItem('beatfilm')) {
@@ -50,7 +49,9 @@ if(location === '/saved-movies') {
   const hendleSearchFilms = (evt) => {
     evt.preventDefault();
     const findFilm = [];
-    localStorage.setItem('search', isInput);
+    location === '/movies'
+      ? localStorage.setItem('search', isInput)
+      : localStorage.setItem('searchSave', isInput);
 
     serch.map((item) => {
       if (item.nameRU.toLowerCase().includes(isInput.toLowerCase())) {
@@ -89,8 +90,7 @@ if(location === '/saved-movies') {
     }
   }, [isInput, location]);
 
-
-console.log()
+  console.log();
   // фильтр короткометражек
   const handleShortsFilms = (mov) => {
     const shortsFilms = [];
@@ -122,13 +122,11 @@ console.log()
                   'shortsFilmSaved',
                   JSON.stringify(shortsFilms)
                 );
-                //setShort(JSON.parse(localStorage.getItem('shortsFilmSaved')))
+            //setShort(JSON.parse(localStorage.getItem('shortsFilmSaved')))
             setTimeout(() => setPreloader(false), 1000);
             return location === '/movies'
               ? setMoviesList(JSON.parse(localStorage.getItem('shortsFilms')))
-              : setShort(
-                JSON.parse(localStorage.getItem('shortsFilmSaved'))
-                );
+              : setShort(JSON.parse(localStorage.getItem('shortsFilmSaved')));
           } else {
             return setFilms(false);
           }
@@ -137,17 +135,15 @@ console.log()
     }
   };
 
-
-
   const handleChange = (evt) => {
     setInput(evt.target.value);
   };
 
-  useEffect(()=>{
-    if(isInput) {
-      setErrors('')
+  useEffect(() => {
+    if (isInput) {
+      setErrors('');
     }
-  },[isInput])
+  }, [isInput]);
 
   useEffect(() => {
     if (location === '/movies') {
